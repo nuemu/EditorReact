@@ -1,15 +1,33 @@
 import React, { useState } from "react";
-import './base.css'
+import TextBlock from './Blocks/TextBlock/TextBlock'
 
 function Base() {
-  var [text, changeText] = useState('Sample Text');
+  var [texts, setTexts] = useState(["Sample Text1","Sample Text2"]);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index:number ) => {
+    var newTexts = texts.slice()
+    newTexts[index] = e.target.innerHTML
+    setTexts(texts = newTexts)
+  }
+  const handleKeyPress = (e:React.KeyboardEvent<HTMLDivElement>, index:number) => {
+    if(e.key==='Enter' && e.shiftKey){
+      e.preventDefault()
+      var newTexts = texts.slice()
+      newTexts.splice(index+1, 0, 'Sample Text '+(texts.length+1))
+      setTexts(texts = newTexts)
+    }
+  }
+  const block = (index: number) => (
+    <TextBlock
+      text = {texts[index]}
+      onChange = {(e) => handleChange(e, index)}
+      onKeyPress={(e) => handleKeyPress(e, index)}
+    />
+  )
+  var blocks = texts.map(((text, index) => <div key={index} className="block-wrapper">{block(index)}</div>))
+
   return (
-    <div>
-      <p>Input:{text}</p>
-      <textarea
-        value={text}
-        onChange={(event) => changeText(text = event.target.value)}
-      />
+    <div className="base-wrapper">
+      {blocks}
     </div>
   );
 }
