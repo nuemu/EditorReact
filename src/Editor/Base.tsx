@@ -117,6 +117,9 @@ function Base() {
           if(index !== 0) handleFocus(index-1)
         }
       }
+      else{
+        if(index !== 0) handleFocus(index-1)
+      }
     }
 
     // Move to Lower Block
@@ -131,6 +134,9 @@ function Base() {
         if(Math.abs(targetBottom - rangeBottom) < 5){
           if(index !== texts.length-1) handleFocus(index+1)
         }
+      }
+      else{
+        if(index !== texts.length-1) handleFocus(index+1)
       }
     }
 
