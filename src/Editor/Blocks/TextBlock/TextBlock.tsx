@@ -1,26 +1,31 @@
-import React, {useRef} from "react";
+import React, { forwardRef, useRef } from "react";
 import './TextBlock.css'
 
 type Props = {
   text: string
+  index: number
   change: boolean
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onKeyPress: (event:React.KeyboardEvent<HTMLDivElement>) => void
+  onKeyDown: (event:React.KeyboardEvent<HTMLDivElement>) => void
+  onFocus: () => void
 }
 
-function TextBlock(props: Props) {
+const TextBlock = forwardRef((props: Props, ref:any) => {
   var textRef = useRef(props.text)
   if(props.change) textRef.current = props.text
 
   return (
     <div
-      className="text-block"
+      ref={ref}
+      className={"text-block"}
+      id={"editable-id-"+props.index}
       contentEditable
       dangerouslySetInnerHTML={{ __html: textRef.current}}
       onInput={(e:React.ChangeEvent<HTMLInputElement>) => props.onChange(e)}
-      onKeyPress={(e:React.KeyboardEvent<HTMLDivElement>) => props.onKeyPress(e)}
+      onKeyDown={(e:React.KeyboardEvent<HTMLDivElement>) => props.onKeyDown(e)}
+      onFocus={() => props.onFocus()}
     />
   );
-}
+})
 
 export default TextBlock;

@@ -1,3 +1,6 @@
-p{
-  white-space: pre-wrap;
+.base-wrapper{
+  position: absolute;
+  padding-top: 5%;
+  width:70%;
+  left:15%;
 }
