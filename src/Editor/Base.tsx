@@ -105,21 +105,35 @@ function Base() {
     }
 
     // Move to Upper Block
-    if(e.key==='ArrowUp'){
+    if(e.key==='ArrowUp' || e.key==='ArrowDown'){
       const target = e.target as HTMLElement
-      const selection = window.getSelection()!.anchorNode
+      const range = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
 
-      target.childNodes.forEach(element => {
-        if(element.nodeType === 1){
+      if(range){
+        const targetTop = target.getClientRects()[0].top
+        const rangeTop = range.top
+
+        if(Math.abs(targetTop - rangeTop) < 5){
+          if(index !== 0) handleFocus(index-1)
         }
-        else if(element.nodeType === 3){
-        }
-      })
+      }
     }
 
     // Move to Lower Block
     if(e.key==='ArrowDown'){
+      const target = e.target as HTMLElement
+      const range = window.getSelection()?.getRangeAt(0)!.getClientRects()[0].bottom
+
+      if(range){
+        const targetBottom = target.getClientRects()[0].bottom
+        const rangeBottom = range
+
+        if(Math.abs(targetBottom - rangeBottom) < 5){
+          if(index !== texts.length-1) handleFocus(index+1)
+        }
+      }
     }
+
   }
   const handleFocus = (index:number) => {
     setFocus(focusing = index)
