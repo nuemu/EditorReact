@@ -105,7 +105,7 @@ function Base() {
     }
 
     // Move to Upper Block
-    if(e.key==='ArrowUp' || e.key==='ArrowDown'){
+    if(e.key==='ArrowUp'){
       const target = e.target as HTMLElement
       const range = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
 
@@ -122,11 +122,11 @@ function Base() {
     // Move to Lower Block
     if(e.key==='ArrowDown'){
       const target = e.target as HTMLElement
-      const range = window.getSelection()?.getRangeAt(0)!.getClientRects()[0].bottom
+      const range = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
 
       if(range){
         const targetBottom = target.getClientRects()[0].bottom
-        const rangeBottom = range
+        const rangeBottom = range.bottom
 
         if(Math.abs(targetBottom - rangeBottom) < 5){
           if(index !== texts.length-1) handleFocus(index+1)
