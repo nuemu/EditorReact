@@ -39,8 +39,18 @@ function Base() {
     // Add New TextBlock
     if(e.key==='Enter' && e.shiftKey){
       e.preventDefault()
-      newTexts.splice(index+1, 0, '')
+      
+      // Split sentence to 2 by caret
+      var target = e.target as HTMLElement
+
+      const range = window.getSelection()!.getRangeAt(0)
+      range.insertNode(document.createElement('code'))
+      const splitedText = target.innerHTML.split('<code></code>')
+
+      newTexts.splice(index, 1, splitedText[0])
+      newTexts.splice(index+1, 0, splitedText[1])
       setTexts(texts = newTexts)
+
       setChange(change = true)
       handleFocus(index+1)
     }
@@ -101,6 +111,24 @@ function Base() {
         setChange(change = true)
         if(index > 0) handleFocus(index-1)
         else handleFocus(0)
+      }
+      
+      // If Caret is on top and leftside join with upper block
+      const range = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
+      if(range){
+        const targetTop = target.getClientRects()[0].top
+        const rangeTop = range.top
+
+        if(Math.abs(targetTop - rangeTop) < 5){
+          if(index !== 0 && window.getSelection()?.anchorOffset === 0){
+            const text = newTexts[index]
+            newTexts[index-1] = newTexts[index-1] + text
+            newTexts.splice(index, 1)
+            setTexts(texts = newTexts)
+            setChange(change = true)
+            handleFocus(index-1)
+          }
+        }
       }
     }
 
