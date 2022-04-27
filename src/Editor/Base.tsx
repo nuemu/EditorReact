@@ -1,6 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import TextBlock from './Blocks/TextBlock/TextBlock'
 import './base.css'
+
+import { BlocksContext } from '../store';
 
 function SetCaret(node:Node, caret:number){
   const selection = window.getSelection()!
@@ -11,9 +13,15 @@ function SetCaret(node:Node, caret:number){
 }
 
 function Base() {
+  var { blocks, setBlocks } = useContext(BlocksContext);
   var [texts, setTexts] = useState(['']);
   var [change, setChange] = useState(false);
   var [focusing, setFocus] = useState(0);
+
+  useEffect(() => {
+    setBlocks(blocks = {id:'asdewq', name:'sample'})
+  },[])
+  console.log(blocks)
 
   // refs
   var refs = useRef([React.createRef()])
@@ -183,11 +191,11 @@ function Base() {
       onFocus={() => handleFocus(index)}
     />
   )
-  var blocks = texts.map(((text, index) => <div key={index} className={"block-wrapper-"+index}>{block(index)}</div>))
+  var blockComponents = texts.map(((text, index) => <div key={index} className={"block-wrapper-"+index}>{block(index)}</div>))
 
   return (
     <div className="base-wrapper">
-      {blocks}
+      {blockComponents}
     </div>
   );
 }
