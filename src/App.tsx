@@ -1,13 +1,12 @@
 import React from 'react';
-import { BlocksProvider } from './store';
+import { RecoilRoot } from 'recoil'
 import Base from './Editor/Base';
-
 
 function App() {
   return (
-    <BlocksProvider>
+    <RecoilRoot>
       <Base />
-    </BlocksProvider>
+    </RecoilRoot>
   );
 };
 

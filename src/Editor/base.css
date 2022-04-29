@@ -4,3 +4,9 @@
   width:70%;
   left:15%;
 }
+.row-wrapper{
+  display: flex;
+}
+.col-wrapper{
+  width: 100%;
+}
