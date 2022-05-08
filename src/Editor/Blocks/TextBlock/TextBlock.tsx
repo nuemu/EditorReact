@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 import './TextBlock.css'
 
 import { useRecoilState } from 'recoil'
@@ -23,12 +23,21 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
   const [blocks, setBlocks] = useRecoilState(blocksSelector) as Blocks
   const [focusing, setFocus] = useRecoilState(focusState)
 
+  const [editing, setEdit] = useState(false)
+
   var textRef = useRef(blocks[props.row_index][props.col_index].data.text)
 
   useEffect(() => {
+    if(focusing[0] === props.row_index && focusing[1] === props.col_index) setEdit(true)
+    else setEdit(false)
     textRef.current = blocks[props.row_index][props.col_index].data.text
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[focusing])
+
+  useEffect(() => {
+    if(editing) ref.current.focus()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editing])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, row_index:number, col_index:number ) => {
     var newBlocks = JSON.parse(JSON.stringify(blocks)) //Deep Copy
@@ -192,7 +201,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
     setFocus([row_index, col_index])
   }
 
-  return (
+  if(editing) return (
     <div
       ref={ref}
       className={"text-block"}
@@ -203,7 +212,17 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
       onKeyDown={(e:React.KeyboardEvent<HTMLDivElement>) => handleKeyDown(e, props.row_index, props.col_index)}
       onFocus={() => handleFocus(props.row_index, props.col_index)}
     />
-  );
+  )
+  
+  else return (
+    <div
+      className={"text-block"}
+      ref={ref}
+      onClick={() => handleFocus(props.row_index, props.col_index)}
+    >
+      Not focusing
+    </div>
+  )
 })
 
 export default TextBlock;
