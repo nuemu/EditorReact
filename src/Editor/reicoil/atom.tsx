@@ -1,4 +1,4 @@
-import { atom } from 'recoil'
+import { atom, selector } from 'recoil'
 import { v4 } from 'uuid'
 
 const blocksState = atom({
@@ -40,4 +40,21 @@ const blocksState = atom({
   },
 });
 
-export default blocksState
+type Blocks = { id: string; type: string; data: { text: string; }; }[][]
+
+const blocksSelector = selector({
+  key: 'blocksSelector',
+  get: ({get}) => {
+    const blocks = get(blocksState).blocks
+    return blocks as Blocks
+  },
+  set: ({get,set}, newBlocks) => {
+    const newValue = {
+      id: get(blocksState).id,
+      blocks: newBlocks as Blocks
+    }
+    set(blocksState, newValue)
+  }
+})
+
+export default blocksSelector
