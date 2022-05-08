@@ -27,6 +27,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
 
   useEffect(() => {
     textRef.current = blocks[props.row_index][props.col_index].data.text
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[focusing])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, row_index:number, col_index:number ) => {

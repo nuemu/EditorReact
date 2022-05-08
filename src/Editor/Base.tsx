@@ -1,17 +1,16 @@
 import React, { useRef, useEffect } from "react";
-import TextBlock from './Blocks/TextBlock/TextBlock'
 import './base.css'
 
 import LoadedBlocks from './Blocks/blocks_loader'
 
-import { useRecoilState } from 'recoil'
+import { useRecoilValue } from 'recoil'
 import { blocksSelector, focusState } from './reicoil/atom';
 
-type BlocksState = [{ id: string; type: string; data: { text: string; }; }[][], any]
+type BlocksState = { id: string; type: string; data: { text: string; }; }[][]
 
 function Base() {
-  const [blocks, setBlocks] = useRecoilState(blocksSelector) as BlocksState
-  const [focusing, setFocus] = useRecoilState(focusState)
+  const blocks = useRecoilValue(blocksSelector) as BlocksState
+  const focusing = useRecoilValue(focusState)
 
   // initialize refs
   var refs = useRef([[React.createRef()]])
