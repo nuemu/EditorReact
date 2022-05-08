@@ -14,13 +14,12 @@ function SetCaret(node:Node, caret:number){
 }
 
 type Blocks = { id: string; type: string; data: { text: string; }; }[][]
+type Block = [Blocks, any]
 
 function Base() {
-  const [blockss, setBlocks] = useRecoilState(blocksState)
+  const [blocks, setBlocks] = useRecoilState(blocksState) as Block
   var [change, setChange] = useState(false);
   var [focusing, setFocus] = useState([0,0])
-
-  const blocks = blockss as Blocks
 
   // initialize refs
   var refs = useRef([[React.createRef()]])
@@ -120,8 +119,9 @@ function Base() {
     // Remove block when Backspace key down
     if(e.key==='Backspace'){
       const target = e.target as HTMLElement
-      if(target.innerText === '' && newBlocks.length>1){
-        newBlocks[row_index].splice(col_index, 1)
+      if(target.innerText === ''){
+        if(col_index > 0) newBlocks[row_index].splice(col_index, 1)
+        else if(row_index > 0) newBlocks.splice(row_index, 1)
         setBlocks(newBlocks)
         setChange(change = true)
         if(col_index > 0) handleFocus(row_index, col_index-1)
@@ -135,7 +135,11 @@ function Base() {
         const targetTop = target.getClientRects()[0].top
         const rangeTop = range.top
 
-        if(Math.abs(targetTop - rangeTop) < 5){
+        if(
+          Math.abs(targetTop - rangeTop) < 5 &&
+          window.getSelection()?.anchorOffset === window.getSelection()?.focusOffset &&
+          window.getSelection()?.anchorOffset === 0
+        ){
           if(col_index !== 0){
             const text = newBlocks[row_index][col_index].data.text
             newBlocks[row_index][col_index-1].data.text = newBlocks[row_index][col_index-1].data.text + text
@@ -144,7 +148,7 @@ function Base() {
             setChange(change = true)
             handleFocus(row_index, col_index-1)
           }
-          else if(row_index !== 0 && window.getSelection()?.anchorOffset === 0){
+          else if(row_index !== 0){
             const text = newBlocks[row_index][col_index].data.text
             newBlocks[row_index-1][col_index].data.text = newBlocks[row_index-1][col_index].data.text + text
             newBlocks[row_index].splice(col_index, 1)
