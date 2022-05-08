@@ -110,7 +110,10 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
       const target = e.target as HTMLElement
       if(target.innerText === ''){
         if(col_index > 0) newBlocks[row_index].splice(col_index, 1)
-        else if(row_index > 0) newBlocks.splice(row_index, 1)
+        else if(row_index > 0){
+          if(newBlocks[row_index].length === 0) newBlocks.splice(row_index, 1)
+          else newBlocks[row_index].splice(col_index, 1)
+        }
         setBlocks(newBlocks)
         if(col_index > 0) handleFocus(row_index, col_index-1)
         else if(row_index > 0) handleFocus(row_index-1, col_index)
