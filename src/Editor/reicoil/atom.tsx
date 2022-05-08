@@ -42,7 +42,7 @@ const blocksState = atom({
 
 type Blocks = { id: string; type: string; data: { text: string; }; }[][]
 
-const blocksSelector = selector({
+export const blocksSelector = selector({
   key: 'blocksSelector',
   get: ({get}) => {
     const blocks = get(blocksState).blocks
@@ -57,4 +57,7 @@ const blocksSelector = selector({
   }
 })
 
-export default blocksSelector
+export const focusState = atom({
+  key: 'focusState',
+  default: [0, 0]
+})
