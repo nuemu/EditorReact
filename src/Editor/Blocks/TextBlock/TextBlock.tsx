@@ -4,6 +4,9 @@ import './TextBlock.css'
 import { useRecoilState } from 'recoil'
 import { blocksSelector, focusState } from '../../reicoil/atom';
 
+import 'katex/dist/katex.css'
+import renderMathInElement from 'katex/contrib/auto-render/auto-render.js'
+
 type Props = {
   row_index: number
   col_index: number
@@ -35,7 +38,20 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
   },[focusing])
 
   useEffect(() => {
-    if(editing) ref.current.focus()
+    if(editing){
+      ref.current.innerHTML = textRef.current
+      ref.current.focus()
+    }
+    else renderMathInElement(ref.current,
+      {
+        delimiters:[
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false},
+          {left: "\\(", right: "\\)", display: false},
+          {left: "\\[", right: "\\]", display: true}
+        ],
+        throwOnError : false
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing])
 
@@ -218,10 +234,9 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
     <div
       className={"text-block"}
       ref={ref}
+      dangerouslySetInnerHTML={{ __html: textRef.current}}
       onClick={() => handleFocus(props.row_index, props.col_index)}
-    >
-      Not focusing
-    </div>
+    />
   )
 })
 
