@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Editor/static/css/main.c527fcbc.css",
-    "main.js": "/Editor/static/js/main.41155198.js",
+    "main.css": "/Editor/static/css/main.0e48aae4.css",
+    "main.js": "/Editor/static/js/main.15faca1e.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/Editor/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/Editor/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
     "static/media/KaTeX_Main-Bold.ttf": "/Editor/static/media/KaTeX_Main-Bold.8169508bf58f8bd92ad8.ttf",
@@ -63,11 +63,11 @@
     "static/media/KaTeX_Size3-Regular.woff": "/Editor/static/media/KaTeX_Size3-Regular.7947224e8a9914fa332b.woff",
     "static/media/KaTeX_Size3-Regular.woff2": "/Editor/static/media/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2",
     "index.html": "/Editor/index.html",
-    "main.c527fcbc.css.map": "/Editor/static/css/main.c527fcbc.css.map",
-    "main.41155198.js.map": "/Editor/static/js/main.41155198.js.map"
+    "main.0e48aae4.css.map": "/Editor/static/css/main.0e48aae4.css.map",
+    "main.15faca1e.js.map": "/Editor/static/js/main.15faca1e.js.map"
   },
   "entrypoints": [
-    "static/css/main.c527fcbc.css",
-    "static/js/main.41155198.js"
+    "static/css/main.0e48aae4.css",
+    "static/js/main.15faca1e.js"
   ]
 }
