@@ -10,6 +10,7 @@ import 'katex/dist/katex.css'
 import { marked } from 'marked'
 import highlightjs from 'highlight.js'
 import 'highlight.js/styles/github-dark-dimmed.css'
+import DOMPurify from "dompurify";
 
 const katexRender = (innerText:string) => {
   var newText = innerText
@@ -96,7 +97,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
     else {
       const math = katexRender(ref.current.innerText)
       const text = marked.parse(math)
-      ref.current.innerHTML = text
+      ref.current.innerHTML = DOMPurify.sanitize(text)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing])
