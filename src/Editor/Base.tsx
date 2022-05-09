@@ -1,17 +1,17 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import './base.css'
 
 import LoadedBlocks from './Blocks/blocks_loader'
 import Menu from './Menu/Menu'
 
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilValue, useRecoilState } from 'recoil'
 import { blocksSelector, focusState, menuState } from './reicoil/atom';
 
 type BlocksState = { id: string; type: string; data: { text: string; }; }[][]
 
 function Base() {
   const blocks = useRecoilValue(blocksSelector) as BlocksState
-  const focusing = useRecoilValue(focusState)
+  const [focusing, setFocus] = useRecoilState(focusState)
 
   const menu = useRecoilValue(menuState)
 
@@ -81,7 +81,9 @@ function Base() {
   )
 
   return (
-    <div className="base-wrapper">
+    <div className="editor-wrapper">
+      <div className="editor-left-wrapper" onMouseOver={() => setFocus([-1, 0])}/>
+      <div className="editor-right-wrapper" onMouseOver={() => setFocus([-1, 0])}/>
       {blockComponents}
     </div>
   );
