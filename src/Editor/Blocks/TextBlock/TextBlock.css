@@ -1,9 +1,23 @@
 .text-block {
   outline:none;
   white-space: pre-wrap;
-  margin-bottom: 8px;
+  margin-bottom: 16pt;
+}
+.text-block-viewer {
+  outline:none;
+  margin-bottom: 16pt;
 }
 [contenteditable=true]:empty:before{
   content: "Text Block";
   color: grey;
+}
+p {
+  margin: 0;
+  display:inline;
+}
+ul {
+  margin: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
 }

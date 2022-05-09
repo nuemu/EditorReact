@@ -4,8 +4,54 @@ import './TextBlock.css'
 import { useRecoilState } from 'recoil'
 import { blocksSelector, focusState } from '../../reicoil/atom';
 
+import katex from 'katex'
 import 'katex/dist/katex.css'
-import renderMathInElement from 'katex/contrib/auto-render/auto-render.js'
+
+import { marked } from 'marked'
+import highlightjs from 'highlight.js'
+import 'highlight.js/styles/github-dark-dimmed.css'
+
+const katexRender = (innerText:string) => {
+  var newText = innerText
+
+  // display mode true
+  var split = innerText.split('$$')
+  var newTexts:string[] = []
+  if(split.length > 1){
+    split.forEach((text, index) => {
+      if(index%2 === 1){
+        text = text.replaceAll('\n', '')
+        newTexts.push(katex.renderToString(text, {displayMode: true}))
+      }
+      else newTexts.push(text)
+    })
+    newText = newTexts.join('')
+  }
+
+  // display mode false
+  split = newText.split('$')
+  newTexts = []
+  if(split.length > 1){
+    split.forEach((text, index) => {
+      if(index%2 === 1) newTexts.push(katex.renderToString(text, {displayMode: false}))
+      else newTexts.push(text)
+    })
+    newText = newTexts.join('')
+  }
+
+  return newText
+}
+
+marked.setOptions({
+  langPrefix: 'hljs language-',
+  highlight: function(code, lang) {
+    return highlightjs.highlightAuto(code, [lang]).value;
+  },
+  pedantic: false,
+  gfm: true,
+  breaks: true,
+  silent: true
+})
 
 type Props = {
   row_index: number
@@ -47,16 +93,11 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
       ref.current.innerText = textRef.current
       ref.current.focus()
     }
-    else renderMathInElement(ref.current,
-      {
-        delimiters:[
-          {left: "$$", right: "$$", display: true},
-          {left: "$", right: "$", display: false},
-          {left: "\\(", right: "\\)", display: false},
-          {left: "\\[", right: "\\]", display: true}
-        ],
-        throwOnError : false
-    })
+    else {
+      const math = katexRender(ref.current.innerText)
+      const text = marked.parse(math)
+      ref.current.innerHTML = text
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing])
 
@@ -270,7 +311,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
   
   else return (
     <div
-      className={"text-block"}
+      className={"text-block-viewer"}
       ref={ref}
       onClick={() => handleFocus(props.row_index, props.col_index)}
     />
