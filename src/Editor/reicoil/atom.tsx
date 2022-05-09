@@ -173,7 +173,7 @@ const blocksState = atom({
                 "id": "a",
                 "type": "Text",
                 "data": {
-                    "text": "- セキュリティ対策 sanitizeしていないのでDOMPurify辺りをかませる。\n- Drag & Drop機能\n- Notionみたいなメニュー機能"
+                    "text": "- Drag & Drop機能\n- Notionみたいなメニュー機能"
                 }
             }
         ],
