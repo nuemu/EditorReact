@@ -105,6 +105,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
     var newBlocks = JSON.parse(JSON.stringify(blocks)) //Deep Copy
     newBlocks[row_index][col_index].data.text = e.target.innerText
     setBlocks(newBlocks)
+    console.log(newBlocks)
   }
 
   const handleKeyDown = (e:React.KeyboardEvent<HTMLDivElement>, row_index:number, col_index:number) => {
@@ -112,6 +113,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
 
     // Add New TextBlock
     if(e.key==='Enter' && e.shiftKey){
+      console.log("sample")
       e.preventDefault()
       
       // Split sentence to 2 by caret

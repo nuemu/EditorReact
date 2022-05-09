@@ -25,9 +25,11 @@ function Base() {
   refs.current = dummyRefs
 
   useEffect(() => {
-    const ref = refs.current[focusing[0]][focusing[1]].current
-    const element = ref as HTMLElement
-    element.focus()
+    if(focusing[0] > 0){
+      const ref = refs.current[focusing[0]][focusing[1]].current
+      const element = ref as HTMLElement
+      element.focus()
+    }
   },[focusing]);
 
   const BlocksComponents = LoadedBlocks as any
