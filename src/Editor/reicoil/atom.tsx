@@ -1,6 +1,11 @@
 import { atom, selector } from 'recoil'
 import { v4 } from 'uuid'
 
+export const menuState = atom({
+    key: 'menuState',
+    default: [-1, 0]
+})
+
 const blocksState = atom({
   key: 'blocksState',
   default: {
