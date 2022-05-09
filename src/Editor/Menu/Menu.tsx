@@ -2,9 +2,10 @@ import React, { forwardRef, useRef } from "react";
 import './Menu.css'
 
 import { useRecoilState } from 'recoil'
-import { blocksSelector, focusState } from '../reicoil/atom';
+import { blocksSelector, focusState, menuState } from '../reicoil/atom';
 
-import Loaded from '../Blocks/blocks_loader'
+import Datas from '../Blocks/BlockDatas'
+import { v4 } from 'uuid'
 
 const grid = require('../Assets/grid.svg').default
 const plus = require('../Assets/plus.svg').default
@@ -19,6 +20,7 @@ type Blocks = [{ id: string; type: string; data: { text: string; }; }[][], any]
 const Menu = forwardRef((props: Props, ref:any) =>  {
   const [blocks, setBlocks] = useRecoilState(blocksSelector) as Blocks
   const [, setFocus] = useRecoilState(focusState)
+  const [, setMenu] = useRecoilState(menuState)
 
   var addRef = useRef<HTMLDivElement>(null)
 
@@ -35,15 +37,58 @@ const Menu = forwardRef((props: Props, ref:any) =>  {
     else handleFocus(0, 0)
   }
 
+  const hideDropDown = () => {
+    setMenu([-1, 0])
+    const element = addRef!.current!.querySelector('.dropDown') as HTMLElement
+    element.style.display = 'none'
+    document.removeEventListener("mousedown", handleClickOutside)
+  }
+
+  const handleClickOutside = (e:MouseEvent) => {
+    const target = e.target as Node
+    if (addRef.current && !addRef.current.contains(target)) {
+      hideDropDown()
+      const element = addRef!.current!.parentNode as HTMLElement
+      element!.style.opacity = '0'
+    }
+  }
+
   const handleAddMenu = () => {
-    addRef!.current!.style.display = 'block'
+    setMenu([props.row_index, props.col_index])
+    const element = addRef!.current!.querySelector('.dropDown') as HTMLElement
+    element.style.display = 'block'
+    document.addEventListener("mousedown", handleClickOutside)
+  }
+
+  const handleAddBlock = (index:number) => {
+    var newBlocks = JSON.parse(JSON.stringify(blocks))
+    newBlocks.splice(
+      props.row_index+1,
+      0,
+      [{
+        'id': v4(),
+        'type': Datas[index].type,
+        'data': Datas[index].initial
+      }]
+    )
+    setBlocks(newBlocks)
+    handleFocus(props.row_index+1, 0)
+    hideDropDown()
   }
 
   const handleFocus = (row_index:number, col_index:number) => {
     setFocus([row_index, col_index])
   }
 
-  const addIcons = Object.keys(Loaded).map(name => <div key={name}>{name}</div>)
+  const addIcons = Datas.map((data, index) => (
+    <div className="dropdown-item" key={index} onClick={() => handleAddBlock(index)}>
+      <div className="block-icon-wrapper">
+        <img src={data.icon} alt="icon" className="block-icon"/>
+        &nbsp;
+      </div>
+      <div className="block-name">{data.name}</div>
+    </div>
+  ))
 
   return (
     <div
@@ -52,15 +97,16 @@ const Menu = forwardRef((props: Props, ref:any) =>  {
     >
       <div
         className="add-menu"
+        ref={addRef}
       >
         <img
+          className="menu-icon"
           src={plus}
           alt="menu-icon"
           onClick={() => handleAddMenu()}
         />
         <div
           className="dropDown"
-          ref={addRef}
         >
           {addIcons}
         </div>
@@ -70,6 +116,7 @@ const Menu = forwardRef((props: Props, ref:any) =>  {
         className = "option-menu"
       >
         <img
+          className="menu-icon"
           src = {grid}
           alt = "menu-icon"
           onClick = {() => handleOptionMenu()}

@@ -13,7 +13,7 @@ function Base() {
   const blocks = useRecoilValue(blocksSelector) as BlocksState
   const focusing = useRecoilValue(focusState)
 
-  const [menu, setMenu] = useRecoilState(menuState)
+  const menu = useRecoilValue(menuState)
 
   const generateRefs = () => {
     var dummyRefs:any = []
@@ -43,11 +43,11 @@ function Base() {
   },[focusing]);
 
   const handleMouseOver = (row_index:number, col_index:number) => {
-    menuRefs.current[row_index][col_index].current.style.opacity = 1
+    if(menu[0] < 0) menuRefs.current[row_index][col_index].current.style.opacity = 1
   }
 
   const handleMouseLeave = (row_index:number, col_index:number) => {
-    menuRefs.current[row_index][col_index].current.style.opacity = 0
+    if(menu[0] < 0) menuRefs.current[row_index][col_index].current.style.opacity = 0
   }
 
   const BlocksComponents = LoadedBlocks as any
