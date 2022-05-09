@@ -83,7 +83,7 @@ const blocksState = atom({
                 "id": "a",
                 "type": "Text",
                 "data": {
-                    "text": "**コードブロック**\n```c++\ninclude<iostream>\nusing namespace std;\n\n\nint main(){\n  cout << \"hello editor\" << endl;\n}\n```"
+                    "text": "**コードブロック**\n```c++\ninclude<iostream>\nusing namespace std;\n\nint main(){\n  cout << \"hello editor\" << endl;\n}\n```"
                 }
             }
         ],
@@ -92,7 +92,7 @@ const blocksState = atom({
                 "id": "a",
                 "type": "Text",
                 "data": {
-                    "text": "**数式入力**\n- inline\nゼータ函数は$\\zeta(s) = \\sum_{n=0}^\\infty\\frac{1}{n^s}$と定義される。\n- display mode\n$$\\sum_{n=0}^\\infty n = -\\frac{1}{12}$$\n"
+                    "text": "**数式入力**\n- inline\nゼータ函数は$\\zeta(s) = \\sum_{n=0}^\\infty\\frac{1}{n^s}$と定義される。\n- display mode\n$$\\sum_{n=0}^\\infty n = -\\frac{1}{12}$$"
                 }
             }
         ],
@@ -192,7 +192,16 @@ const blocksState = atom({
                     "text": "文章の並列表示"
                 }
             }
-        ]
+        ],
+        [
+            {
+                "id": "a",
+                "type": "Text",
+                "data": {
+                    "text": ""
+                }
+            }
+        ],
     ]
   },
 });
