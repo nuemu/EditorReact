@@ -31,6 +31,11 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
   var textRef = useRef(blocks[props.row_index][props.col_index].data.text)
 
   useEffect(() => {
+    ref.current.innerText = textRef.current
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
+
+  useEffect(() => {
     if(focusing[0] === props.row_index && focusing[1] === props.col_index) setEdit(true)
     else setEdit(false)
     textRef.current = blocks[props.row_index][props.col_index].data.text
@@ -39,7 +44,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
 
   useEffect(() => {
     if(editing){
-      ref.current.innerHTML = textRef.current
+      ref.current.innerText = textRef.current
       ref.current.focus()
     }
     else renderMathInElement(ref.current,
@@ -175,6 +180,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
     }
 
     // Move to Upper Block
+    // FIX!!! caret move to start pos
     if(e.key==='ArrowUp'){
       const target = e.target as HTMLElement
       const range = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
@@ -183,9 +189,9 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
         const targetTop = target.getClientRects()[0].top
         const rangeTop = range.top
 
-        if(Math.abs(targetTop - rangeTop) < 5){
-          if(col_index !== 0) handleFocus(row_index, col_index-1)
-          else if(row_index !== 0) handleFocus(row_index-1, blocks[row_index-1].length-1)
+        if(Math.abs(targetTop - rangeTop) < 5 && row_index !== 0){
+          if(col_index > blocks[row_index-1].length-1) handleFocus(row_index-1, blocks[row_index-1].length-1)
+          else handleFocus(row_index-1, col_index)
         }
       }
       else{
@@ -196,19 +202,52 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
     // Move to Lower Block
     if(e.key==='ArrowDown'){
       const target = e.target as HTMLElement
-      const range = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
+      const rect = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
 
-      if(range){
+      if(rect){
         const targetBottom = target.getClientRects()[0].bottom
-        const rangeBottom = range.bottom
+        const rangeBottom = rect.bottom
+        const range = window.getSelection()?.getRangeAt(0)
+        const container = range?.startContainer
 
-        if(Math.abs(targetBottom - rangeBottom) < 5){
-          if(col_index !== blocks[row_index].length-1) handleFocus(row_index, col_index+1)
-          else if(row_index !== blocks.length-1) handleFocus(row_index+1, 0)
+        if(Math.abs(targetBottom - rangeBottom) < 5 && row_index !== blocks.length-1 && container?.nodeValue?.length === range?.startOffset){
+          if(col_index > blocks[row_index+1].length-1) handleFocus(row_index+1, blocks[row_index+1].length-1)
+          else handleFocus(row_index+1, col_index)
         }
       }
       else{
         if(row_index !== blocks.length-1) handleFocus(row_index+1, col_index)
+      }
+    }
+
+    // Move to Left Block
+    // FIX!!! caret need on start pos when ...
+    if(e.key==='ArrowLeft'){
+      const range = window.getSelection()?.getRangeAt(0)
+      if(
+        range?.startOffset === range?.endOffset &&
+        range?.startOffset === 0 &&
+        col_index > 0
+      ){
+        handleFocus(row_index, col_index-1)
+      }
+    }
+
+    // Move to Right Block
+    if(e.key==='ArrowRight'){
+      const target = e.target as HTMLElement
+      const rect = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
+      const range = window.getSelection()?.getRangeAt(0)
+      const container = range?.startContainer
+      const targetBottom = target.getClientRects()[0].bottom
+      const rectBottom = rect?.bottom || 0
+      if(
+        Math.abs(targetBottom - rectBottom) < 5 &&
+        range?.startOffset === range?.endOffset &&
+        container?.nodeValue?.length === range?.startOffset &&
+        blocks[row_index].length-1 > col_index
+      ){
+        handleFocus(row_index, col_index+1)
       }
     }
   }
@@ -223,7 +262,6 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
       className={"text-block"}
       id={"editable-id-"+props.row_index+"-"+props.col_index}
       contentEditable
-      dangerouslySetInnerHTML={{ __html: textRef.current}}
       onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleChange(e, props.row_index, props.col_index)}
       onKeyDown={(e:React.KeyboardEvent<HTMLDivElement>) => handleKeyDown(e, props.row_index, props.col_index)}
       onFocus={() => handleFocus(props.row_index, props.col_index)}
@@ -234,7 +272,6 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
     <div
       className={"text-block"}
       ref={ref}
-      dangerouslySetInnerHTML={{ __html: textRef.current}}
       onClick={() => handleFocus(props.row_index, props.col_index)}
     />
   )
