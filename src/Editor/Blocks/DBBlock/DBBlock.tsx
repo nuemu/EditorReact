@@ -18,6 +18,7 @@ type DBStateType = [
 
 const DB = () => {
   const [DB, setDB] = useRecoilState(DBState) as DBStateType
+  const keepDB = useRef(DB)
   
   var rowMenu = -1, colMenu = -1
 
@@ -31,13 +32,38 @@ const DB = () => {
   DB.column.forEach(() => dummyRefs.push(React.createRef()))
   colMenuRefs.current = dummyRefs
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>, row_index: number) => {
-    
+  var dataRefs = useRef([React.createRef()]) as any
+  dummyRefs = []
+  DB.data.forEach((row) => {
+    var dummyRowRefs:any[] = []
+    row.forEach(() => {
+      dummyRowRefs.push(React.createRef())
+    })
+    dummyRefs.push(dummyRowRefs)
+  })
+  dataRefs.current = dummyRefs
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>, row_index: number, col_index: number) => {
     if(e.key === 'Enter'){
       e.preventDefault()
       DBActions('AddRow', row_index)
+      process.nextTick(() => {dataRefs.current[row_index+1][col_index].current.focus()})
     }
+  }
+
+  const handleHeadChange = (e: React.ChangeEvent<HTMLInputElement>, col_index: number) => {
+    const element = e.target as HTMLElement
+    var newDB = JSON.parse(JSON.stringify(DB)) //Deep Copy
+    newDB.column[col_index].name = element.innerText
+    console.log(newDB)
+    setDB(newDB)
+  }
+
+  const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>, row_index:number, col_index:number) => {
+    const element = e.target as HTMLElement
+    var newDB = JSON.parse(JSON.stringify(DB)) //Deep Copy
+    newDB.data[row_index][col_index] = element.innerText
+    setDB(newDB)
   }
 
   const closeRowMenu = () => {
@@ -110,13 +136,14 @@ const DB = () => {
         break
     }
     setDB(newDB)
+    keepDB.current = newDB
   }
 
   const thead = (
     <thead>
       <tr>
         <td>#</td>
-        {DB.column.map((column, index) => (
+        {keepDB.current.column.map((column, index) => (
           <td
             key={index}
           >
@@ -125,6 +152,7 @@ const DB = () => {
               contentEditable
               dangerouslySetInnerHTML={{__html: column.name}}
               onContextMenu={(e) => handleColumnMenu(e, index)}
+              onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleHeadChange(e, index)}
             />
             <div
               ref={colMenuRefs.current[index]}
@@ -149,7 +177,7 @@ const DB = () => {
 
   const tbody = (
     <tbody>
-      {DB.data.map((row, row_index) => (
+      {keepDB.current.data.map((row, row_index) => (
         <tr
           className="table-row"
           key={row_index}
@@ -177,12 +205,17 @@ const DB = () => {
           {
             row.map((column, col_index) => (
               <td
-                className="table-data"
                 key={col_index}
-                contentEditable
-                dangerouslySetInnerHTML={{__html: column}}
-                onKeyDown={(e) => handleKeyDown(e, row_index)}
-              />
+              >
+                <div
+                  ref={dataRefs.current[row_index][col_index]}
+                  className="table-data"
+                  contentEditable
+                  dangerouslySetInnerHTML={{__html: column}}
+                  onKeyPress={(e) => handleKeyPress(e, row_index, col_index)}
+                  onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleDataChange(e, row_index, col_index)}
+                />
+              </td>
           ))}
           <td />
         </tr>

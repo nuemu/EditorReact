@@ -33,7 +33,7 @@ table{
   border-top: solid 1px gainsboro;
   border-bottom: solid 1px gainsboro;
 }
-td{
+.table-data{
   outline: none;
 }
 .row-index:hover{
