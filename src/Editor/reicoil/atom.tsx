@@ -9,11 +9,11 @@ export const menuState = atom({
 export const DBState = atom({
     key: 'DBState',
     default: {
-        column:[{name:'sample title 1', property: 'text'}, {name:'sample title 2', property: 'text'}],
+        column:[{name:'作成中の', property: 'text'}, {name:'DB', property: 'text'}],
         data:
         [
-            ['sample data 1-1', 'sample data 1-2'],
-            ['sample data 2-1', 'sample data 2-2']
+            ['行は複数選択可能', '一括削除も'],
+            ['列はこれから', '色々拡張予定']
         ]
     }
 })
@@ -53,15 +53,6 @@ const blocksState = atom({
         [
             {
                 "id": "a",
-                "type": "DB",
-                "data": {
-                    "id": "db"
-                }
-            }
-        ],
-        [
-            {
-                "id": "a",
                 "type": "Text",
                 "data": {
                     "text": "### 目次"
@@ -91,7 +82,7 @@ const blocksState = atom({
                 "id": "a",
                 "type": "Text",
                 "data": {
-                    "text": "- markdownスタイルの文章修飾\n- $\\KaTeX$による数式表示\n- Drag&Dropでブロックの並び替え、並列配置"
+                    "text": "- markdownスタイルの文章修飾\n- $\\KaTeX$による数式表示\n- Drag&Dropでブロックの並び替え、並列配置\n- DBの編集、行の追加・削除"
                 }
             }
         ],
@@ -109,48 +100,30 @@ const blocksState = atom({
                 "id": "a",
                 "type": "Text",
                 "data": {
-                    "text": "**コードブロック**\n```c++\ninclude<iostream>\nusing namespace std;\n\nint main(){\n  cout << \"hello editor\" << endl;\n}\n```"
-                }
-            }
-        ],
-        [
-            {
-                "id": "a",
-                "type": "Text",
-                "data": {
-                    "text": "**数式入力**\n- inline\nゼータ函数は$\\zeta(s) = \\sum_{n=0}^\\infty\\frac{1}{n^s}$と定義される。\n- display mode\n$$\\sum_{n=0}^\\infty n = -\\frac{1}{12}$$"
-                }
-            }
-        ],
-        [
-            {
-                "id": "a",
-                "type": "Text",
-                "data": {
-                    "text": "**並列配置**"
-                }
-            }
-        ],
-        [
-            {
-                "id": "a",
-                "type": "Text",
-                "data": {
                     "text": "普通の文\n### h3\n- **List**\n   - nestedList"
                 }
             },
             {
                 "id": "a",
+                "type": "DB",
+                "data": {
+                    "id": "db"
+                }
+            }
+        ],
+        [
+            {
+                "id": "a",
                 "type": "Text",
                 "data": {
-                    "text": "数式\n$$\n\\int\\sin(x)dx\n$$"
+                    "text": "**コードブロック**\n```c++\ninclude<iostream>\nusing namespace std;\n\nint main(){\n  cout << \"hello editor\" << endl;\n}\n```"
                 }
             },
             {
-                "id": "c64eb1b0-f3ed-4627-9d22-5ca8c01a4e2a",
+                "id": "a",
                 "type": "Text",
                 "data": {
-                    "text": "コードブロック\n```js\nconsole.log(\"CodeBlock\")\n\n```"
+                    "text": "**数式入力**\n- inline\nゼータ函数は$\\zeta(s) = \\sum_{n=0}^\\infty\\frac{1}{n^s}$と定義される。\n- display mode\n$$\\sum_{n=0}^\\infty n = -\\frac{1}{12}$$"
                 }
             }
         ],
