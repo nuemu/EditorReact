@@ -44,10 +44,23 @@ const DB = () => {
   dataRefs.current = dummyRefs
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>, row_index: number, col_index: number) => {
-    if(e.key === 'Enter'){
+    if(e.key === 'Enter' && e.shiftKey){
       e.preventDefault()
       DBActions('AddRow', row_index)
-      process.nextTick(() => {dataRefs.current[row_index+1][col_index].current.focus()})
+    }
+    if(e.key === 'Enter'){
+      e.preventDefault()
+      if(row_index < DB.data.length-1) dataRefs.current[row_index+1][col_index].current.focus()
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>, row_index: number, col_index: number) => {
+    switch(e.key){
+      case('ArrowUp'):
+        if(row_index !== 0) dataRefs.current[row_index-1][col_index].current.focus()
+        break
+      case('ArrowDown'):
+        if(row_index < DB.data.length-1) dataRefs.current[row_index+1][col_index].current.focus()
     }
   }
 
@@ -213,6 +226,7 @@ const DB = () => {
                   contentEditable
                   dangerouslySetInnerHTML={{__html: column}}
                   onKeyPress={(e) => handleKeyPress(e, row_index, col_index)}
+                  onKeyDown={(e) => handleKeyDown(e, row_index, col_index)}
                   onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleDataChange(e, row_index, col_index)}
                 />
               </td>
