@@ -82,7 +82,10 @@ function Base() {
       if(dragging[1] > dropping[1]) newBlocks[dragging[0]].splice(dragging[1]+1, 1)
       else newBlocks[dragging[0]].splice(dragging[1], 1)
     }
-    else newBlocks[dragging[0]].splice(dragging[1], 1)
+    else{
+      if(newBlocks[dragging[0]].length > 1) newBlocks[dragging[0]].splice(dragging[1], 1)
+      else newBlocks.splice(dragging[0], 1)
+    }
     return newBlocks
   }
 
