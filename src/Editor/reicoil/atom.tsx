@@ -70,7 +70,7 @@ const blocksState = atom({
                 "id": "a",
                 "type": "Text",
                 "data": {
-                    "text": "- markdownスタイルの文章修飾\n- $\\KaTeX$による数式表示"
+                    "text": "- markdownスタイルの文章修飾\n- $\\KaTeX$による数式表示\n- Drag&Dropでブロックの並び替え、並列配置"
                 }
             }
         ],
@@ -106,6 +106,38 @@ const blocksState = atom({
                 "id": "a",
                 "type": "Text",
                 "data": {
+                    "text": "**並列配置**"
+                }
+            }
+        ],
+        [
+            {
+                "id": "a",
+                "type": "Text",
+                "data": {
+                    "text": "普通の文\n### h3\n- **List**\n   - nestedList"
+                }
+            },
+            {
+                "id": "a",
+                "type": "Text",
+                "data": {
+                    "text": "数式\n$$\n\\int\\sin(x)dx\n$$"
+                }
+            },
+            {
+                "id": "c64eb1b0-f3ed-4627-9d22-5ca8c01a4e2a",
+                "type": "Text",
+                "data": {
+                    "text": "コードブロック\n```js\nconsole.log(\"CodeBlock\")\n\n```"
+                }
+            }
+        ],
+        [
+            {
+                "id": "a",
+                "type": "Text",
+                "data": {
                     "text": "### 今後の開発予定"
                 }
             }
@@ -115,98 +147,10 @@ const blocksState = atom({
                 "id": "a",
                 "type": "Text",
                 "data": {
-                    "text": "#### DB機能"
+                    "text": "このエディターの[GitHub](https://github.com/tusko-ku/Editor)レポジトリーのREADME.mdに記載\n"
                 }
             }
-        ],
-        [
-            {
-                "id": "a",
-                "type": "Text",
-                "data": {
-                    "text": "- 一覧表示(ブログトップページ用)\n- カレンダー表示\n- グラフ表示(Excel形式のDBを準備)"
-                }
-            }
-        ],
-        [
-            {
-                "id": "a",
-                "type": "Text",
-                "data": {
-                    "text": "#### ブログ機能"
-                }
-            }
-        ],
-        [
-            {
-                "id": "a",
-                "type": "Text",
-                "data": {
-                    "text": "- 目次(ちゃんと飛べるようにする、自動生成)\n- コメント機能(ブロック単位で？)\n- 自作CSS、レイアウト選択\n - タグ機能"
-                }
-            }
-        ],
-        [
-            {
-                "id": "a",
-                "type": "Text",
-                "data": {
-                    "text": "#### 欲しい機能"
-                }
-            }
-        ],
-        [
-            {
-                "id": "a",
-                "type": "Text",
-                "data": {
-                    "text": "- 地図表示\n- 化学式入力"
-                }
-            }
-        ],
-        [
-            {
-                "id": "a",
-                "type": "Text",
-                "data": {
-                    "text": "#### その他"
-                }
-            }
-        ],
-        [
-            {
-                "id": "a",
-                "type": "Text",
-                "data": {
-                    "text": "- Drag & Drop機能\n- Notionみたいなメニュー機能"
-                }
-            }
-        ],
-        [
-            {
-                "id": "e0f3e4e3-a08b-42d5-8320-c286e2e5226e",
-                "type": "Text",
-                "data": {
-                    "text": "- このように"
-                }
-            },
-            {
-                "id": "908a31cf-7544-4337-b786-b92dba2f24de",
-                "type": "Text",
-                "data": {
-                    "text": "文章の並列表示"
-                }
-            }
-        ],
-        [
-            {
-                "id": "a",
-                "type": "Text",
-                "data": {
-                    "text": ""
-                }
-            }
-        ],
+        ]
     ]
   },
 });

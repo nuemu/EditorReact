@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import './TextBlock.css'
 
 import { useRecoilState } from 'recoil'
@@ -69,12 +69,13 @@ function SetCaret(node:Node, caret:number){
   selection.addRange(range)
 }
 
-const TextBlock = forwardRef((props: Props, ref:any) => {
+const TextBlock = (props: Props) => {
   const [blocks, setBlocks] = useRecoilState(blocksSelector) as Blocks
   const [focusing, setFocus] = useRecoilState(focusState)
 
   const [editing, setEdit] = useState(false)
 
+  var ref = useRef<HTMLDivElement>(null)
   var textRef = useRef(blocks[props.row_index][props.col_index].data.text)
 
   useEffect(() => {
@@ -85,7 +86,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
   },[focusing])
 
   useEffect(() => {
-    if(editing) ref.current.focus()
+    if(editing) ref!.current!!.focus()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing])
 
@@ -218,7 +219,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
       const rect = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
 
       if(rect){
-        const targetTop = ref.current.getClientRects()[0].top
+        const targetTop = ref!.current!.getClientRects()[0].top
         const rangeTop = rect.top
         const range = window.getSelection()?.getRangeAt(0)
 
@@ -227,7 +228,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
           else handleFocus(row_index-1, col_index)
         }
       }
-      else if(ref.current.innerText.length === 0 && row_index>0) handleFocus(row_index-1, col_index)
+      else if(ref!.current!.innerText.length === 0 && row_index>0) handleFocus(row_index-1, col_index)
     }
 
     // Move to Lower Block
@@ -235,7 +236,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
       const rect = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
 
       if(rect){
-        const targetBottom = ref.current.getClientRects()[0].bottom
+        const targetBottom = ref!.current!.getClientRects()[0].bottom
         const rangeBottom = rect.bottom
         const range = window.getSelection()?.getRangeAt(0)
         const container = range?.startContainer
@@ -245,7 +246,7 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
           else handleFocus(row_index+1, col_index)
         }
       }
-      else if(ref.current.innerText.length === 0 && row_index < blocks.length-1) handleFocus(row_index+1, col_index)
+      else if(ref!.current!.innerText.length === 0 && row_index < blocks.length-1) handleFocus(row_index+1, col_index)
     }
 
     // Move to Left Block
@@ -309,6 +310,6 @@ const TextBlock = forwardRef((props: Props, ref:any) => {
       onClick={() => handleFocus(props.row_index, props.col_index)}
     />
   )
-})
+}
 
 export default TextBlock;

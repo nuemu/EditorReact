@@ -23,3 +23,53 @@
   width: 100%;
   display: flex;
 }
+.block-wrapper{
+  width: 100%;
+  position: relative;
+}
+.dragArea{
+  position: absolute;
+  opacity: 0.3;
+}
+.dragArea.top{
+  top: 0;
+  height: 10pt;
+  width: 100%;
+}
+.top.active{
+  border-top: 5pt;
+  border-top-color: lightblue;
+  border-top-style: solid;
+}
+.dragArea.bottom{
+  bottom: 0;
+  height: 10pt;
+  width: 100%;
+}
+.bottom.active{
+  border-bottom: 5pt;
+  border-bottom-color: lightblue;
+  border-bottom-style: solid;
+}
+.dragArea.right{
+  top: 0;
+  right: 0;
+  width: 10pt;
+  height: 100%;
+}
+.right.active{
+  border-right: 5pt;
+  border-right-color: lightblue;
+  border-right-style: solid;
+}
+.dragArea.left{
+  top: 0;
+  left: 0;
+  width: 10pt;
+  height: 100%;
+}
+.left.active{
+  border-left: 5pt;
+  border-left-color: lightblue;
+  border-left-style: solid;
+}
