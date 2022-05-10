@@ -25,6 +25,9 @@ table{
   border-radius: 5px;
   box-shadow: 0px 0px 1px 1px lightgrey;
 }
+.col-menu.active{
+  display: block;
+}
 .col-menu-item:hover{
   background-color: gainsboro;
 }
@@ -54,6 +57,9 @@ table{
   max-height: 128pt;
   border-radius: 5px;
   box-shadow: 0px 0px 1px 1px lightgrey;
+}
+.row-menu.active{
+  display: block;
 }
 .row-menu-item:hover{
   background-color: gainsboro;

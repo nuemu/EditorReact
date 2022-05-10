@@ -21,8 +21,7 @@ const DB = () => {
   const keepDB = useRef(DB)
 
   const [rowSelect, setRowSelect] = useState(new Array(DB.data.length).fill(''))
-  
-  var rowMenu = -1, colMenu = -1
+  const [Menu, setMenu] = useState([-1,-1])
 
   var rowMenuRefs = useRef([React.createRef()]) as any
   var dummyRefs:any[] = []
@@ -81,39 +80,19 @@ const DB = () => {
     setDB(newDB)
   }
 
-  const closeRowMenu = () => {
-    const element = rowMenuRefs.current[rowMenu].current as HTMLElement
-    element.style.display = 'none'
-    rowMenu = -1
-    document.removeEventListener("mousedown", handleClickOutside)
-  }
-
-  const closeColMenu = () => {
-    const element = colMenuRefs.current[colMenu].current as HTMLElement
-    element.style.display = 'none'
-    colMenu = -1
+  const closeMenu = () => {
+    setMenu([-1, -1])
     document.removeEventListener("mousedown", handleClickOutside)
   }
 
   const handleClickOutside = (e:MouseEvent) => {
-    const target = e.target as Node
-    if(rowMenu >= 0){
-      if(!rowMenuRefs.current[rowMenu].current.contains(target)){
-        closeRowMenu()
-      }
-    }
-    if(colMenu >= 0){
-      if(!colMenuRefs.current[colMenu].current.contains(target)){
-        closeColMenu()
-      }
-    }
+    const target = e.target as HTMLElement
+    if(!(target.classList.contains('row-menu-item') || target.classList.contains('col-menu-item'))) closeMenu()
   }
 
   const handleRowMenu = (e: React.MouseEvent<HTMLTableDataCellElement>, row_index: number) => {
     e.preventDefault()
-    rowMenu = row_index
-    const element = rowMenuRefs.current[row_index].current as HTMLElement
-    element.style.display = 'block'
+    setMenu([row_index, -1])
     document.addEventListener("mousedown", handleClickOutside)
 
     if(rowSelect.filter(row => row==='active').length < 2){
@@ -125,9 +104,7 @@ const DB = () => {
 
   const handleColumnMenu = (e: React.MouseEvent<HTMLDivElement>, col_index: number) => {
     e.preventDefault()
-    colMenu = col_index
-    const element = colMenuRefs.current[col_index].current as HTMLElement
-    element.style.display = 'block'
+    setMenu([-1, col_index])
     document.addEventListener("mousedown", handleClickOutside)
   }
 
@@ -162,42 +139,6 @@ const DB = () => {
     keepDB.current = newDB
   }
 
-  const thead = (
-    <thead>
-      <tr>
-        <td>#</td>
-        {keepDB.current.column.map((column, index) => (
-          <td
-            key={index}
-          >
-            <div
-              className="table-head"
-              contentEditable
-              dangerouslySetInnerHTML={{__html: column.name}}
-              onContextMenu={(e) => handleColumnMenu(e, index)}
-              onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleHeadChange(e, index)}
-            />
-            <div
-              ref={colMenuRefs.current[index]}
-              className="col-menu"
-            >
-              {colMenuItems.map(item => (
-                <div
-                  className="col-menu-item"
-                  key={item.name}
-                  onClick={() => {DBActions(item.type, index);closeColMenu()}}
-                >
-                  {item.name}
-                </div>
-              ))}
-            </div>
-          </td>
-        ))}
-        <td />
-      </tr>
-    </thead>
-  )
-
   const handleRowSelect = (e: React.MouseEvent<HTMLDivElement>,row_index: number) => {
     var select:string[] = new Array(DB.data.length).fill('')
     if(e.shiftKey){
@@ -221,6 +162,50 @@ const DB = () => {
     setRowSelect(select)
   }
 
+  const isSelectedRowMenu = (row_index:number) => {
+    return row_index === Menu[0]
+  }
+
+  const isSelectedColwMenu = (col_index:number) => {
+    return col_index === Menu[1]
+  }
+
+  const thead = (
+    <thead>
+      <tr>
+        <td>#</td>
+        {keepDB.current.column.map((column, index) => (
+          <td
+            key={index}
+          >
+            <div
+              className="table-head"
+              contentEditable
+              dangerouslySetInnerHTML={{__html: column.name}}
+              onContextMenu={(e) => handleColumnMenu(e, index)}
+              onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleHeadChange(e, index)}
+            />
+            <div
+              ref={colMenuRefs.current[index]}
+              className={isSelectedColwMenu(index) ? "col-menu active": "col-menu"}
+            >
+              {colMenuItems.map(item => (
+                <div
+                  className="col-menu-item"
+                  key={item.name}
+                  onClick={() => {DBActions(item.type, index);closeMenu()}}
+                >
+                  {item.name}
+                </div>
+              ))}
+            </div>
+          </td>
+        ))}
+        <td />
+      </tr>
+    </thead>
+  )
+
   const tbody = (
     <tbody>
       {keepDB.current.data.map((row, row_index) => (
@@ -236,13 +221,13 @@ const DB = () => {
             {row_index}
             <div
               ref={rowMenuRefs.current[row_index]}
-              className="row-menu"
+              className={isSelectedRowMenu(row_index) ? "row-menu active" : "row-menu"}
             >
               {rowMenuItems.map(item => (
                 <div
                   className="row-menu-item"
                   key={item.type}
-                  onClick={() => {rowMenu=row_index;DBActions(item.type, row_index);closeRowMenu()}}
+                  onClick={() => {DBActions(item.type, row_index);closeMenu()}}
                 >
                   {item.name(rowSelect.filter(row => row==='active').length > 1)}
                 </div>
