@@ -1,10 +1,10 @@
 export const rowMenuItems = [
   {
-    name: 'Remove Row',
+    name: (multiple:boolean) => multiple ? 'Remove Rows' : 'Remove Row',
     type: 'RemoveRow'
   },
   {
-    name: 'Add Row',
+    name: () => 'Add Row',
     type: 'AddRow'
   }
 ]

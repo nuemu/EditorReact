@@ -33,8 +33,14 @@ table{
   border-top: solid 1px gainsboro;
   border-bottom: solid 1px gainsboro;
 }
+.table-row.active{
+  background-color: whitesmoke;
+}
 .table-data{
   outline: none;
+}
+.row-index{
+  cursor: pointer;
 }
 .row-index:hover{
   background-color: whitesmoke;

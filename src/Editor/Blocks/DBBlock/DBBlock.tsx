@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import './DBBlock.css'
 
 import { useRecoilState } from 'recoil'
@@ -19,6 +19,8 @@ type DBStateType = [
 const DB = () => {
   const [DB, setDB] = useRecoilState(DBState) as DBStateType
   const keepDB = useRef(DB)
+
+  const [rowSelect, setRowSelect] = useState(new Array(DB.data.length).fill(''))
   
   var rowMenu = -1, colMenu = -1
 
@@ -113,6 +115,12 @@ const DB = () => {
     const element = rowMenuRefs.current[row_index].current as HTMLElement
     element.style.display = 'block'
     document.addEventListener("mousedown", handleClickOutside)
+
+    if(rowSelect.filter(row => row==='active').length < 2){
+      var select:string[] = new Array(DB.data.length).fill('')
+      select[row_index] = 'active'
+      setRowSelect(select)
+    }
   }
 
   const handleColumnMenu = (e: React.MouseEvent<HTMLDivElement>, col_index: number) => {
@@ -133,11 +141,13 @@ const DB = () => {
         break
       case('RemoveRow'):
         if(newDB.data.length > 1){
-          newDB.data.splice(index, 1)
+          const startIndex = rowSelect.findIndex(row => row==='active')
+          const count = rowSelect.filter(row => row==='active').length
+          newDB.data.splice(startIndex, count)
         }
         break
       case('AddColumn'):
-        const newCol = {name: ''}
+        const newCol = {name: '', property: 'text'}
         newDB.column.splice(index+1, 0, newCol)
         newDB.data.map((row:any) => row.splice(index+1, 0, ''))
         break
@@ -188,15 +198,39 @@ const DB = () => {
     </thead>
   )
 
+  const handleRowSelect = (e: React.MouseEvent<HTMLDivElement>,row_index: number) => {
+    var select:string[] = new Array(DB.data.length).fill('')
+    if(e.shiftKey){
+      select = JSON.parse(JSON.stringify(rowSelect))
+      const selectedIndex = select.findIndex(row => row==='active')
+      if(selectedIndex >=0 ){
+        select = select.map((row, index) => {
+          if(row_index < selectedIndex){
+            if(row_index <= index && index <= selectedIndex) return 'active'
+            else return ''
+          }
+          else{
+            if(row_index >= index && index >= selectedIndex) return 'active'
+            else return ''
+          }
+        })
+      }
+    }
+    if(rowSelect[row_index] !== 'active') select[row_index] = 'active'
+    else select[row_index] = ''
+    setRowSelect(select)
+  }
+
   const tbody = (
     <tbody>
       {keepDB.current.data.map((row, row_index) => (
         <tr
-          className="table-row"
+          className={"table-row "+rowSelect[row_index]}
           key={row_index}
         >
           <td
             className="row-index"
+            onClick={(e) => handleRowSelect(e, row_index)}
             onContextMenu={(e) => handleRowMenu(e, row_index)}
           >
             {row_index}
@@ -207,10 +241,10 @@ const DB = () => {
               {rowMenuItems.map(item => (
                 <div
                   className="row-menu-item"
-                  key={item.name}
-                  onClick={() => {DBActions(item.type, row_index);closeRowMenu()}}
+                  key={item.type}
+                  onClick={() => {rowMenu=row_index;DBActions(item.type, row_index);closeRowMenu()}}
                 >
-                  {item.name}
+                  {item.name(rowSelect.filter(row => row==='active').length > 1)}
                 </div>
               ))}
             </div>
