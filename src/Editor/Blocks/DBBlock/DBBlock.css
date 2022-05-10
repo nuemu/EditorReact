@@ -1,0 +1,54 @@
+table{
+  width: 100%;
+  border-collapse: collapse;
+  border: solid 1px white;
+  text-align: center;
+  overflow: scroll;
+  margin-bottom: 16pt;
+}
+
+.table-head{
+  outline: none;
+  width: 100%;
+  height: 100%;
+}
+.table-head:hover{
+  background-color: whitesmoke;
+}
+.col-menu{
+  z-index: 1;
+  display: none;
+  position:absolute;
+  background-color: white;
+  width: 128pt;
+  max-height: 128pt;
+  border-radius: 5px;
+  box-shadow: 0px 0px 1px 1px lightgrey;
+}
+.col-menu-item:hover{
+  background-color: gainsboro;
+}
+
+.table-row{
+  border-top: solid 1px gainsboro;
+  border-bottom: solid 1px gainsboro;
+}
+td{
+  outline: none;
+}
+.row-index:hover{
+  background-color: whitesmoke;
+}
+.row-menu{
+  z-index: 1;
+  display: none;
+  position:absolute;
+  background-color: white;
+  width: 128pt;
+  max-height: 128pt;
+  border-radius: 5px;
+  box-shadow: 0px 0px 1px 1px lightgrey;
+}
+.row-menu-item:hover{
+  background-color: gainsboro;
+}

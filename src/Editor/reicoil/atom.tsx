@@ -6,6 +6,18 @@ export const menuState = atom({
     default: [-1, 0]
 })
 
+export const DBState = atom({
+    key: 'DBState',
+    default: {
+        column:[{name:'sample title 1', property: 'text'}, {name:'sample title 2', property: 'text'}],
+        data:
+        [
+            ['sample data 1-1', 'sample data 1-2'],
+            ['sample data 2-1', 'sample data 2-2']
+        ]
+    }
+})
+
 const blocksState = atom({
   key: 'blocksState',
   default: {
@@ -35,6 +47,15 @@ const blocksState = atom({
                 "type": "Text",
                 "data": {
                     "text": "Editor.jsに満足できなかったので、ブログ用に開発しています。\nクリックすると編集できます。"
+                }
+            }
+        ],
+        [
+            {
+                "id": "a",
+                "type": "DB",
+                "data": {
+                    "id": "db"
                 }
             }
         ],

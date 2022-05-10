@@ -14,7 +14,7 @@
   background-color: gainsboro;
 }
 .dropDown{
-  height: 128pt;
+  max-height: 128pt;
   width: 128pt;
   overflow-y: scroll;
   z-index: 1;

@@ -9,10 +9,6 @@
   outline:none;
   margin-bottom: 16pt;
 }
-[contenteditable=true]:empty:before{
-  content: "Text Block";
-  color: grey;
-}
 p {
   margin: 0;
   display:inline;
