@@ -7,6 +7,8 @@ import { DBState } from '../../../reicoil/atom';
 import { rowMenuItems, colMenuItems } from './TableMenu'
 import { viewMenuItems } from '../DBViews'
 
+//import DBBlocks from '../DBBlocks/DBblocks_loader.js'
+
 type DBStateType = [
   {
     id: string

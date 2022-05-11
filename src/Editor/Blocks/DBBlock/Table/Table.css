@@ -33,6 +33,7 @@ table{
 }
 
 .anchor{
+  width: 10%;
   cursor: pointer;
 }
 .anchor:hover{

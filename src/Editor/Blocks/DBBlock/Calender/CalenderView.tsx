@@ -4,16 +4,17 @@ import './Calender.css'
 import { useRecoilState } from 'recoil'
 import { DBState } from '../../../reicoil/atom';
 
-import { Week } from './CalenderSettings'
+import { Week, currentYear, currentMonth, today } from './CalenderSettings'
 
 import { viewMenuItems } from '../DBViews'
 
 type DBStateType = [
   {
     column:{
-      name: string
+      name: string,
+      property: string
     }[],
-    data: string[][],
+    data: any[][],
   },
   any
 ]
@@ -21,16 +22,21 @@ type DBStateType = [
 const Calender = () => {
   const [DB, setDB] = useRecoilState(DBState) as DBStateType
 
-  const thisYear = new Date().getFullYear()
-  const thisMonth = new Date().getMonth()
-  const thisDate = new Date().getDate()
-
-  const [year, setYear] = useState(thisYear)
-  const [month, setMonth] = useState(thisMonth)
+  const [year, setYear] = useState(currentYear)
+  const [month, setMonth] = useState(currentMonth)
 
   const [Menu, setMenu] = useState(0)
 
   useEffect(() => {
+    var newDB = JSON.parse(JSON.stringify(DB))
+    if(DB.column.filter(column => column.property === 'Date').length === 0){
+      newDB.column.splice(0, 0, {name: 'Date', property: 'Date'})
+      newDB.data.forEach((row:any[]) => {
+        row.splice(0, 0, Date.now())
+      })
+      setDB(newDB)
+    }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [DB])
 
   const firstDayOfMonth = () => {
@@ -48,10 +54,42 @@ const Calender = () => {
     return calender2d
   }
 
+  const formatDate = (date: Date|number) => {
+    // convert unixtime to Date
+    if(typeof date == 'number') date = new Date(date)
+    if(typeof date == 'string') date = new Date(Number(date))
+
+    const year = date.getFullYear()
+    const month = date.getMonth()+1
+    const day = date.getDate()
+    return year + '/' + month + '/' + day
+  }
+
+  const dayContent = (column:any, row_index:number, col_index:number) => {
+    return (
+      <div className="date-content" key={row_index+'-'+col_index}>
+        {column}
+      </div>
+    )
+  }
+
+  const dayContents = (date: Date) => {
+    const index = DB.column.findIndex(column => column.property==='Date')
+    if(date && index >= 0){
+      const contents = DB.data.filter(row => formatDate(row[index]) === formatDate(date))
+      return (
+        <div className="date-contents-wrapper">
+          {contents.map((row, row_index) => {
+            return row.map((column, col_index) => {return col_index !== index ? dayContent(column, row_index, col_index) : null})
+          })}
+        </div>
+    )}
+  }
+
   const dayDiv = (date: Date) => {
-    if(date.getFullYear() === thisYear && date.getMonth() === thisMonth && date.getDate() === thisDate) return <div className="date-wrapper today">{date.getDate()}</div>
-    if(date.getMonth() !== month) return <div className="date-wrapper not-this-month">{date.getDate()}</div>
-    return <div className="date-wrapper">{date.getDate()}</div>
+    if(date.getFullYear() === currentYear && date.getMonth() === currentMonth && date.getDate() === today) return <div className="date-wrapper today">{date.getDate()}{dayContents(date)}</div>
+    if(date.getMonth() !== month) return <div className="date-wrapper not-current-month">{date.getDate()}{dayContents(date)}</div>
+    return <div className="date-wrapper">{date.getDate()}{dayContents(date)}</div>
   }
   
   const setDates = (number: number) => {
