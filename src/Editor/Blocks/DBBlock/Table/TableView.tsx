@@ -4,7 +4,7 @@ import './Table.css'
 import { useRecoilState } from 'recoil'
 import { DBState } from '../../../reicoil/atom';
 
-import { rowMenuItems, colMenuItems } from './TableMenu'
+import { rowMenuItems, colMenuItems } from './TableMenuItems'
 
 import ViewMenu from '../Components/ViewMenu/ViewMenu'
 
@@ -229,7 +229,7 @@ const Table = () => {
           className={"table-row "+rowSelect[row_index]}
           key={row_index}
         >
-          <td>
+          <td className="row-index-wrapper">
             <div
               className="row-index"
               onClick={(e) => handleRowSelect(e, row_index)}

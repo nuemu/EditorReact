@@ -45,10 +45,18 @@ table{
 .table-data-wrapper{
   width: 100%;
 }
+.row-index-wrapper{
+  position:relative;
+}
 .row-index{
+  position: absolute;
   height: 100%;
   width: 100%;
+  top: 0;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .row-index:hover{
   background-color: whitesmoke;
