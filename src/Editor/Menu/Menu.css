@@ -1,8 +1,10 @@
 .menu-wrapper{
-  width: 32pt;
-  height: 100%;
   position: relative;
-  left: 0%;
+}
+.menu-icons-wrapper{
+  width: 32pt;
+  position: absolute;
+  left: -32pt;
   opacity: 0;
   display: flex;
 }

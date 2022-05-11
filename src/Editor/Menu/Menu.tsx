@@ -92,7 +92,7 @@ const Menu = forwardRef((props: Props, ref:any) =>  {
 
   return (
     <div
-      className="menu-wrapper"
+      className="menu-icons-wrapper"
       ref={ref}
     >
       <div

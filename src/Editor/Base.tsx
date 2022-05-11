@@ -57,7 +57,7 @@ function Base() {
 
     const id = element.id.split('-')
     setDrag([Number(id[0]), Number(id[1])])
-    e.dataTransfer.setDragImage(Refs.current[Number(id[0])][Number(id[1])].current, 1, 1)
+    e.dataTransfer.setDragImage(Refs.current[Number(id[0])][Number(id[1])].current, 0, 0)
   }
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -137,35 +137,49 @@ function Base() {
   const block = (row_index: number, col_index: number) => {
     const Block = BlocksComponents[blocks[row_index][col_index].type].default
     return (
-    <div
-    ref = {Refs.current[row_index][col_index]}
-      className="col-wrapper"
-      key = {row_index + '-' + col_index}
-      onMouseOver = {() => handleMouseOver(row_index, col_index)}
-      onMouseLeave = {() => handleMouseLeave(row_index, col_index)}
-      draggable
-      onDragStart={(e) => handleDragStart(e)}
-      onDragOver={(e) => handleDragOver(e)}
-      onDragLeave={(e) => handleDragLeave(e)}
-      onDrop={(e) => handleDrop(e)}
-    >
-      <Menu
-        ref = {menuRefs.current[row_index][col_index]}
-        row_index = {row_index}
-        col_index = {col_index}
-      />
-      <div className="block-wrapper">
-        <Block
-          row_index = {row_index}
-          col_index = {col_index}
-        />
-        <div className="dragArea top" id={row_index+'-'+col_index}/>
-        <div className="dragArea bottom" id={row_index+'-'+col_index}/>
-        <div className="dragArea left" id={row_index+'-'+col_index}/>
-        <div className="dragArea right" id={row_index+'-'+col_index}/>
+      <div
+        ref = {Refs.current[row_index][col_index]}
+        className="col-wrapper"
+        key = {row_index + '-' + col_index}
+        onMouseOver = {() => handleMouseOver(row_index, col_index)}
+        onMouseLeave = {() => handleMouseLeave(row_index, col_index)}
+        draggable
+        onDragStart={(e) => handleDragStart(e)}
+        onDragOver={(e) => handleDragOver(e)}
+        onDragLeave={(e) => handleDragLeave(e)}
+        onDrop={(e) => handleDrop(e)}
+      >
+        <div className="menu-wrapper">
+          <Menu
+            ref = {menuRefs.current[row_index][col_index]}
+            row_index = {row_index}
+            col_index = {col_index}
+          />
+        </div>
+        <div className="block-wrapper">
+          <Block
+            row_index = {row_index}
+            col_index = {col_index}
+          />
+          <div className="dragArea top" id={row_index+'-'+col_index}/>
+          <div className="dragArea bottom" id={row_index+'-'+col_index}/>
+          <div className="dragArea left" id={row_index+'-'+col_index}/>
+          <div className="dragArea right" id={row_index+'-'+col_index}/>
+        </div>
       </div>
-    </div>
   )}
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLHeadingElement>) => {
+    console.log(e)
+  }
+
+  const title = (
+    <h1
+      className="title"
+      contentEditable
+      dangerouslySetInnerHTML={{__html: 'title'}}
+      onInput={(e:React.ChangeEvent<HTMLHeadingElement>) => handleTitleChange(e)}
+    />)
 
   var blockComponents = blocks.map((row, row_index) => 
     <div key={row_index} className="row-wrapper">
@@ -175,6 +189,7 @@ function Base() {
 
   return (
     <div className="editor-wrapper">
+      {title}
       <div className="editor-left-wrapper" onMouseOver={() => setFocus([-1, 0])}/>
       <div className="editor-right-wrapper" onMouseOver={() => setFocus([-1, 0])}/>
       {blockComponents}
