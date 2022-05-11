@@ -7,10 +7,6 @@
 }
 .calender-header-item.left{
   width: 10%;
-  cursor: pointer;
-}
-.calender-header-item.left:hover{
-  background-color: gainsboro;
 }
 .calender-header-item.right{
   width: 10%;
@@ -20,9 +16,10 @@
   height: 100px;
   width:13%;
   border:solid;
-  border-color: gainsboro;
+  border-color: whitesmoke;
   text-align: left;
   color: grey;
+  padding: 0;
 }
 .date-wrapper{
   height: 100%;

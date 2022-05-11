@@ -1,7 +1,6 @@
 table{
   width: 100%;
   border-collapse: collapse;
-  border: solid 1px white;
   text-align: center;
   overflow: scroll;
   margin-bottom: 16pt;
@@ -34,29 +33,6 @@ table{
 
 .anchor{
   width: 10%;
-  cursor: pointer;
-}
-.anchor:hover{
-  background-color: whitesmoke;
-}
-.view-menu{
-  z-index: 1;
-  display: none;
-  position:absolute;
-  background-color: white;
-  width: 128pt;
-  max-height: 128pt;
-  border-radius: 5px;
-  box-shadow: 0px 0px 1px 1px lightgrey;
-}
-.view-menu-header{
-  border-bottom: 1px solid;
-}
-.view-menu.active{
-  display: block;
-}
-.view-menu-item:hover{
-  background-color: gainsboro;
 }
 
 .table-row{
@@ -66,9 +42,8 @@ table{
 .table-row.active{
   background-color: whitesmoke;
 }
-.table-data{
+.table-data-wrapper{
   width: 100%;
-  outline: none;
 }
 .row-index{
   height: 100%;

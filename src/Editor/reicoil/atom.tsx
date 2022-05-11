@@ -10,12 +10,12 @@ export const DBState = atom({
     key: 'DBState',
     default: {
         id: v4(),
-        view: 'Calender',
-        column:[{name:'作成中の', property: 'text'}, {name:'DB', property: 'text'}],
+        view: 'Table',
+        column:[{name:'Date', property: 'Date'}, {name:'作成中の', property: 'Text'}, {name:'DB', property: 'Text'}],
         data:
         [
-            ['行は複数選択可能', '一括削除も'],
-            ['列はこれから', '色々拡張予定']
+            ['', '行は複数選択可能', '一括削除も'],
+            ['', '列はこれから', '色々拡張予定']
         ]
     }
 })

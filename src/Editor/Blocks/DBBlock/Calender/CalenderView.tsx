@@ -6,7 +6,7 @@ import { DBState } from '../../../reicoil/atom';
 
 import { Week, currentYear, currentMonth, today } from './CalenderSettings'
 
-import { viewMenuItems } from '../DBViews'
+import ViewMenu from '../Components/ViewMenu/ViewMenu'
 
 type DBStateType = [
   {
@@ -24,8 +24,6 @@ const Calender = () => {
 
   const [year, setYear] = useState(currentYear)
   const [month, setMonth] = useState(currentMonth)
-
-  const [Menu, setMenu] = useState(0)
 
   useEffect(() => {
     var newDB = JSON.parse(JSON.stringify(DB))
@@ -98,34 +96,6 @@ const Calender = () => {
     setMonth(nextDate.getMonth())
   }
 
-  const closeMenu = () => {
-    document.removeEventListener("mousedown", handleClickOutside)
-    setMenu(0)
-  }
-
-  const handleClickOutside = (e:MouseEvent) => {
-    const target = e.target as HTMLElement
-    if(!(
-      target.classList.contains('view-menu-item')
-    )) closeMenu()
-  }
-
-  const handleViewMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setMenu(1)
-    document.addEventListener("mousedown", handleClickOutside)
-  }
-
-  const handleView = (view_name: string) => {
-    var newDB = JSON.parse(JSON.stringify(DB))
-    newDB.view = view_name
-    setDB(newDB)
-  }
-
-  const isSelectedViewMenu = () => {
-    return Menu === 1
-  }
-
   const thead = (
     <thead>
       <tr>
@@ -154,23 +124,8 @@ const Calender = () => {
     <div className="calender-header">
       <div
         className="calender-header-item left"
-        onClick={(e) => handleViewMenu(e)}
       >
-        #
-        <div
-          className={isSelectedViewMenu() ? "view-menu active" : "view-menu"}
-        >
-          <div className="view-menu-header">View Menu</div>
-          {viewMenuItems.map(item => (
-            <div
-              className="view-menu-item"
-              key={item.name}
-              onClick={() => {handleView(item.type)}}
-            >
-              {item.name}
-            </div>
-          ))}
-        </div>
+        <ViewMenu />
       </div>
       <div className="calender-header-item">
         <button className="change-month-button" onClick={() => setDates(-1)}> &lt; </button>

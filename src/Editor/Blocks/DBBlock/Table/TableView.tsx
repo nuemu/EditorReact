@@ -5,9 +5,11 @@ import { useRecoilState } from 'recoil'
 import { DBState } from '../../../reicoil/atom';
 
 import { rowMenuItems, colMenuItems } from './TableMenu'
-import { viewMenuItems } from '../DBViews'
 
-//import DBBlocks from '../DBBlocks/DBblocks_loader.js'
+import ViewMenu from '../Components/ViewMenu/ViewMenu'
+
+import DBElements from '../Components/DBElements_loader.js'
+const Elements = DBElements as any
 
 type DBStateType = [
   {
@@ -15,6 +17,7 @@ type DBStateType = [
     view: string,
     column:{
       name: string
+      property: string
     }[],
     data: string[][],
   },
@@ -72,33 +75,12 @@ const Table = () => {
       e.preventDefault()
       TableActions('AddRow', row_index)
     }
-    if(e.key === 'Enter'){
-      e.preventDefault()
-      if(row_index < DB.data.length-1) dataRefs.current[row_index+1][col_index].current.focus()
-    }
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>, row_index: number, col_index: number) => {
-    switch(e.key){
-      case('ArrowUp'):
-        if(row_index !== 0) dataRefs.current[row_index-1][col_index].current.focus()
-        break
-      case('ArrowDown'):
-        if(row_index < DB.data.length-1) dataRefs.current[row_index+1][col_index].current.focus()
-    }
   }
 
   const handleHeadChange = (e: React.ChangeEvent<HTMLInputElement>, col_index: number) => {
     const element = e.target as HTMLElement
     var newDB = JSON.parse(JSON.stringify(DB)) //Deep Copy
     newDB.column[col_index].name = element.innerText
-    setDB(newDB)
-  }
-
-  const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>, row_index:number, col_index:number) => {
-    const element = e.target as HTMLElement
-    var newDB = JSON.parse(JSON.stringify(DB)) //Deep Copy
-    newDB.data[row_index][col_index] = element.innerText
     setDB(newDB)
   }
 
@@ -111,8 +93,7 @@ const Table = () => {
     const target = e.target as HTMLElement
     if(!(
       target.classList.contains('row-menu-item') ||
-      target.classList.contains('col-menu-item') ||
-      target.classList.contains('view-menu-item')
+      target.classList.contains('col-menu-item')
     )) closeMenu()
   }
 
@@ -148,7 +129,7 @@ const Table = () => {
         newDB.data.splice(startIndex, count)
         break
       case('AddColumn'):
-        const newCol = {name: '', property: 'text'}
+        const newCol = {name: '', property: 'Text'}
         newDB.column.splice(index+1, 0, newCol)
         newDB.data.map((row:any) => row.splice(index+1, 0, ''))
         break
@@ -192,20 +173,13 @@ const Table = () => {
     return col_index === Menu[1]
   }
 
-  const isSelectedViewMenu = () => {
-    return Menu.length === 3
-  }
-
-  const handleViewMenu = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setMenu([-1, -1, 1])
-    document.addEventListener("mousedown", handleClickOutside)
-  }
-
-  const handleView = (view_name: string) => {
-    var newDB = JSON.parse(JSON.stringify(DB))
-    newDB.view = view_name
-    setDB(newDB)
+  const renderElement = (row_index:number, col_index: number) => {
+    const Element = Elements[DB.column[col_index].property].default
+    return (
+      <Element
+        row_index={row_index}
+        col_index={col_index}
+      />)
   }
 
   const thead = (
@@ -213,23 +187,8 @@ const Table = () => {
       <tr>
         <td
           className="anchor"
-          onClick={(e) => handleViewMenu(e)}
         >
-          #
-          <div
-            className={isSelectedViewMenu() ? "view-menu active" : "view-menu"}
-          >
-            <div className="view-menu-header">View Menu</div>
-            {viewMenuItems.map(item => (
-              <div
-                className="view-menu-item"
-                key={item.name}
-                onClick={() => {handleView(item.type)}}
-              >
-                {item.name}
-              </div>
-            ))}
-          </div>
+          <ViewMenu />
         </td>
         {keepDB.current.column.map((column, index) => (
           <td
@@ -295,19 +254,17 @@ const Table = () => {
             </div>
           </td>
           {
-            row.map((column, col_index) => (
+            row.map((_, col_index) => (
               <td
                 key={col_index}
               >
                 <div
                   ref={dataRefs.current[row_index][col_index]}
-                  className="table-data"
-                  contentEditable
-                  dangerouslySetInnerHTML={{__html: column}}
+                  className="table-data-wrapper"
                   onKeyPress={(e) => handleKeyPress(e, row_index, col_index)}
-                  onKeyDown={(e) => handleKeyDown(e, row_index, col_index)}
-                  onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleDataChange(e, row_index, col_index)}
-                />
+                >
+                  {renderElement(row_index, col_index)}
+                </div>
               </td>
           ))}
           <td />
