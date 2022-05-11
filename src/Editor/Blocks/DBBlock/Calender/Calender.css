@@ -1,0 +1,44 @@
+.calender-header{
+  display: flex;
+  justify-content: space-between
+}
+.calender-header{
+  text-align: center;
+}
+.calender-header-item.left{
+  width: 10%;
+  cursor: pointer;
+}
+.calender-header-item.left:hover{
+  background-color: gainsboro;
+}
+.calender-header-item.right{
+  width: 10%;
+}
+
+.date{
+  width:13%;
+  border:solid;
+  border-color: gainsboro;
+}
+.date-wrapper:hover{
+  background-color: gainsboro;
+}
+
+.not-this-month{
+  opacity: 0.5;
+  background-color: gainsboro;
+}
+.today{
+  background-color: red;
+}
+
+.change-month-button{
+  border: 0;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+.change-month-button:hover{
+  background-color: gainsboro;
+}

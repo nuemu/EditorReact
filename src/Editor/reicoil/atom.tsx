@@ -9,6 +9,8 @@ export const menuState = atom({
 export const DBState = atom({
     key: 'DBState',
     default: {
+        id: v4(),
+        view: 'Calender',
         column:[{name:'作成中の', property: 'text'}, {name:'DB', property: 'text'}],
         data:
         [
