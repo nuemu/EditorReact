@@ -84,7 +84,7 @@ const blocksState = atom({
                 "id": "a",
                 "type": "Text",
                 "data": {
-                    "text": "- markdownスタイルの文章修飾\n- $\\KaTeX$による数式表示\n- Drag&Dropでブロックの並び替え、並列配置\n- DBの編集、行の追加・削除"
+                    "text": "- markdownスタイルの文章修飾\n- $\\KaTeX$による数式表示\n- Drag&Dropでブロックの並び替え、並列配置\n- DBの編集、行の追加・削除\n- DBのビュー変更(現状カレンダーでは編集できない。)"
                 }
             }
         ],

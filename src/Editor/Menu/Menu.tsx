@@ -116,7 +116,8 @@ const Menu = forwardRef((props: Props, ref:any) =>  {
         className = "option-menu"
       >
         <img
-          className="menu-icon"
+          className="menu-icon option-menu-icon"
+          id={props.row_index + '-' + props.col_index}
           src = {grid}
           alt = "menu-icon"
           onClick = {() => handleOptionMenu()}

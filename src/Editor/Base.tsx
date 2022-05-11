@@ -33,6 +33,9 @@ function Base() {
   var menuRefs = useRef([[React.createRef()]]) as any
   menuRefs.current = generateRefs()
 
+  var Refs = useRef([[React.createRef()]]) as any
+  Refs.current = generateRefs()
+
   useEffect(() => {
     if(focusing[0] === -1 && focusing[1] === 1)setFocus([-1,0])
   })
@@ -47,9 +50,11 @@ function Base() {
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     const element = e.target as HTMLElement
-    if(element.classList.contains('col_wrapper')) return
+    if(!element.classList.contains("option-menu-icon")) e.preventDefault()
+
     const id = element.id.split('-')
     setDrag([Number(id[0]), Number(id[1])])
+    e.dataTransfer.setDragImage(Refs.current[Number(id[0])][Number(id[1])].current, 1, 1)
   }
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -130,8 +135,8 @@ function Base() {
     const Block = BlocksComponents[blocks[row_index][col_index].type].default
     return (
     <div
+    ref = {Refs.current[row_index][col_index]}
       className="col-wrapper"
-      id={row_index + '-' + col_index}
       key = {row_index + '-' + col_index}
       onMouseOver = {() => handleMouseOver(row_index, col_index)}
       onMouseLeave = {() => handleMouseLeave(row_index, col_index)}
