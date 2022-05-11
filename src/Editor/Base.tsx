@@ -50,7 +50,10 @@ function Base() {
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     const element = e.target as HTMLElement
-    if(!element.classList.contains("option-menu-icon")) e.preventDefault()
+    if(!element.classList.contains("option-menu-icon")){
+      e.preventDefault()
+      return
+    }
 
     const id = element.id.split('-')
     setDrag([Number(id[0]), Number(id[1])])
