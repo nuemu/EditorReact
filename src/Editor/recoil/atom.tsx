@@ -1,6 +1,11 @@
 import { atom, selector } from 'recoil'
 import { v4 } from 'uuid'
 
+export const currentUserState = atom({
+  key: 'currentUserState',
+  default: 'Editor'
+})
+
 export const menuState = atom({
     key: 'menuState',
     default: [-1, 0]
@@ -26,7 +31,7 @@ export const DBState = atom({
 
 export const currentPage = atom({
   key: 'currentPageId',
-  default: 'Base'
+  default: 'Editor'
 })
 
 export const pageListState = atom<PageList|null>({

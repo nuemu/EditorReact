@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom"
 import './base.css'
 
 import LoadedBlocks from './Blocks/blocks_loader'
@@ -17,17 +18,25 @@ function Base() {
 
   // Mainly Initialize use
   const [pageList, setPageList] = useRecoilState(pageListSelector) as [PageList, any]
-  const [currentPageId, ] = useRecoilState(currentPage)
+  const currentPageId = useRecoilValue(currentPage)
 
   const menu = useRecoilValue(menuState)
   const [dragging, setDrag] = useState([-1,0])
 
+  //For Github Pages
+  const query = new URLSearchParams(useLocation().search).get('q')
+  //
+
   useEffect(() => {
     (async () => {
-      const newPage = await PageActions('fetch', {id: 'Base'})
+      //For Github Pages
+      var id = 'Editor'
+      if(query) id = query
+      //
+      const newPage = await PageActions('fetch', {id: currentPageId})
       setBlocks(newPage.data)
 
-      const newPageList = await PageListActions('fetch', '')
+      const newPageList = await PageListActions('fetch')
       setPageList(newPageList)
       
       setFocus([-1, 1])

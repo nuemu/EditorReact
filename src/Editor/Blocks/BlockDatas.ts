@@ -1,18 +1,27 @@
+import { v4 } from "uuid"
+
 const Data = [
 	{
 		type: 'Text',
 		name: 'Text',
-		description: '文字入力ができます',
+		description: '',
 		icon: require('../Assets/Text.svg').default,
 		initial: {'text': ''}
 	},
 	{
 		type: 'DB',
 		name: 'DataBase',
-		description: '表計算ソフトのようなデータベース作成ができます。',
+		description: '',
 		icon: require('../Assets/DB.svg').default,
 		initial: {'text': ''}
 	},
+	{
+		type : 'Page',
+		name : 'New Page',
+		description: '',
+		icon: require('../Assets/Page.svg').default,
+		initial: {'id': v4()}
+	}
 ]
 
 export default Data

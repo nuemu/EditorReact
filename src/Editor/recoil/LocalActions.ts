@@ -44,12 +44,34 @@ export const PageActions = async (action: string, params: any|null) => {
   return response
 }
 
-export const PageListActions = async (action: string, params: any) => {
-  var response: any = 'failed'
+const getList = (id:string, pageList: any) => {
+  var listItem:any = null
+  pageList.forEach((item:any) => {
+    if(item.id === id) listItem = item
+    else if(!listItem) listItem = getList(id,item.list)
+  })
+  return listItem
+}
+
+export const PageListActions = async (action: string, params?: any) => {
+  var response: any = false
   switch(action){
     case 'fetch':
       await axiosInstance.get('get')
         .then(() => response = PageList)
+      break
+    case 'check':
+      const list = getList(params.id, PageList)
+      if(list) response = true
+      break
+    case 'add':
+      await axiosInstance.patch('patch', params)
+        .then(() => {
+          const newPageList = JSON.parse(JSON.stringify(PageList))
+          const newItem = {id: params.id, title: 'New Page', list: []} as PageList[0]
+          getList(params.currentId, newPageList).list.push(newItem)
+          response = newPageList
+        })
       break
   }
   return response
@@ -58,7 +80,7 @@ export const PageListActions = async (action: string, params: any) => {
 export const DBs = []
 export const Pages = [
   {
-    id: 'Base',
+    id: 'Editor',
     column: [],
     data: [
       [
@@ -177,17 +199,10 @@ export const Pages = [
     ]
   }
 ]
-export const PageList = [
+export const PageList:PageList = [
   {
-    id: 'Base',
+    id: 'Editor',
     title: 'Semi WYSIWYG Block Style Editor',
-    list:
-    [
-      {
-        id: 'sample',
-        title: '',
-        list: []
-      }
-    ]
+    list:[]
   }
 ]

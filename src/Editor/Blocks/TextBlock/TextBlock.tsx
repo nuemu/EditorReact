@@ -54,13 +54,6 @@ marked.setOptions({
   silent: true
 })
 
-type Props = {
-  row_index: number
-  col_index: number
-}
-
-type Blocks = [{ id: string; type: string; data: { text: string; }; }[][], any]
-
 function SetCaret(node:Node, caret:number){
   const selection = window.getSelection()!
   var range = document.createRange()
@@ -69,8 +62,8 @@ function SetCaret(node:Node, caret:number){
   selection.addRange(range)
 }
 
-const TextBlock = (props: Props) => {
-  const [blocks, setBlocks] = useRecoilState(blocksSelector) as Blocks
+const TextBlock = (props: BlockProps) => {
+  const [blocks, setBlocks] = useRecoilState(blocksSelector) as [Blocks, any]
   const [focusing, setFocus] = useRecoilState(focusState)
 
   const [editing, setEdit] = useState(false)
