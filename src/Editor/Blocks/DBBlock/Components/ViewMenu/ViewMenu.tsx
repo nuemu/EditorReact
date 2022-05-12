@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './ViewMenu.css'
 
 import { useRecoilState } from 'recoil'
-import { DBState } from '../../../../reicoil/atom';
+import { DBState } from '../../../../recoil/atom';
 import { viewMenuItems } from '../../DBViews'
 
 type DBStateType = [

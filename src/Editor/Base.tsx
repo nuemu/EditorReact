@@ -5,17 +5,39 @@ import LoadedBlocks from './Blocks/blocks_loader'
 import Menu from './Menu/Menu'
 
 import { useRecoilValue, useRecoilState } from 'recoil'
-import { blocksSelector, focusState, menuState } from './reicoil/atom';
+import { blocksSelector, focusState, currentPage, menuState, pageListSelector } from './recoil/atom';
 
-type BlocksState = [{ id: string; type: string; data: { text: string; }; }[][], any]
+const BlocksComponents = LoadedBlocks as any
 
 function Base() {
-  const [blocks, setBlocks] = useRecoilState(blocksSelector) as BlocksState
+  const [blocks, setBlocks] = useRecoilState(blocksSelector) as [Blocks, any]
   const [focusing, setFocus] = useRecoilState(focusState)
 
-  const menu = useRecoilValue(menuState)
+  // Mainly Initialize use
+  const [pageList, setPageList] = useRecoilState(pageListSelector) as [PageList, any]
+  const [currentPageId, setCurrentPageId] = useRecoilState(currentPage)
 
+  const menu = useRecoilValue(menuState)
   const [dragging, setDrag] = useState([-1,0])
+
+  const getList = (id:string, pageList: any) => {
+    var listItem = {title: 'loading'}
+    pageList.forEach((item:any) => {
+      if(item.id === id) listItem = item
+      else if(listItem === {title: 'loading'}) listItem = getList(id,item.list)
+    })
+    return listItem
+  }
+
+  const getTitle = () => {
+    const newList = JSON.parse(JSON.stringify(pageList))
+    const listItem = getList(currentPageId, newList)
+    return listItem.title
+  }
+
+  const currentTitle = useRef(getTitle())
+
+  // Initialize
 
   const generateRefs = () => {
     var dummyRefs:any = []
@@ -29,17 +51,18 @@ function Base() {
     return dummyRefs
   }
 
-  // initialize refs
   var menuRefs = useRef([[React.createRef()]]) as any
   menuRefs.current = generateRefs()
 
   var Refs = useRef([[React.createRef()]]) as any
   Refs.current = generateRefs()
 
+  // forceUpdate
   useEffect(() => {
     if(focusing[0] === -1 && focusing[1] === 1)setFocus([-1,0])
   })
 
+  // Actions
   const handleMouseOver = (row_index:number, col_index:number) => {
     if(menu[0] < 0) menuRefs.current[row_index][col_index].current.style.opacity = 1
   }
@@ -73,7 +96,7 @@ function Base() {
     element.classList.remove('active')
   }
 
-  const removeBlockAddLine = (dragging: number[], dropping: number[], newBlocks: BlocksState[0]) => {
+  const removeBlockAddLine = (dragging: number[], dropping: number[], newBlocks: Blocks) => {
     // Add new line upside of the removing block?
     if(dragging[0] > dropping[0]){
       if(newBlocks[dragging[0]+1].length > 1) newBlocks[dragging[0]+1].splice(dragging[1], 1)
@@ -85,7 +108,7 @@ function Base() {
     }
     return newBlocks
   }
-  const removeBlock = (dragging: number[], dropping: number[], newBlocks: BlocksState[0]) => {
+  const removeBlock = (dragging: number[], dropping: number[], newBlocks: Blocks) => {
     if(dragging[0] === dropping[0]){
       if(dragging[1] > dropping[1]) newBlocks[dragging[0]].splice(dragging[1]+1, 1)
       else newBlocks[dragging[0]].splice(dragging[1], 1)
@@ -132,8 +155,6 @@ function Base() {
     }
   }
 
-  const BlocksComponents = LoadedBlocks as any
-
   const block = (row_index: number, col_index: number) => {
     const Block = BlocksComponents[blocks[row_index][col_index].type].default
     return (
@@ -170,14 +191,19 @@ function Base() {
   )}
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLHeadingElement>) => {
-    console.log(e)
+    const element = e.target as HTMLElement
+    const newList = JSON.parse(JSON.stringify(pageList))
+    const listItem = getList(currentPageId, newList)
+    listItem.title = element.innerText
+    
+    setPageList(newList)
   }
 
   const title = (
     <h1
       className="title"
       contentEditable
-      dangerouslySetInnerHTML={{__html: 'title'}}
+      dangerouslySetInnerHTML={{__html: currentTitle.current}}
       onInput={(e:React.ChangeEvent<HTMLHeadingElement>) => handleTitleChange(e)}
     />)
 

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import './TextBlock.css'
 
 import { useRecoilState } from 'recoil'
-import { blocksSelector, focusState } from '../../reicoil/atom';
+import { blocksSelector, focusState } from '../../recoil/atom';
 
 import katex from 'katex'
 import 'katex/dist/katex.css'

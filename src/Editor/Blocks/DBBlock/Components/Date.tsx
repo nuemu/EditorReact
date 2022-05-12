@@ -2,7 +2,7 @@ import React from 'react'
 import './Date.css'
 
 import { useRecoilState } from 'recoil'
-import { DBState } from '../../../reicoil/atom';
+import { DBState } from '../../../recoil/atom';
 
 type DBStateType = [
   {

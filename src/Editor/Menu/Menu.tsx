@@ -2,7 +2,7 @@ import React, { forwardRef, useRef } from "react";
 import './Menu.css'
 
 import { useRecoilState } from 'recoil'
-import { blocksSelector, focusState, menuState } from '../reicoil/atom';
+import { blocksSelector, focusState, menuState } from '../recoil/atom';
 
 import Datas from '../Blocks/BlockDatas'
 import { v4 } from 'uuid'

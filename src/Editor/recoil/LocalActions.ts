@@ -1,61 +1,57 @@
-import { atom, selector } from 'recoil'
-import { v4 } from 'uuid'
+/*
+  This File is using for Local Dev
+*/
 
-export const menuState = atom({
-    key: 'menuState',
-    default: [-1, 0]
-})
+const initialPage = {
+  id: 'Loading',
+  column: [],
+  data: [[
+    {
+      "id": "Loading",
+      "type": "Text",
+      "data": {
+        "text": "Loading..."
+  }}]]
+}
 
-export const DBState = atom({
-  key: 'DBState',
-  default: {
-    id: v4(),
-    view: 'Table',
-    column:[
-      {name:'Date', property: 'Date'},
-      {name:'作成中の', property: 'Text'},
-      {name:'DB', property: 'Text'}
-    ],
-    data:
-    [
-      ['', '行は複数選択可能', '一括削除も'],
-      ['', '列はこれから', '色々拡張予定']
-    ]
+export const DBActions = (action: string, params: any) => {
+  var response: any = 'failed'
+  switch(action){
+    case 'fetch':
+      break
   }
-})
+  return response
+}
 
-export const pageListState = atom({
-  key: 'pageListState',
-  default: 
+export const PageActions = (action: string, params: any|null) => {
+  var response: any = 'failed'
+  switch(action){
+    case 'fetch':
+      response = Pages.find(page => page.id === params.id)
+      break
+    case 'post':
+      response = Pages.push(initialPage)
+      break
+  }
+  return response
+}
+
+export const PageListActions = (action: string, params: any) => {
+  var response: any = 'failed'
+  switch(action){
+    case 'fetch':
+      response = PageList
+      break
+  }
+  return response
+}
+
+export const DBs = []
+export const Pages = [
   {
-    id: 'base',
-    title: 'Semi WYSIWYG Block Style Editor',
-    list:
-    [
-      {
-        id: 'sample',
-        title: '',
-        list: []
-      }
-    ]
-  }
-})
-
-const pageState = atom({
-  key: 'pageState',
-  default: {
-    id: 'base',
+    id: 'Base',
     column: [],
     data: [
-      [
-        {
-          "id": "c33b2d2c-3690-4a1a-80ab-701e294a574c",
-          "type": "Text",
-          "data": {
-            "text": "# Semi WYSIWYG Blocks Style Editor"
-          }
-        }
-      ],
       [
         {
           "id": "d24c3512-d4a2-4e93-a145-7aaf96b6ab1b",
@@ -170,28 +166,19 @@ const pageState = atom({
         }
       ]
     ]
-  },
-});
-
-type Blocks = { id: string; type: string; data: { text: string; }; }[][]
-
-export const blocksSelector = selector({
-  key: 'blocksSelector',
-  get: ({get}) => {
-    const blocks = get(pageState).data
-    return blocks as Blocks
-  },
-  set: ({get,set}, newBlocks) => {
-    const newValue = {
-      id: get(pageState).id,
-      column: [],
-      data: newBlocks as Blocks
-    }
-    set(pageState, newValue)
   }
-})
-
-export const focusState = atom({
-  key: 'focusState',
-  default: [-1, 0]
-})
+]
+export const PageList = [
+  {
+    id: 'Base',
+    title: 'Semi WYSIWYG Block Style Editor',
+    list:
+    [
+      {
+        id: 'sample',
+        title: '',
+        list: []
+      }
+    ]
+  }
+]

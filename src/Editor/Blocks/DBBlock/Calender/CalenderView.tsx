@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './Calender.css'
 
 import { useRecoilState } from 'recoil'
-import { DBState } from '../../../reicoil/atom';
+import { DBState } from '../../../recoil/atom';
 
 import { Week, currentYear, currentMonth, today } from './CalenderSettings'
 

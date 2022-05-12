@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useRecoilValue } from 'recoil'
-import { DBState } from '../../reicoil/atom';
+import { DBState } from '../../recoil/atom';
 
 import Components from './view_loader'
 

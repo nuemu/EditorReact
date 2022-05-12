@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import './Table.css'
 
 import { useRecoilState } from 'recoil'
-import { DBState } from '../../../reicoil/atom';
+import { DBState } from '../../../recoil/atom';
 
 import { rowMenuItems, colMenuItems } from './TableMenuItems'
 
