@@ -2,6 +2,13 @@
   This File is using for Local Dev
 */
 
+// wait for ajax request https://httpbin.org/
+import axios from 'axios'
+
+const axiosInstance = axios.create({
+  baseURL: 'https://httpbin.org/'
+})
+
 const initialPage = {
   id: 'Loading',
   column: [],
@@ -14,7 +21,7 @@ const initialPage = {
   }}]]
 }
 
-export const DBActions = (action: string, params: any) => {
+export const DBActions = async (action: string, params: any) => {
   var response: any = 'failed'
   switch(action){
     case 'fetch':
@@ -23,11 +30,12 @@ export const DBActions = (action: string, params: any) => {
   return response
 }
 
-export const PageActions = (action: string, params: any|null) => {
+export const PageActions = async (action: string, params: any|null) => {
   var response: any = 'failed'
   switch(action){
     case 'fetch':
-      response = Pages.find(page => page.id === params.id)
+      await axiosInstance.get('get')
+        .then(() => response = Pages.find(page => page.id === params.id))
       break
     case 'post':
       response = Pages.push(initialPage)
@@ -36,11 +44,12 @@ export const PageActions = (action: string, params: any|null) => {
   return response
 }
 
-export const  PageListActions = (action: string, params: any) => {
+export const PageListActions = async (action: string, params: any) => {
   var response: any = 'failed'
   switch(action){
     case 'fetch':
-      response = PageList
+      await axiosInstance.get('get')
+        .then(() => response = PageList)
       break
   }
   return response
