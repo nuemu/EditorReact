@@ -1,8 +1,6 @@
 import { atom, selector } from 'recoil'
 import { v4 } from 'uuid'
 
-import { PageActions, PageListActions } from './LocalActions'
-
 export const menuState = atom({
     key: 'menuState',
     default: [-1, 0]
@@ -31,20 +29,19 @@ export const currentPage = atom({
   default: 'Base'
 })
 
-export const pageListState = atom<PageList>({
+export const pageListState = atom<PageList|null>({
   key: 'pageListState',
   default: [{
     id: 'loading',
-    title: 'Loading',
-    list:[]
+    title: 'Loading...',
+    list: []
   }]
 })
 
 export const pageListSelector = selector({
   key: 'pageListSelector',
-  get: () => {
-    const pageList = PageListActions('fetch', '')
-    return pageList as PageList
+  get: ({get}) => {
+    return get(pageListState)
   },
   set: ({set}, newPageList) => {
     const newList = newPageList as PageList
@@ -70,8 +67,7 @@ export const pageState = atom<Page>({
 export const blocksSelector = selector({
   key: 'blocksSelector',
   get: ({get}) => {
-    const page = PageActions('fetch', {id: get(currentPage)})
-    return page!.data as Blocks
+    return get(pageState)!.data as Blocks
   },
   set: ({get,set}, newBlocks) => {
     const newValue = {

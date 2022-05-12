@@ -7,6 +7,8 @@ import Menu from './Menu/Menu'
 import { useRecoilValue, useRecoilState } from 'recoil'
 import { blocksSelector, focusState, currentPage, menuState, pageListSelector } from './recoil/atom';
 
+import { PageActions, PageListActions } from './recoil/LocalActions'
+
 const BlocksComponents = LoadedBlocks as any
 
 function Base() {
@@ -15,10 +17,22 @@ function Base() {
 
   // Mainly Initialize use
   const [pageList, setPageList] = useRecoilState(pageListSelector) as [PageList, any]
-  const [currentPageId, setCurrentPageId] = useRecoilState(currentPage)
+  const [currentPageId, ] = useRecoilState(currentPage)
 
   const menu = useRecoilValue(menuState)
   const [dragging, setDrag] = useState([-1,0])
+
+  useEffect(() => {
+    (async () => {
+      const newPage = await PageActions('fetch', {id: 'Base'})
+      setBlocks(newPage.data)
+
+      const newPageList = await PageListActions('fetch', '')
+      setPageList(newPageList)
+      
+      setFocus([-1, 1])
+    })()
+  }, [])
 
   const getList = (id:string, pageList: any) => {
     var listItem = {title: 'loading'}
@@ -35,10 +49,9 @@ function Base() {
     return listItem.title
   }
 
-  const currentTitle = useRef(getTitle())
+  var currentTitle = useRef(getTitle())
 
   // Initialize
-
   const generateRefs = () => {
     var dummyRefs:any = []
     blocks.forEach(row => {
@@ -59,7 +72,10 @@ function Base() {
 
   // forceUpdate
   useEffect(() => {
-    if(focusing[0] === -1 && focusing[1] === 1)setFocus([-1,0])
+    if(focusing[0] === -1 && focusing[1] === 1){
+      setFocus([-1,0])
+      currentTitle.current = getTitle()
+    }
   })
 
   // Actions

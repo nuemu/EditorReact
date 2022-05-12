@@ -36,7 +36,7 @@ export const PageActions = (action: string, params: any|null) => {
   return response
 }
 
-export const PageListActions = (action: string, params: any) => {
+export const  PageListActions = (action: string, params: any) => {
   var response: any = 'failed'
   switch(action){
     case 'fetch':
