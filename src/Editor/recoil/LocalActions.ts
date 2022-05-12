@@ -4,22 +4,11 @@
 
 // wait for ajax request https://httpbin.org/
 import axios from 'axios'
+import { v4 } from 'uuid'
 
 const axiosInstance = axios.create({
   baseURL: 'https://httpbin.org/'
 })
-
-const initialPage = {
-  id: 'Loading',
-  column: [],
-  data: [[
-    {
-      "id": "Loading",
-      "type": "Text",
-      "data": {
-        "text": "Loading..."
-  }}]]
-}
 
 export const DBActions = async (action: string, params: any) => {
   var response: any = 'failed'
@@ -38,7 +27,22 @@ export const PageActions = async (action: string, params: any|null) => {
         .then(() => response = Pages.find(page => page.id === params.id))
       break
     case 'post':
-      response = Pages.push(initialPage)
+      await axiosInstance.post('post')
+        .then(() => {
+          const newPage = {
+            id: params.id,
+            column: [],
+            data: [[
+              {
+                "id": v4(),
+                "type": "Text",
+                "data": {
+                  "text": ""
+            }}]]
+          }
+          if(Pages.filter(page => page.id === params.id).length === 0) Pages.push(newPage)
+          response = Pages
+        })
       break
   }
   return response
@@ -60,25 +64,22 @@ export const PageListActions = async (action: string, params?: any) => {
       await axiosInstance.get('get')
         .then(() => response = PageList)
       break
-    case 'check':
-      const list = getList(params.id, PageList)
-      if(list) response = true
-      break
     case 'add':
       await axiosInstance.patch('patch', params)
         .then(() => {
           const newPageList = JSON.parse(JSON.stringify(PageList))
           const newItem = {id: params.id, title: 'New Page', list: []} as PageList[0]
-          getList(params.currentId, newPageList).list.push(newItem)
+          if(!getList(params.id, newPageList)) getList(params.currentId, newPageList).list.push(newItem)
           response = newPageList
+          PageList = newPageList
         })
       break
   }
   return response
 }
 
-export const DBs = []
-export const Pages = [
+const DBs = []
+const Pages = [
   {
     id: 'Editor',
     column: [],
@@ -199,7 +200,7 @@ export const Pages = [
     ]
   }
 ]
-export const PageList:PageList = [
+var PageList:PageList = [
   {
     id: 'Editor',
     title: 'Semi WYSIWYG Block Style Editor',

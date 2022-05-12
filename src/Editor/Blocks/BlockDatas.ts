@@ -6,21 +6,21 @@ const Data = [
 		name: 'Text',
 		description: '',
 		icon: require('../Assets/Text.svg').default,
-		initial: {'text': ''}
+		initial: () => {return {text: ''}}
 	},
 	{
 		type: 'DB',
 		name: 'DataBase',
 		description: '',
 		icon: require('../Assets/DB.svg').default,
-		initial: {'text': ''}
+		initial: () => {return {id: v4()}}
 	},
 	{
 		type : 'Page',
 		name : 'New Page',
 		description: '',
 		icon: require('../Assets/Page.svg').default,
-		initial: {'id': v4()}
+		initial: () => {return {id: v4()}}
 	}
 ]
 

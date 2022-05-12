@@ -68,7 +68,7 @@ const Menu = forwardRef((props: Props, ref:any) =>  {
       [{
         'id': v4(),
         'type': Datas[index].type,
-        'data': Datas[index].initial
+        'data': Datas[index].initial()
       }]
     )
     setBlocks(newBlocks)

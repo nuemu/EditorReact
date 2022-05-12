@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom"
 import './base.css'
 
 import LoadedBlocks from './Blocks/blocks_loader'
@@ -23,16 +22,9 @@ function Base() {
   const menu = useRecoilValue(menuState)
   const [dragging, setDrag] = useState([-1,0])
 
-  //For Github Pages
-  const query = new URLSearchParams(useLocation().search).get('q')
-  //
-
+  // Initial Load
   useEffect(() => {
     (async () => {
-      //For Github Pages
-      var id = 'Editor'
-      if(query) id = query
-      //
       const newPage = await PageActions('fetch', {id: currentPageId})
       setBlocks(newPage.data)
 
@@ -43,11 +35,11 @@ function Base() {
     })()
   }, [])
 
-  const getList = (id:string, pageList: any) => {
-    var listItem = {title: 'loading'}
+  const getList = (id: string, pageList: PageList) => {
+    var listItem = {title: 'loading', id: 'loading'}
     pageList.forEach((item:any) => {
       if(item.id === id) listItem = item
-      else if(listItem === {title: 'loading'}) listItem = getList(id,item.list)
+      else if(listItem.id === 'loading') listItem = getList(id, item.list)
     })
     return listItem
   }
