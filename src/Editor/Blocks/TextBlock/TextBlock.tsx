@@ -299,6 +299,7 @@ const TextBlock = (props: Props) => {
       onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleChange(e, props.row_index, props.col_index)}
       onKeyDown={(e:React.KeyboardEvent<HTMLDivElement>) => handleKeyDown(e, props.row_index, props.col_index)}
       onFocus={() => handleFocus(props.row_index, props.col_index)}
+      onMouseOver={() => {setFocus([props.row_index, props.col_index])}}
     />
   )
   
