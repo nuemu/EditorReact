@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Editor/static/css/main.608ae98b.css",
-    "main.js": "/Editor/static/js/main.41624646.js",
+    "main.js": "/Editor/static/js/main.e4eb3434.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/Editor/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/Editor/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
     "static/media/KaTeX_Main-Bold.ttf": "/Editor/static/media/KaTeX_Main-Bold.8169508bf58f8bd92ad8.ttf",
@@ -68,10 +68,10 @@
     "static/media/Text.svg": "/Editor/static/media/Text.cba6fb6f83334be8a5ce18c0e7621081.svg",
     "static/media/plus.svg": "/Editor/static/media/plus.84478f1596d8d93aef242201a227b42b.svg",
     "main.608ae98b.css.map": "/Editor/static/css/main.608ae98b.css.map",
-    "main.41624646.js.map": "/Editor/static/js/main.41624646.js.map"
+    "main.e4eb3434.js.map": "/Editor/static/js/main.e4eb3434.js.map"
   },
   "entrypoints": [
     "static/css/main.608ae98b.css",
-    "static/js/main.41624646.js"
+    "static/js/main.e4eb3434.js"
   ]
 }
