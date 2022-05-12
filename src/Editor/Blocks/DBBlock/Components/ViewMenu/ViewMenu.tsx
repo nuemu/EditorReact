@@ -5,20 +5,8 @@ import { useRecoilState } from 'recoil'
 import { DBState } from '../../../../recoil/atom';
 import { viewMenuItems } from '../../DBViews'
 
-type DBStateType = [
-  {
-    id: string,
-    view: string,
-    column:{
-      name: string
-    }[],
-    data: string[][],
-  },
-  any
-]
-
 const ViewMenu = () => {
-  const [DB, setDB] = useRecoilState(DBState) as DBStateType
+  const [DB, setDB] = useRecoilState(DBState) as [Data, any]
   const [Menu, setMenu] = useState(0)
 
   const closeMenu = () => {
@@ -60,13 +48,16 @@ const ViewMenu = () => {
       >
         <div className="view-menu-header">View Menu</div>
         {viewMenuItems.map((item:any) => (
-          <div
-            className="view-menu-item"
-            key={item.name}
-            onClick={() => {handleView(item.type)}}
-          >
-            {item.name}
-          </div>
+          <>
+            <img src={item.icon} alt="view-menu-icon"/>
+            <div
+              className="view-menu-item"
+              key={item.name}
+              onClick={() => {handleView(item.type)}}
+            >
+              {item.name}
+            </div>
+          </>
         ))}
       </div>
     </div>)

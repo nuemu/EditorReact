@@ -11,21 +11,8 @@ import ViewMenu from '../Components/ViewMenu/ViewMenu'
 import DBElements from '../Components/DBElements_loader.js'
 const Elements = DBElements as any
 
-type DBStateType = [
-  {
-    id: string
-    view: string,
-    column:{
-      name: string
-      property: string
-    }[],
-    data: string[][],
-  },
-  any
-]
-
 const Table = () => {
-  const [DB, setDB] = useRecoilState(DBState) as DBStateType
+  const [DB, setDB] = useRecoilState(DBState) as [Data, any]
   const keepDB = useRef(DB)
 
   useEffect(() => {

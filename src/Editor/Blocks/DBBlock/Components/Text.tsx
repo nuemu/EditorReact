@@ -5,27 +5,15 @@ import { DBState } from '../../../recoil/atom';
 
 import './Text.css'
 
-type DBStateType = [
-  {
-    id: string,
-    view: string,
-    column:{
-      name: string
-    }[],
-    data: string[][],
-  },
-  any
-]
-
 type Props = {
   row_index: number,
   col_index: number
 }
 
 const TextElement = (props: Props) => {
-  const [DB, setDB] = useRecoilState(DBState) as DBStateType
+  const [DB, setDB] = useRecoilState(DBState) as [Data, any]
 
-  const text = useRef(DB.data[props.row_index][props.col_index])
+  const text = useRef(DB.data[props.row_index][props.col_index].data)
   const [focusing, setFocus] = useState(false)
 
   useEffect(() => {

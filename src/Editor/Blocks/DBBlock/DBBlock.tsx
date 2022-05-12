@@ -1,27 +1,26 @@
 import React from 'react'
 
 import { useRecoilValue } from 'recoil'
-import { DBState } from '../../recoil/atom';
+import { currentPage, pageListState } from '../../recoil/atom';
 
 import Components from './view_loader'
 
 const ViewComponents = Components as any
 
-type DBStateType = [
-  {
-    id: string,
-    view: string,
-    column:{
-      name: string
-    }[],
-    data: string[][],
-  },
-  any
-]
-
 const DB = () => {
-  const DB = useRecoilValue(DBState) as DBStateType[0]
-  const View = ViewComponents[DB.view].default
+  const PageList = useRecoilValue(pageListState) as PageList
+  const currentPageId = useRecoilValue(currentPage)
+
+  const getList = (id:string, pageList: any) => {
+    var listItem:any = null
+    pageList.forEach((item:any) => {
+      if(item.id === id) listItem = item
+      else if(!listItem) listItem = getList(id,item.list)
+    })
+    return listItem
+  }
+
+  const View = ViewComponents[getList(currentPageId, PageList).view].default
 
   return <View />
 }

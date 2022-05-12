@@ -4,26 +4,8 @@ import './Date.css'
 import { useRecoilState } from 'recoil'
 import { DBState } from '../../../recoil/atom';
 
-type DBStateType = [
-  {
-    id: string,
-    view: string,
-    column:{
-      name: string
-      property: string
-    }[],
-    data: string[][],
-  },
-  any
-]
-
-type Props = {
-  row_index: number,
-  col_index: number
-}
-
-const DateElement = (props:Props) => {
-  const [DB, setDB] = useRecoilState(DBState) as DBStateType
+const DateElement = (props:BlockProps) => {
+  const [DB, setDB] = useRecoilState(DBState) as [Data, any]
 
   const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>, row_index:number, col_index:number) => {
     var newDB = JSON.parse(JSON.stringify(DB))
@@ -31,9 +13,9 @@ const DateElement = (props:Props) => {
     setDB(newDB)
   }
 
-  const initialData = () =>{
+  const initializeData = () =>{
     if(DB.data[props.row_index][props.col_index]){
-      const data = new Date(DB.data[props.row_index][props.col_index])
+      const data = new Date(DB.data[props.row_index][props.col_index].data)
       var month = String(data.getMonth()+1)
       var date = String(data.getDate())
       if(Number(month) < 10){
@@ -53,7 +35,7 @@ const DateElement = (props:Props) => {
         <input
           type="date"
           className="table-data-date"
-          value={initialData()}
+          value={initializeData()}
           onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleDataChange(e, props.row_index, props.col_index)}
         />
       </label>

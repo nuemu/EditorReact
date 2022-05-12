@@ -3,6 +3,7 @@
 type PageList = [{
   id: string,
   title: string,
+  view: string,
   list: PageList[]
 }]
 
@@ -12,9 +13,12 @@ type Blocks = {
   data: any
 }[][]
 
-type Page = {
+type Data = {
   id: string,
-  column: {},
+  column: {
+    name: string,
+    property: string,
+  }[],
   data: Blocks
 }
 

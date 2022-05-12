@@ -68,7 +68,7 @@ export const PageListActions = async (action: string, params?: any) => {
       await axiosInstance.patch('patch', params)
         .then(() => {
           const newPageList = JSON.parse(JSON.stringify(PageList))
-          const newItem = {id: params.id, title: 'New Page', list: []} as PageList[0]
+          const newItem = {id: params.id, title: 'New Page', view: 'Page', list: []} as PageList[0]
           if(!getList(params.id, newPageList)) getList(params.currentId, newPageList).list.push(newItem)
           response = newPageList
           PageList = newPageList
@@ -78,7 +78,22 @@ export const PageListActions = async (action: string, params?: any) => {
   return response
 }
 
-const DBs = []
+const DBs = [
+  {
+    id: v4(),
+    view: 'Table',
+    column:[
+      {name:'Date', property: 'Date'},
+      {name:'作成中の', property: 'Text'},
+      {name:'DB', property: 'Text'}
+    ],
+    data:
+    [
+      ['', '行は複数選択可能', '一括削除も'],
+      ['', '列はこれから', '色々拡張予定']
+    ]
+  }
+]
 const Pages = [
   {
     id: 'Editor',
@@ -154,13 +169,6 @@ const Pages = [
           "data": {
             "text": "普通の文\n### h3\n- **List**\n   - nestedList"
           }
-        },
-        {
-          "id": "a",
-          "type": "DB",
-          "data": {
-            "id": "db"
-          }
         }
       ],
       [
@@ -204,6 +212,7 @@ var PageList:PageList = [
   {
     id: 'Editor',
     title: 'Semi WYSIWYG Block Style Editor',
+    view: 'Page',
     list:[]
   }
 ]
