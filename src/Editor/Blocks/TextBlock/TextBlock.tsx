@@ -301,7 +301,7 @@ const TextBlock = (props: BlockProps) => {
       className={"text-block-viewer"}
       ref={ref}
       dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(processedText(textRef.current))}}
-      onClick={() => handleFocus(props.row_index, props.col_index)}
+      onMouseOver={() => handleFocus(props.row_index, props.col_index)}
     />
   )
 }

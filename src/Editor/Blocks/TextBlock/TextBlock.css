@@ -9,6 +9,9 @@
   outline:none;
   margin-bottom: 16pt;
 }
+.text-block-viewer:after{
+  content: '\200b';
+}
 p {
   margin: 0;
   display:inline;

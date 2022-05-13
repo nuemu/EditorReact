@@ -5,14 +5,13 @@ import './BreadCrumb.css'
 
 import { Link } from 'react-router-dom'
 
-import { blocksSelector, currentPage, focusState, pageListSelector } from '../Editor/recoil/atom'
+import { blocksSelector, currentPage, pageListSelector } from '../Editor/recoil/atom'
 import { PageActions } from '../Editor/recoil/LocalActions'
 
 const BreadCrumb = () => {
   const pageList = useRecoilValue(pageListSelector)
   const [currentPageId, setCurrentPageId] = useRecoilState(currentPage)
   const setBlocks = useSetRecoilState(blocksSelector)
-  const setFocus = useSetRecoilState(focusState)
 
   const listUp = (id:string, pageList: any) => {
     var end = false
@@ -44,7 +43,6 @@ const BreadCrumb = () => {
           setBlocks(response.data)
         }
       })
-      setFocus([-1, 1])
   }
 
   const breadCrumbLinks = breadCrumbLists.map((list:any, index:number) => (

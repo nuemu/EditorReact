@@ -37,7 +37,6 @@ function Base() {
     else currentPath = currentPageId
   }
 
-
   // Initial Load
   useEffect(() => {
     (async () => {

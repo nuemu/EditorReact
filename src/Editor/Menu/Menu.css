@@ -9,7 +9,7 @@
   display: flex;
 }
 .menu-icon{
-  padding: 2px;
+  padding-right: 2px;
   border-radius: 5px;
 }
 .menu-icon:hover{
@@ -28,7 +28,8 @@
   box-shadow: 0px 0px 1px 1px lightgrey;
 }
 .dropdown-item{
-  margin: 3px;
+  margin: 5px;
+  padding: 3px;
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -37,15 +38,14 @@
   background-color: gainsboro;
 }
 .block-name{
-  font-weight: normal;
+  padding-left: 10px;
 }
 .block-icon-wrapper{
-  margin: 2px;
   display: flex;
-  align-items: center;
+  border-radius: 5px;
+  border: 1px solid;
+  background-color: white !important;
 }
 .block-icon{
-  border-radius: 5px;
-  border: solid;
-  background-color: white !important;
+  padding-left: 4px;
 }
