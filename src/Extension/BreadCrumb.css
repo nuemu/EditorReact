@@ -1,0 +1,7 @@
+.bread-crumb{
+  color: grey;
+}
+.bread-crumb-link{
+  color: grey !important;
+  text-decoration: none;
+}

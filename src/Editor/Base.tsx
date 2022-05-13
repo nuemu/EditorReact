@@ -7,19 +7,22 @@ import LoadedBlocks from './Blocks/blocks_loader'
 import Menu from './Menu/Menu'
 
 import { useRecoilValue, useRecoilState } from 'recoil'
-import { blocksSelector, focusState, currentPage, menuState, pageListSelector } from './recoil/atom';
+import { blocksSelector, focusState, currentPage, menuState, pageListSelector, pageState } from './recoil/atom';
 
 import { PageActions, PageListActions } from './recoil/LocalActions'
+
+import BreadCrumb from "../Extension/BreadCrumb";
 
 const BlocksComponents = LoadedBlocks as any
 
 function Base() {
+  const page = useRecoilValue(pageState)
   const [blocks, setBlocks] = useRecoilState(blocksSelector) as [Blocks, any]
   const [focusing, setFocus] = useRecoilState(focusState)
 
   // Mainly Initialize use
   const [pageList, setPageList] = useRecoilState(pageListSelector) as [PageList, any]
-  const currentPageId = useRecoilValue(currentPage)
+  const [currentPageId, setCurrentPageId] = useRecoilState(currentPage)
 
   const menu = useRecoilValue(menuState)
   const [dragging, setDrag] = useState([-1,0])
@@ -28,6 +31,7 @@ function Base() {
 
   var currentPath = useParams().id
   
+  // for GitHubPages?
   if(!currentPath){
     if(searchParams.get('path')) currentPath = searchParams.get('path')!
     else currentPath = currentPageId
@@ -37,8 +41,11 @@ function Base() {
   // Initial Load
   useEffect(() => {
     (async () => {
-      const newPage = await PageActions('fetch', {id: currentPath})
+      var newPage = await PageActions('fetch', {id: currentPath})
+      if(!newPage) newPage = await PageActions('fetch', {id: 'Editor'})
+
       setBlocks(newPage.data)
+      setCurrentPageId(newPage.id)
 
       setFocus([-1, 1])
 
@@ -46,8 +53,20 @@ function Base() {
       setPageList(newPageList)
       
       setFocus([-1, 1])
+
     })()
   }, [])
+  useEffect(() => {
+    if(page?.id !== 'loading'){
+      (async () => await PageActions('patch', page))()
+    }
+  }, [blocks])
+
+  useEffect(() => {
+    if(pageList[0].id !== 'loading'){
+      (async () => await PageListActions('patch', pageList))()
+    }
+  }, [pageList])
 
   const getList = (id: string, pageList: PageList) => {
     var listItem = {title: 'loading', id: 'loading'}
@@ -245,12 +264,15 @@ function Base() {
   )
 
   return (
-    <div className="editor-wrapper">
-      {title}
-      <div className="editor-left-wrapper" onMouseOver={() => setFocus([-1, 0])}/>
-      <div className="editor-right-wrapper" onMouseOver={() => setFocus([-1, 0])}/>
-      {blockComponents}
-    </div>
+    <>
+      <BreadCrumb />
+      <div className="editor-wrapper">
+        {title}
+        <div className="editor-left-wrapper" onMouseOver={() => setFocus([-1, 0])}/>
+        <div className="editor-right-wrapper" onMouseOver={() => setFocus([-1, 0])}/>
+        {blockComponents}
+      </div>
+    </>
   );
 }
 

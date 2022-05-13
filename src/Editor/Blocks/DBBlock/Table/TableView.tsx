@@ -109,6 +109,7 @@ const Table = (props: BlockProps) => {
     switch(type){
       case('AddRow'):
         const newRow = generateRow(newDB)
+        console.log(newRow)
         newDB.data.splice(index+1, 0, newRow)
         break
       case('RemoveRow'):
@@ -119,12 +120,12 @@ const Table = (props: BlockProps) => {
       case('InsertColumnBefore'):
         var newCol = {name: '', property: 'Text'}
         newDB.column.splice(index, 0, newCol)
-        newDB.data.map((row:any) => row.splice(index+1, 0, ''))
+        newDB.data.map((row:any) => row.splice(index+1, 0, {id: v4(), type: 'Text', data: Property['Text'].initialData}))
         break
       case('InsertColumnAfter'):
         newCol = {name: '', property: 'Text'}
         newDB.column.splice(index+1, 0, newCol)
-        newDB.data.map((row:any) => row.splice(index+1, 0, ''))
+        newDB.data.map((row:any) => row.splice(index+1, 0, {id: v4(), type: 'Text', data: Property['Text'].initialData}))
         break
       case('RemoveColumn'):
         newDB.column.splice(index, 1)
@@ -184,11 +185,11 @@ const Table = (props: BlockProps) => {
   const RowMenu = (row_index: number) => {
     return (<div
       ref={rowMenuRefs.current[row_index]}
-      className={isSelectedRowMenu(row_index) ? "row-menu active" : "row-menu"}
+      className={isSelectedRowMenu(row_index) ? "row-menu menu-item active" : "menu-item row-menu"}
     >
       {rowMenuItems.map(item => (
         <div
-          className="row-menu-item"
+          className="row-menu-item menu-item"
           key={item.type}
           onClick={() => {TableActions(item.type, row_index);closeMenu()}}
         >

@@ -79,10 +79,10 @@ export const PageActions = async (action: string, params: any|null) => {
         })
       break
     case 'patch':
-      const data = JSON.parse(JSON.stringify(params.data))
-      await axiosInstance.patch('patch', params)
+      const data = JSON.parse(JSON.stringify(params))
+      await axiosInstance.patch('patch', data)
         .then(() => {
-          const index = Pages.findIndex(page => page.id === params.id)
+          const index = Pages.findIndex(page => page.id === data.id)
           response = Pages.splice(index, 1, data)
           //console.log('Pages:', Pages)
         })
@@ -114,9 +114,18 @@ export const PageListActions = async (action: string, params?: any) => {
           if(!getList(params.id, newPageList)) getList(params.currentId, newPageList).list.push(newItem)
           response = newPageList
           PageList = newPageList
+        })
+      break
+    case 'patch':
+      await axiosInstance.patch('patch', params)
+        .then(() => {
+          const newPageList = params
+          response = newPageList
+          PageList = newPageList
           //console.log('PageList:',newPageList)
         })
       break
+      
   }
   return response
 }
