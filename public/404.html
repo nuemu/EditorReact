@@ -2,7 +2,8 @@
 <html>
 <head>
   <script>
-    const pathname = window.location.pathname
+    const pathname = window.location.pathname.split('/Editor')[1]
+    console.log(pathname)
     window.location.href = '/Editor?path='+pathname
   </script>
 </head>
