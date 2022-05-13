@@ -40,9 +40,11 @@
 }
 
 .date-contents-wrapper{
-  color: black
+  color: black;
 }
 .date-content{
+  padding: 1px;
+  margin: 5px;
   overflow: hidden;
   height: 30px;
   border-radius: 5px;

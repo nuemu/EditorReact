@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './Table.css'
 
-import { useRecoilState } from 'recoil'
-import { DBState } from '../../../recoil/atom';
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { DBSelector, blocksSelector } from '../../../recoil/atom';
 
 import { rowMenuItems, colMenuItems } from './TableMenuItems'
 
@@ -15,8 +15,11 @@ import { v4 } from 'uuid';
 const Property = Properties as any
 const Elements = DBElements as any
 
-const Table = () => {
-  const [DB, setDB] = useRecoilState(DBState) as [Data, any]
+const Table = (props: BlockProps) => {
+  const blocks = useRecoilValue(blocksSelector) as Blocks
+
+  const DBId = blocks[props.row_index][props.col_index].data.id
+  const [DB, setDB] = useRecoilState(DBSelector(DBId)) as [Data, any]
   const keepDB = useRef(DB)
 
   useEffect(() => {
@@ -169,6 +172,8 @@ const Table = () => {
       <Element
         row_index={row_index}
         col_index={col_index}
+        base_row_index={props.row_index}
+        base_col_index={props.col_index}
       />)
   }
 
@@ -178,7 +183,7 @@ const Table = () => {
         <td
           className="anchor"
         >
-          <ViewMenu />
+          <ViewMenu row_index={props.row_index} col_index={props.col_index}/>
         </td>
         {keepDB.current.column.map((column, index) => (
           <td

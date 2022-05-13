@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import './ViewMenu.css'
 
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { DBState, pageListSelector } from '../../../../recoil/atom';
+import { DBSelector, blocksSelector, pageListSelector } from '../../../../recoil/atom';
 import { viewMenuItems } from '../../DBConstants'
 
-const ViewMenu = () => {
-  const DB = useRecoilValue(DBState) as Data
+const ViewMenu = (props: BlockProps) => {
+  const blocks = useRecoilValue(blocksSelector) as Blocks
+  const DBId = blocks[props.row_index][props.col_index].data.id
+  const [DB, setDB] = useRecoilState(DBSelector(DBId)) as [Data, any]
   const [Menu, setMenu] = useState(0)
   const [PageList, setPageList] = useRecoilState(pageListSelector)
 

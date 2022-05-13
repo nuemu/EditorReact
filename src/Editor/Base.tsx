@@ -5,13 +5,14 @@ import LoadedBlocks from './Blocks/blocks_loader'
 import Menu from './Menu/Menu'
 
 import { useRecoilValue, useRecoilState } from 'recoil'
-import { blocksSelector, focusState, currentPage, menuState, pageListSelector } from './recoil/atom';
+import { blocksSelector, focusState, currentPage, menuState, pageListSelector, pageState } from './recoil/atom';
 
 import { PageActions, PageListActions } from './recoil/LocalActions'
 
 const BlocksComponents = LoadedBlocks as any
 
 function Base() {
+  const page = useRecoilValue(pageState)
   const [blocks, setBlocks] = useRecoilState(blocksSelector) as [Blocks, any]
   const [focusing, setFocus] = useRecoilState(focusState)
 
@@ -21,6 +22,14 @@ function Base() {
 
   const menu = useRecoilValue(menuState)
   const [dragging, setDrag] = useState([-1,0])
+
+  useEffect(() => {
+    if(page?.id !== 'loading'){
+      (async () => {
+        await PageActions('patch', {data: page, id: currentPageId})
+      })()
+    }
+  },[page])
 
   // Initial Load
   useEffect(() => {

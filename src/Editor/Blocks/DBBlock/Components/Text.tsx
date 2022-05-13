@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { useRecoilState } from 'recoil'
-import { DBState } from '../../../recoil/atom';
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { DBSelector, blocksSelector } from '../../../recoil/atom';
 
 import './Text.css'
 
 type Props = {
-  row_index: number,
+  row_index: number
   col_index: number
+  base_row_index: number
+  base_col_index: number
 }
 
 const TextElement = (props: Props) => {
-  const [DB, setDB] = useRecoilState(DBState) as [Data, any]
+  const blocks = useRecoilValue(blocksSelector) as Blocks
+  const DBId = blocks[props.base_row_index][props.base_col_index].data.id
+  const [DB, setDB] = useRecoilState(DBSelector(DBId)) as [Data, any]
 
   const text = useRef(DB.data[props.row_index][props.col_index].data)
   const [focusing, setFocus] = useState(false)

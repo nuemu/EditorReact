@@ -1,11 +1,20 @@
 import React from 'react'
 import './Date.css'
 
-import { useRecoilState } from 'recoil'
-import { DBState } from '../../../recoil/atom';
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { DBSelector, blocksSelector } from '../../../recoil/atom';
 
-const DateElement = (props:BlockProps) => {
-  const [DB, setDB] = useRecoilState(DBState) as [Data, any]
+type Props = {
+  row_index: number
+  col_index: number
+  base_row_index: number
+  base_col_index: number
+}
+
+const DateElement = (props: Props) => {
+  const blocks = useRecoilValue(blocksSelector) as Blocks
+  const DBId = blocks[props.base_row_index][props.base_col_index].data.id
+  const [DB, setDB] = useRecoilState(DBSelector(DBId)) as [Data, any]
 
   const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>, row_index:number, col_index:number) => {
     var newDB = JSON.parse(JSON.stringify(DB))

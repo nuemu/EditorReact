@@ -2,7 +2,7 @@
   This File is using for Local Dev
 */
 
-// wait for ajax request https://httpbin.org/
+// wait for ajax request test... https://httpbin.org/
 import axios from 'axios'
 import { v4 } from 'uuid'
 
@@ -77,6 +77,13 @@ export const PageActions = async (action: string, params: any|null) => {
           response = Pages
         })
       break
+    case 'patch':
+      const data = JSON.parse(JSON.stringify(params.data))
+      await axiosInstance.patch('patch', params)
+        .then(() => {
+          const index = Pages.findIndex(page => page.id === params.id)
+          response = Pages.splice(index, 1, data)
+        })
   }
   return response
 }
@@ -116,42 +123,47 @@ const DBs:Data[] = [
     "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7",
     "column": [
         {
-            "name": "sample",
+            "name": "Date",
+            "property": "Date"
+        },
+        {
+            "name": "memo",
             "property": "Text"
         }
     ],
     "data": [
         [
             {
+                "id": "d5f3e499-96a9-43ef-a513-ef34713ae5f4",
+                "type": "Date",
+                "data": 1651968000000
+            },
+            {
                 "id": "62dd889d-7972-4d4b-bea5-0876509a6057",
                 "type": "text",
-                "data": "sample"
+                "data": "この辺で復活"
             }
         ],
         [
             {
+                "id": "2e787347-074c-4617-aca7-9858655be15c",
+                "type": "Date",
+                "data": 1652412286341
+            },
+            {
                 "id": "99f42e10-fe55-4a14-9484-267494860955",
                 "type": "Text",
-                "data": "sample"
+                "data": "最終更新日"
             }
         ]
     ]
-  }
+}
 ]
 const Pages = [
   {
     id: 'Editor',
     column: [],
     data: [
-      [
-        {
-          "id": "sample",
-          "type": "DB",
-          "data": {
-            "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7"
-          }
-        }
-      ],
       [
         {
           "id": "d24c3512-d4a2-4e93-a145-7aaf96b6ab1b",
@@ -257,6 +269,15 @@ const Pages = [
             "text": "このエディターの[GitHub](https://github.com/tusko-ku/Editor)レポジトリーのREADME.mdに記載\n"
           }
         }
+      ],
+      [
+        {
+          "id": "sample",
+          "type": "DB",
+          "data": {
+            "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7"
+          }
+        }
       ]
     ]
   }
@@ -270,7 +291,7 @@ var PageList:PageList = [
       {
         id: "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7",
         title: "newDB",
-        view: "Table",
+        view: "Calendar",
         list: []
       }
     ]

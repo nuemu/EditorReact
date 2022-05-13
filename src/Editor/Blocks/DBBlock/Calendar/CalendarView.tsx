@@ -3,15 +3,17 @@ import './Calendar.css'
 
 import { v4 } from 'uuid'
 
-import { useRecoilState } from 'recoil'
-import { DBState } from '../../../recoil/atom';
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { blocksSelector, DBSelector } from '../../../recoil/atom';
 
 import { Week, currentYear, currentMonth, today } from './CalendarSettings'
 
 import ViewMenu from '../Components/ViewMenu/ViewMenu'
 
-const Calender = () => {
-  const [DB, setDB] = useRecoilState(DBState) as [Data, any]
+const Calender = (props: BlockProps) => {
+  const blocks = useRecoilValue(blocksSelector) as Blocks
+  const DBId = blocks[props.row_index][props.col_index].data.id
+  const [DB, setDB] = useRecoilState(DBSelector(DBId)) as [Data, any]
 
   const [year, setYear] = useState(currentYear)
   const [month, setMonth] = useState(currentMonth)
@@ -118,7 +120,7 @@ const Calender = () => {
       <div
         className="calender-header-item left"
       >
-        <ViewMenu />
+        <ViewMenu row_index={props.row_index} col_index={props.col_index}/>
       </div>
       <div className="calender-header-item">
         <button className="change-month-button" onClick={() => setDates(-1)}> &lt; </button>

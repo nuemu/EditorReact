@@ -1,4 +1,4 @@
-import { atom, selector } from 'recoil'
+import { atom, selector, selectorFamily } from 'recoil'
 
 export const currentUserState = atom({
   key: 'currentUserState',
@@ -15,9 +15,17 @@ export const DBsState = atom({
   default: []
 })
 
-export const DBState = atom<Data|null>({
-  key: 'DBState',
-  default: null
+export const DBSelector = selectorFamily({
+  key: 'DBselector',
+  get: (id) => ({get}) => {
+    return get(DBsState).find((DB: any) => DB.id === id)
+  },
+  set: (id) => ({set, get}, newDB) => {
+    const newDBs = JSON.parse(JSON.stringify(get(DBsState)))
+    const index = newDBs.findIndex((DB:any) => DB.id === id)
+    newDBs.splice(index, 1, newDB)
+    set(DBsState, newDBs)
+  }
 })
 
 export const currentPage = atom({
@@ -68,7 +76,7 @@ export const blocksSelector = selector({
   },
   set: ({get,set}, newBlocks) => {
     const newValue = {
-      id: get(pageState)!.id,
+      id: get(currentPage),
       column: [],
       data: newBlocks as Blocks
     }

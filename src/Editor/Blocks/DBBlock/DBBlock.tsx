@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { blocksSelector, currentPage, DBState, pageListState, DBsState } from '../../recoil/atom';
+import { blocksSelector, currentPage, DBSelector, pageListState, DBsState } from '../../recoil/atom';
 import { DBActions, PageListActions } from '../../recoil/LocalActions';
 
 import Components from './view_loader'
@@ -12,13 +12,14 @@ const DB = (props: BlockProps) => {
   const [DBs, setDBs] = useRecoilState(DBsState) as [any, any]
   const [PageList, setPageList] = useRecoilState(pageListState) as [PageList, any]
   const blocks = useRecoilValue(blocksSelector) as Blocks
-  const [currentDB, setDB] = useRecoilState(DBState)
+
+  const DBId = blocks[props.row_index][props.col_index].data.id
+  const [currentDB, setDB] = useRecoilState(DBSelector(DBId))
   const currentPageId = useRecoilValue(currentPage)
 
   const [view, setView] = useState('Loading.tsx')
 
-  const DBId = blocks[props.row_index][props.col_index].data.id
-
+  
   const getList = (id:string, pageList: any) => {
     var listItem:any = null
     pageList.forEach((item:any) => {
@@ -27,6 +28,14 @@ const DB = (props: BlockProps) => {
     })
     return listItem
   }
+
+  console.log(DBs)
+
+  useEffect(() => {
+    var viewStyle = 'Loading.tsx'
+    if(getList(DBId, PageList) && DB !== null) viewStyle = getList(DBId, PageList).view
+    setView(viewStyle)
+  },[currentDB, PageList])
 
   useEffect(() => {
     if(PageList[0].id !== 'loading'){
@@ -53,12 +62,11 @@ const DB = (props: BlockProps) => {
           })()
       }
     }
-    if(getList(DBId, PageList) && DB !== null) setView(getList(DBId, PageList).view)
   },[PageList])
 
   useEffect(() => {
     if(currentDB) DBActions('patch', {data: currentDB, id: DBId})
-  },[DB])
+  },[currentDB])
 
   var View = ViewComponents[view].default
 
@@ -66,7 +74,7 @@ const DB = (props: BlockProps) => {
     <div
       className="DB-wrapper"
     >
-      <View />
+      <View row_index={props.row_index} col_index={props.col_index}/>
     </div>)
 }
 
