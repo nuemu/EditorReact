@@ -29,7 +29,7 @@ const HoverMenu = (props: Props) => {
     return (
       <div
         className="hover-menu-title menu-item"
-        onClick={() => {props.Action(content.type);console.log("sam")}}
+        onClick={() => props.Action(content.type)}
       >
         <img src={content.icon} alt="menu-icon" /><div className="menu-title  menu-item">{content.name}</div>
       </div>)

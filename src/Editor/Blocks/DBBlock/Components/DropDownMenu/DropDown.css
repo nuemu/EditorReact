@@ -6,7 +6,7 @@
 
 .dropdown-menu-wrapper{
   position: relative;
-  width: 100%;
+  max-width: 100%;
 }
 .dropdown-menu-wrapper:hover{
   background-color: gainsboro;
@@ -14,7 +14,7 @@
 }
 .dropdown-menu-contents{
   position: absolute;
-  width: 50%;
+  max-width: 50%;
   z-index: 5;
   background-color: white;
   display: none;
@@ -26,7 +26,7 @@
 }
 
 .dropdown-menu-content{
-  width: 100%;
+  max-width: 100%;
   border-radius: 5px;
   padding: 0px;
 }

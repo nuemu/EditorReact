@@ -41,16 +41,19 @@ export const colMenuItems = [
       {
         name: 'Page',
         type: 'Page',
+        icon: require('../../../Assets/Page.svg').default,
         contents: []
       },
       {
         name: 'Date',
         type: 'Date',
+        icon: require('../../../Assets/Calendar.svg').default,
         contents: []
       },
       {
         name: 'Text',
         type: 'Text',
+        icon: require('../../../Assets/Text.svg').default,
         contents: []
       }]
   }

@@ -29,7 +29,7 @@ const DropDownMenu = (props: Props) => {
     return (
       <div
         className="dropdown-menu-title menu-item"
-        onClick={() => {props.Action(content.type);console.log("sam")}}
+        onClick={() => props.Action(content.type)}
       >
         <img src={content.icon} alt="menu-icon" /><div className="menu-title">{content.name}</div>
       </div>)
