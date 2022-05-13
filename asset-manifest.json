@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Editor/static/css/main.ce0bf218.css",
-    "main.js": "/Editor/static/js/main.dd411dc9.js",
+    "main.css": "/Editor/static/css/main.19e82675.css",
+    "main.js": "/Editor/static/js/main.be78d1b9.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/Editor/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/Editor/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
     "static/media/KaTeX_Main-Bold.ttf": "/Editor/static/media/KaTeX_Main-Bold.8169508bf58f8bd92ad8.ttf",
@@ -62,19 +62,23 @@
     "static/media/KaTeX_Size4-Regular.woff2": "/Editor/static/media/KaTeX_Size4-Regular.e418bf257af1052628d8.woff2",
     "static/media/KaTeX_Size3-Regular.woff": "/Editor/static/media/KaTeX_Size3-Regular.7947224e8a9914fa332b.woff",
     "static/media/KaTeX_Size3-Regular.woff2": "/Editor/static/media/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2",
-    "static/media/grid.svg": "/Editor/static/media/grid.dc2982bd74bf13fee4d2eace0364762c.svg",
+    "static/media/Grid.svg": "/Editor/static/media/Grid.dc2982bd74bf13fee4d2eace0364762c.svg",
     "static/media/DB.svg": "/Editor/static/media/DB.dfbc7e29e7b746f2dcc2424135d8bf38.svg",
+    "static/media/Change.svg": "/Editor/static/media/Change.00ac3c26e97ccca61e0122a133566e16.svg",
+    "static/media/Remove.svg": "/Editor/static/media/Remove.43abd16f54731d4913dce221c9e37631.svg",
     "index.html": "/Editor/index.html",
+    "static/media/Left.svg": "/Editor/static/media/Left.abaa8f9a908f59d94c2b4a6ae46d7b99.svg",
+    "static/media/Right.svg": "/Editor/static/media/Right.89a4e2c5840d3bb558d6f0177f2c1c1b.svg",
     "static/media/Table.svg": "/Editor/static/media/Table.81c50475450ec0ecef46d8ec3ac306da.svg",
     "static/media/Text.svg": "/Editor/static/media/Text.cba6fb6f83334be8a5ce18c0e7621081.svg",
     "static/media/Calendar.svg": "/Editor/static/media/Calendar.84471c0a90fae8ad0f380c56f657f4ba.svg",
     "static/media/Page.svg": "/Editor/static/media/Page.8502ce1e072afa86cb16452850c32f1f.svg",
-    "static/media/plus.svg": "/Editor/static/media/plus.84478f1596d8d93aef242201a227b42b.svg",
-    "main.ce0bf218.css.map": "/Editor/static/css/main.ce0bf218.css.map",
-    "main.dd411dc9.js.map": "/Editor/static/js/main.dd411dc9.js.map"
+    "static/media/Plus.svg": "/Editor/static/media/Plus.84478f1596d8d93aef242201a227b42b.svg",
+    "main.19e82675.css.map": "/Editor/static/css/main.19e82675.css.map",
+    "main.be78d1b9.js.map": "/Editor/static/js/main.be78d1b9.js.map"
   },
   "entrypoints": [
-    "static/css/main.ce0bf218.css",
-    "static/js/main.dd411dc9.js"
+    "static/css/main.19e82675.css",
+    "static/js/main.be78d1b9.js"
   ]
 }
