@@ -120,7 +120,7 @@ const Table = (props: BlockProps) => {
       case('InsertColumnBefore'):
         var newCol = {name: '', property: 'Text'}
         newDB.column.splice(index, 0, newCol)
-        newDB.data.map((row:any) => row.splice(index+1, 0, {id: v4(), type: 'Text', data: Property['Text'].initialData}))
+        newDB.data.map((row:any) => row.splice(index, 0, {id: v4(), type: 'Text', data: Property['Text'].initialData}))
         break
       case('InsertColumnAfter'):
         newCol = {name: '', property: 'Text'}
@@ -215,7 +215,7 @@ const Table = (props: BlockProps) => {
               className="table-head"
               onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleHeadChange(e, index)}
             >
-            <DropDownMenu title={column.name} contents={colMenuItems} Action={(type:string) => TableActions(type, index)} />
+            <DropDownMenu title={column.name} contents={colMenuItems} Action={(type:string) => TableActions(type, index)} icon="" />
             </div>
           </td>
         ))}

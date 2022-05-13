@@ -7,8 +7,8 @@ import { blocksSelector, focusState, menuState } from '../recoil/atom';
 import Datas from '../Blocks/BlockDatas'
 import { v4 } from 'uuid'
 
-const grid = require('../Assets/grid.svg').default
-const plus = require('../Assets/plus.svg').default
+const grid = require('../Assets/Grid.svg').default
+const plus = require('../Assets/Plus.svg').default
 
 type Props = {
   row_index: number,

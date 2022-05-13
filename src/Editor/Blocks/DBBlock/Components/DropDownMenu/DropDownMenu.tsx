@@ -4,7 +4,7 @@ import './DropDown.css'
 import HoverMenu from '../HoverMenu/HoverMenu'
 
 type Props = {
-  title:string, contents:any, Action: any
+  title: string, contents: any, Action: any, icon: string
 }
 
 const DropDownMenu = (props: Props) => {
@@ -21,17 +21,31 @@ const DropDownMenu = (props: Props) => {
     if(content.contents.length > 0){
       switch(content.type){
         case 'DropDown':
-          return <DropDownMenu title={content.name} contents={content.contents} Action={props.Action} />
+          return <DropDownMenu title={content.name} contents={content.contents} Action={props.Action} icon={content.icon}/>
         case 'Hover':
-          return <HoverMenu title={content.name} contents={content.contents} Action={props.Action} />
+          return <HoverMenu title={content.name} contents={content.contents} Action={props.Action} icon={content.icon}/>
       }
     }
     return (
       <div
-        className="menu-item"
-        onClick={() => props.Action(content.type)}
+        className="dropdown-menu-title menu-item"
+        onClick={() => {props.Action(content.type);console.log("sam")}}
       >
-        {content.name}
+        <img src={content.icon} alt="menu-icon" /><div className="menu-title">{content.name}</div>
+      </div>)
+  }
+
+  const title = () => {
+    if(props.icon !== "") return (
+      <div
+        className="dropdown-menu-title menu-item"
+      >
+        <img className="menu-title-icon menu-item" src={props.icon} alt="menu-icon" /><div className="menu-title menu-item">{props.title}</div>
+      </div>)
+    else  return (<div
+        className="dropdown-menu-title menu-item"
+      >
+        <div className="menu-title menu-item">{props.title}</div>
       </div>)
   }
 
@@ -42,11 +56,7 @@ const DropDownMenu = (props: Props) => {
         onClick={() => {setToggle(true);document.addEventListener("mousedown", handleClickOutside)}}
         onMouseLeave={() => {setToggle(false)}}
       >
-        <div
-          className="dropdown-menu-title menu-item"
-        >
-          {props.title}
-        </div>
+        {title()}
         <div
           className={"menu-item dropdown-menu-contents " + (dropdown ? "active" : "")}
         >

@@ -1,5 +1,10 @@
 .hover-menu-title{
   padding: 5px;
+  display: flex;
+  justify-content: flex-start
+}
+.menu-title{
+  padding-left: 10px;
 }
 
 .hover-menu-wrapper{
@@ -13,7 +18,7 @@
 .hover-menu-contents{
   position: absolute;
   width: 100%;
-  z-index: 1;
+  z-index: 5;
   top: 0%;
   left: 100%;
   background-color: white;
@@ -28,7 +33,6 @@
 .hover-menu-content{
   width: 100%;
   border-radius: 5px;
-  padding: 5px;
 }
 .hover-menu-content:hover{
   background-color: gainsboro;
