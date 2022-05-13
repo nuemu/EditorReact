@@ -29,8 +29,6 @@ const DB = (props: BlockProps) => {
     return listItem
   }
 
-  console.log(DBs)
-
   useEffect(() => {
     var viewStyle = 'Loading.tsx'
     if(getList(DBId, PageList) && DB !== null) viewStyle = getList(DBId, PageList).view

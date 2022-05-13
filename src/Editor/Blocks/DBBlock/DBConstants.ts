@@ -17,5 +17,8 @@ export const Properties = {
   },
   Date: {
     initialData: (() => Date.now())()
+  },
+  Page: {
+    initialData: (() => Date.now())()
   }
 }

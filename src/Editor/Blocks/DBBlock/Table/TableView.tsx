@@ -12,6 +12,9 @@ import { Properties } from '../DBConstants'
 import DBElements from '../Components/DBElements_loader.js'
 import { v4 } from 'uuid';
 
+import DropDownMenu from '../Components/DropDownMenu/DropDownMenu'
+import HoverMenu from '../Components/HoverMenu/HoverMenu';
+
 const Property = Properties as any
 const Elements = DBElements as any
 
@@ -81,8 +84,7 @@ const Table = (props: BlockProps) => {
   const handleClickOutside = (e:MouseEvent) => {
     const target = e.target as HTMLElement
     if(!(
-      target.classList.contains('row-menu-item') ||
-      target.classList.contains('col-menu-item')
+      target.classList.contains('menu-item')
     )) closeMenu()
   }
 
@@ -121,14 +123,23 @@ const Table = (props: BlockProps) => {
         const count = rowSelect.filter(row => row==='active').length
         newDB.data.splice(startIndex, count)
         break
-      case('AddColumn'):
-        const newCol = {name: '', property: 'Text'}
+      case('InsertColumnBefore'):
+        var newCol = {name: '', property: 'Text'}
+        newDB.column.splice(index, 0, newCol)
+        newDB.data.map((row:any) => row.splice(index+1, 0, ''))
+        break
+      case('InsertColumnAfter'):
+        newCol = {name: '', property: 'Text'}
         newDB.column.splice(index+1, 0, newCol)
         newDB.data.map((row:any) => row.splice(index+1, 0, ''))
         break
       case('RemoveColumn'):
         newDB.column.splice(index, 1)
         newDB.data.map((row:any) => row.splice(index, 1))
+        break
+      case('Page'):
+        newDB.column[index].property = 'Page'
+        newDB.data.map((row:any) => row[index].data=v4())
         break
     }
     setDB(newDB)
@@ -166,6 +177,10 @@ const Table = (props: BlockProps) => {
     return col_index === Menu[1]
   }
 
+  const isMouseOnColMenu = (col_index: number, col_item_index: number) => {
+    return false
+  }
+
   const renderElement = (row_index:number, col_index: number) => {
     const Element = Elements[DB.column[col_index].property].default
     return (
@@ -176,6 +191,23 @@ const Table = (props: BlockProps) => {
         base_col_index={props.col_index}
       />)
   }
+
+  const RowMenu = (row_index: number) => {
+    return (<div
+      ref={rowMenuRefs.current[row_index]}
+      className={isSelectedRowMenu(row_index) ? "row-menu active" : "row-menu"}
+    >
+      {rowMenuItems.map(item => (
+        <div
+          className="row-menu-item"
+          key={item.type}
+          onClick={() => {TableActions(item.type, row_index);closeMenu()}}
+        >
+          {item.name(rowSelect.filter(row => row === 'active').length > 1)}
+        </div>
+      ))}
+    </div>
+  )}
 
   const thead = (
     <thead>
@@ -191,24 +223,9 @@ const Table = (props: BlockProps) => {
           >
             <div
               className="table-head"
-              contentEditable
-              dangerouslySetInnerHTML={{__html: column.name}}
-              onContextMenu={(e) => handleColumnMenu(e, index)}
               onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleHeadChange(e, index)}
-            />
-            <div
-              ref={colMenuRefs.current[index]}
-              className={isSelectedColwMenu(index) ? "col-menu active": "col-menu"}
             >
-              {colMenuItems.map(item => (
-                <div
-                  className="col-menu-item"
-                  key={item.name}
-                  onClick={() => {TableActions(item.type, index);closeMenu()}}
-                >
-                  {item.name}
-                </div>
-              ))}
+            <DropDownMenu title={column.name} contents={colMenuItems} Action={(type:string) => TableActions(type, index)} />
             </div>
           </td>
         ))}
@@ -233,20 +250,7 @@ const Table = (props: BlockProps) => {
               {row_index}
             </div>
             
-            <div
-              ref={rowMenuRefs.current[row_index]}
-              className={isSelectedRowMenu(row_index) ? "row-menu active" : "row-menu"}
-            >
-              {rowMenuItems.map(item => (
-                <div
-                  className="row-menu-item"
-                  key={item.type}
-                  onClick={() => {TableActions(item.type, row_index);closeMenu()}}
-                >
-                  {item.name(rowSelect.filter(row => row==='active').length > 1)}
-                </div>
-              ))}
-            </div>
+            {RowMenu(row_index)}
           </td>
           {
             row.map((_, col_index) => (

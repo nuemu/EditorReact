@@ -2,7 +2,7 @@ import React from 'react'
 import './Date.css'
 
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { DBSelector, blocksSelector } from '../../../recoil/atom';
+import { DBSelector, blocksSelector } from '../../../../recoil/atom';
 
 type Props = {
   row_index: number

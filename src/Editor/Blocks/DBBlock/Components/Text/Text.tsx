@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { DBSelector, blocksSelector } from '../../../recoil/atom';
+import { DBSelector, blocksSelector } from '../../../../recoil/atom';
 
 import './Text.css'
 

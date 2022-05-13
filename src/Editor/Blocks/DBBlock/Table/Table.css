@@ -21,6 +21,7 @@ table{
   background-color: white;
   width: 128pt;
   max-height: 128pt;
+  overflow: scroll;
   border-radius: 5px;
   box-shadow: 0px 0px 1px 1px lightgrey;
 }

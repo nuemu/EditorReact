@@ -11,11 +11,41 @@ export const rowMenuItems = [
 
 export const colMenuItems = [
   {
-    name: 'Add Column',
-    type: 'AddColumn'
+    name: 'Insert Column',
+    type: 'Hover',
+    contents: [{
+      name: 'Insert Before',
+      type: 'InsertColumnBefore',
+      contents: []
+    },
+    {
+      name: 'Insert After',
+      type: 'InsertColumnAfter',
+      contents: []
+    }]
   },
   {
     name: 'Remove Column',
-    type: 'RemoveColumn'
+    type: 'RemoveColumn',
+    contents: []
+  },
+  {
+    name: 'Change Property',
+    type: 'Hover',
+    contents: [{
+      name: 'Page',
+      type: 'Page',
+      contents: []
+    },
+    {
+      name: 'Date',
+      type: 'Date',
+      contents: []
+    },
+    {
+      name: 'Text',
+      type: 'Text',
+      contents: []
+    }]
   }
 ]

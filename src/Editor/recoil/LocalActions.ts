@@ -184,6 +184,15 @@ const Pages = [
       ],
       [
         {
+          "id": "sample",
+          "type": "DB",
+          "data": {
+            "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7"
+          }
+        }
+      ],
+      [
+        {
           "id": "a",
           "type": "Text",
           "data": {
@@ -270,15 +279,6 @@ const Pages = [
           }
         }
       ],
-      [
-        {
-          "id": "sample",
-          "type": "DB",
-          "data": {
-            "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7"
-          }
-        }
-      ]
     ]
   }
 ]
@@ -291,7 +291,7 @@ var PageList:PageList = [
       {
         id: "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7",
         title: "newDB",
-        view: "Calendar",
+        view: "Table",
         list: []
       }
     ]
