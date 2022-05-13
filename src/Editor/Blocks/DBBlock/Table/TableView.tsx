@@ -13,7 +13,6 @@ import DBElements from '../Components/DBElements_loader.js'
 import { v4 } from 'uuid';
 
 import DropDownMenu from '../Components/DropDownMenu/DropDownMenu'
-import HoverMenu from '../Components/HoverMenu/HoverMenu';
 
 const Property = Properties as any
 const Elements = DBElements as any
@@ -100,12 +99,6 @@ const Table = (props: BlockProps) => {
     }
   }
 
-  const handleColumnMenu = (e: React.MouseEvent<HTMLDivElement>, col_index: number) => {
-    e.preventDefault()
-    setMenu([-1, col_index])
-    document.addEventListener("mousedown", handleClickOutside)
-  }
-
   const generateRow = (newDB: Data) => {
     return newDB.column.map(item => {const data = {id: v4(), type: item.property, data: Property[item.property].initialData}; return data})
   }
@@ -139,7 +132,11 @@ const Table = (props: BlockProps) => {
         break
       case('Page'):
         newDB.column[index].property = 'Page'
-        newDB.data.map((row:any) => row[index].data=v4())
+        newDB.data.map((row:any) => {
+          const id = v4()
+          row[index].data=id
+          row[index].type='Page'
+        })
         break
     }
     setDB(newDB)
@@ -171,14 +168,6 @@ const Table = (props: BlockProps) => {
 
   const isSelectedRowMenu = (row_index:number) => {
     return row_index === Menu[0]
-  }
-
-  const isSelectedColwMenu = (col_index:number) => {
-    return col_index === Menu[1]
-  }
-
-  const isMouseOnColMenu = (col_index: number, col_item_index: number) => {
-    return false
   }
 
   const renderElement = (row_index:number, col_index: number) => {

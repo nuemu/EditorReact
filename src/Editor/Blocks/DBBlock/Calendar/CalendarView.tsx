@@ -9,6 +9,8 @@ import { blocksSelector, DBSelector } from '../../../recoil/atom';
 import { Week, currentYear, currentMonth, today } from './CalendarSettings'
 
 import ViewMenu from '../Components/ViewMenu/ViewMenu'
+import DBElements from '../Components/DBElements_loader.js'
+const Elements = DBElements as any
 
 const Calender = (props: BlockProps) => {
   const blocks = useRecoilValue(blocksSelector) as Blocks
@@ -56,24 +58,38 @@ const Calender = (props: BlockProps) => {
     return year + '/' + month + '/' + day
   }
 
-  const dayContent = (column:any, row_index:number, col_index:number) => {
+  const renderElement = (row_index:number, col_index: number) => {
+    const Element = Elements[DB.column[col_index].property].default
     return (
-      <div className="date-content" key={row_index+'-'+col_index}>
-        {column.data}
-      </div>
-    )
+      <Element
+        row_index={row_index}
+        col_index={col_index}
+        base_row_index={props.row_index}
+        base_col_index={props.col_index}
+      />)
+  }
+
+  const dayContent = (column:any, row_index:number, col_index:number) => {
+    console.log(column)
+    if(column.type === 'Page'){
+      return (
+        <div className="date-content" key={row_index+'-'+col_index}>
+          {renderElement(row_index, col_index)}
+        </div>
+      )}
+    return null
   }
 
   const dayContents = (date: Date) => {
     const index = DB.column.findIndex(column => column.property==='Date')
     if(date && index >= 0){
-      const contents = DB.data.filter(row => 
-        formatDate(row[index].data) === formatDate(date)
-      )
       return (
         <div className="date-contents-wrapper">
-          {contents.map((row, row_index) => {
-            return row.map((column, col_index) => {return col_index !== index ? dayContent(column, row_index, col_index) : null})
+          {DB.data.map((row, row_index) => {
+            if(formatDate(row[index].data) === formatDate(date)){
+              return row.map((column, col_index) => {return col_index !== index ? dayContent(column, row_index, col_index) : null})
+            }
+            return null
           })}
         </div>
     )}
