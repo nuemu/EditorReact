@@ -22,7 +22,7 @@ const katexRender = (innerText:string) => {
     split.forEach((text, index) => {
       if(index%2 === 1){
         text = text.replaceAll('\n', '')
-        newTexts.push(katex.renderToString(text, {displayMode: true}))
+        newTexts.push(katex.renderToString(text, {displayMode: true, throwOnError: false, strict: 'ignore'}))
       }
       else newTexts.push(text)
     })
@@ -34,7 +34,7 @@ const katexRender = (innerText:string) => {
   newTexts = []
   if(split.length > 1){
     split.forEach((text, index) => {
-      if(index%2 === 1) newTexts.push(katex.renderToString(text, {displayMode: false}))
+      if(index%2 === 1) newTexts.push(katex.renderToString(text, {displayMode: false, throwOnError: false, strict: 'ignore'}))
       else newTexts.push(text)
     })
     newText = newTexts.join('')
@@ -54,7 +54,7 @@ marked.setOptions({
   silent: true
 })
 
-function SetCaret(node:Node, caret:number){
+const SetCaret = (node:Node, caret:number) => {
   const selection = window.getSelection()!
   var range = document.createRange()
   range.setStart(node, caret)
@@ -68,19 +68,26 @@ const TextBlock = (props: BlockProps) => {
 
   const [editing, setEdit] = useState(false)
 
-  var ref = useRef<HTMLDivElement>(null)
+  var wrapperRef = useRef<HTMLDivElement>(null)
+  var editRef = useRef<HTMLDivElement>(null)
+  var viewRef = useRef<HTMLDivElement>(null)
   var textRef = useRef(blocks[props.row_index][props.col_index].data.text)
+
+  const [height, setHeight] = useState(100)
+
+  var wrapperSize = {
+    height: height
+  }
 
   useEffect(() => {
     if(focusing[0] === props.row_index && focusing[1] === props.col_index) setEdit(true)
     else setEdit(false)
     textRef.current = blocks[props.row_index][props.col_index].data.text
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setHeight((editRef.current!.clientHeight > viewRef.current!.clientHeight) ? editRef.current?.clientHeight as number : viewRef.current?.clientHeight as number)
   },[focusing])
 
   useEffect(() => {
-    if(editing) ref!.current!!.focus()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if(editing) editRef!.current!!.focus()
   }, [editing])
 
   const processedText = (text:string) => {
@@ -92,6 +99,7 @@ const TextBlock = (props: BlockProps) => {
     var newBlocks = JSON.parse(JSON.stringify(blocks)) //Deep Copy
     newBlocks[row_index][col_index].data.text = e.target.innerText
     setBlocks(newBlocks)
+    setHeight((editRef.current!.clientHeight > viewRef.current!.clientHeight) ? editRef.current?.clientHeight as number : viewRef.current?.clientHeight as number)
   }
 
   const handleKeyDown = (e:React.KeyboardEvent<HTMLDivElement>, row_index:number, col_index:number) => {
@@ -212,7 +220,7 @@ const TextBlock = (props: BlockProps) => {
       const rect = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
 
       if(rect){
-        const targetTop = ref!.current!.getClientRects()[0].top
+        const targetTop = editRef!.current!.getClientRects()[0].top
         const rangeTop = rect.top
         const range = window.getSelection()?.getRangeAt(0)
 
@@ -221,7 +229,7 @@ const TextBlock = (props: BlockProps) => {
           else handleFocus(row_index-1, col_index)
         }
       }
-      else if(ref!.current!.innerText.length === 0 && row_index>0) handleFocus(row_index-1, col_index)
+      else if(editRef!.current!.innerText.length === 0 && row_index>0) handleFocus(row_index-1, col_index)
     }
 
     // Move to Lower Block
@@ -229,7 +237,7 @@ const TextBlock = (props: BlockProps) => {
       const rect = window.getSelection()?.getRangeAt(0)!.getClientRects()[0]
 
       if(rect){
-        const targetBottom = ref!.current!.getClientRects()[0].bottom
+        const targetBottom = editRef!.current!.getClientRects()[0].bottom
         const rangeBottom = rect.bottom
         const range = window.getSelection()?.getRangeAt(0)
         const container = range?.startContainer
@@ -239,7 +247,7 @@ const TextBlock = (props: BlockProps) => {
           else handleFocus(row_index+1, col_index)
         }
       }
-      else if(ref!.current!.innerText.length === 0 && row_index < blocks.length-1) handleFocus(row_index+1, col_index)
+      else if(editRef!.current!.innerText.length === 0 && row_index < blocks.length-1) handleFocus(row_index+1, col_index)
     }
 
     // Move to Left Block
@@ -279,30 +287,30 @@ const TextBlock = (props: BlockProps) => {
   }
 
   const handleFocus = (row_index:number, col_index:number) => {
+    setEdit(true)
     setFocus([row_index, col_index])
   }
 
-  if(editing) return (
-    <div
-      ref={ref}
-      className={"text-block"}
-      id={"editable-id-"+props.row_index+"-"+props.col_index}
-      contentEditable
-      dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(textRef.current)}}
-      onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleChange(e, props.row_index, props.col_index)}
-      onKeyDown={(e:React.KeyboardEvent<HTMLDivElement>) => handleKeyDown(e, props.row_index, props.col_index)}
-      onFocus={() => handleFocus(props.row_index, props.col_index)}
-      onMouseOver={() => {setFocus([props.row_index, props.col_index])}}
-    />
-  )
-  
-  else return (
-    <div
-      className={"text-block-viewer"}
-      ref={ref}
-      dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(processedText(textRef.current))}}
-      onMouseOver={() => handleFocus(props.row_index, props.col_index)}
-    />
+  return (
+    <div ref={wrapperRef} className="text-block-wrapper" style={wrapperSize}>
+      <div
+        ref={editRef}
+        className={"text-block " + (editing ? 'visible' : 'invisible')}
+        id={"editable-id-"+props.row_index+"-"+props.col_index}
+        contentEditable
+        dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(textRef.current)}}
+        onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleChange(e, props.row_index, props.col_index)}
+        onKeyDown={(e:React.KeyboardEvent<HTMLDivElement>) => handleKeyDown(e, props.row_index, props.col_index)}
+        onFocus={() => handleFocus(props.row_index, props.col_index)}
+        onMouseOver={() => {setFocus([props.row_index, props.col_index])}}
+      />
+      <div
+        ref={viewRef}
+        className={"text-block-viewer " + (editing ? 'invisible' : 'visible')}
+        dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(processedText(blocks[props.row_index][props.col_index].data.text))}}
+        onMouseOver={() => handleFocus(props.row_index, props.col_index)}
+      />
+    </div>
   )
 }
 

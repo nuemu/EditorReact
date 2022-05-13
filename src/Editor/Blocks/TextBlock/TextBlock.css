@@ -1,10 +1,20 @@
 .text-block {
+  position: relative;
+  z-index: 1;
   width: 100%;
   outline:none;
   white-space: pre-wrap;
   margin-bottom: 16pt;
 }
+.visible{
+  opacity: 1;
+}
+.invisible{
+  opacity: 0;
+}
 .text-block-viewer {
+  position: absolute;
+  top: 0;
   width: 100%;
   outline:none;
   margin-bottom: 16pt;
