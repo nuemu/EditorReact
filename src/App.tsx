@@ -9,7 +9,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            path="*"
+            path="/Editor"
+            element={<Base />}
+          />
+          <Route
+            path="/Editor/:id"
             element={<Base />}
           />
         </Routes>

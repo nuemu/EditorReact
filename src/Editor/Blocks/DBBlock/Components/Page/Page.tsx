@@ -66,12 +66,10 @@ const PageElement = (props: Props) => {
       setFocus([-1, 1])
   }
 
-  console.log(pageId, getList(pageId, PageList))
-
   return (
     <div className="table-data-page">
       <Link
-        to={"/"+currentUser+"?q="+pageId}
+        to={"/"+currentUser+"/"+pageId}
         onClick={() => handlePage()}
       >
         {getList(pageId, PageList) ? getList(pageId, PageList)?.title : 'Loading...'}

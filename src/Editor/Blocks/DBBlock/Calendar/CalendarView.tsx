@@ -70,7 +70,6 @@ const Calender = (props: BlockProps) => {
   }
 
   const dayContent = (column:any, row_index:number, col_index:number) => {
-    console.log(column)
     if(column.type === 'Page'){
       return (
         <div className="date-content" key={row_index+'-'+col_index}>

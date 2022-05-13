@@ -1,18 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useParams, useSearchParams } from 'react-router-dom'
+
 import './base.css'
 
 import LoadedBlocks from './Blocks/blocks_loader'
 import Menu from './Menu/Menu'
 
 import { useRecoilValue, useRecoilState } from 'recoil'
-import { blocksSelector, focusState, currentPage, menuState, pageListSelector, pageState } from './recoil/atom';
+import { blocksSelector, focusState, currentPage, menuState, pageListSelector } from './recoil/atom';
 
 import { PageActions, PageListActions } from './recoil/LocalActions'
 
 const BlocksComponents = LoadedBlocks as any
 
 function Base() {
-  const page = useRecoilValue(pageState)
   const [blocks, setBlocks] = useRecoilState(blocksSelector) as [Blocks, any]
   const [focusing, setFocus] = useRecoilState(focusState)
 
@@ -23,18 +24,20 @@ function Base() {
   const menu = useRecoilValue(menuState)
   const [dragging, setDrag] = useState([-1,0])
 
-  useEffect(() => {
-    if(page?.id !== 'loading'){
-      (async () => {
-        await PageActions('patch', {data: page, id: currentPageId})
-      })()
-    }
-  },[page])
+  let [searchParams, ] = useSearchParams()
+
+  var currentPath = useParams().id
+  
+  if(!currentPath){
+    if(searchParams.get('path')) currentPath = searchParams.get('path')!
+    else currentPath = currentPageId
+  }
+
 
   // Initial Load
   useEffect(() => {
     (async () => {
-      const newPage = await PageActions('fetch', {id: currentPageId})
+      const newPage = await PageActions('fetch', {id: currentPath})
       setBlocks(newPage.data)
 
       setFocus([-1, 1])

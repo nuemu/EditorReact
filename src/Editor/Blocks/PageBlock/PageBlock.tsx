@@ -55,7 +55,7 @@ const PageBlock = (props: BlockProps) => {
   return (
     <div className="page-block">
       <Link
-        to={"/"+currentUser+"?q="+pageId}
+        to={"/"+currentUser+"/"+pageId}
         onClick={() => handlePage()}
       >
         {getList(pageId, PageList)? getList(pageId, PageList)?.title : 'Loading...'}
