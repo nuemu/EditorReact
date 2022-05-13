@@ -19,7 +19,7 @@
   max-height: 128pt;
   width: 128pt;
   overflow-y: scroll;
-  z-index: 1;
+  z-index: 5;
   display: none;
   position: absolute;
   top: 16pt;
