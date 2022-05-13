@@ -4,8 +4,14 @@ type PageList = [{
   id: string,
   title: string,
   view: string,
-  list: PageList[]
+  list: any[]
 }]
+
+type Block = {
+  id: string;
+  type: string;
+  data: any
+}
 
 type Blocks = {
   id: string;

@@ -17,14 +17,14 @@ const TextElement = (props: Props) => {
   const [focusing, setFocus] = useState(false)
 
   useEffect(() => {
-    if(!focusing) text.current = DB.data[props.row_index][props.col_index]
+    if(!focusing) text.current = DB.data[props.row_index][props.col_index].data
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [DB])
 
   const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>, row_index:number, col_index:number) => {
     const element = e.target as HTMLElement
     var newDB = JSON.parse(JSON.stringify(DB))
-    newDB.data[row_index][col_index] = element.innerText
+    newDB.data[row_index][col_index].data = element.innerText
     setDB(newDB)
   }
 

@@ -34,7 +34,7 @@ const PageBlock = (props: BlockProps) => {
     if(!response) {
       (async () => {
       
-        await PageListActions('add', {currentId: currentPageId,id: pageId})
+        await PageListActions('add', {currentId: currentPageId,id: pageId, view: 'Page'})
           .then((response) => setPageList(response))
         if(!await PageActions('fetch', {id: pageId})){
           await PageActions('post', {id: pageId})

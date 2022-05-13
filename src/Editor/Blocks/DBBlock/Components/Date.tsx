@@ -9,12 +9,12 @@ const DateElement = (props:BlockProps) => {
 
   const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>, row_index:number, col_index:number) => {
     var newDB = JSON.parse(JSON.stringify(DB))
-    newDB.data[row_index][col_index] = new Date(e.target.value).getTime() 
+    newDB.data[row_index][col_index].data = new Date(e.target.value).getTime() 
     setDB(newDB)
   }
 
   const initializeData = () =>{
-    if(DB.data[props.row_index][props.col_index]){
+    if(DB.data[props.row_index][props.col_index].type === 'Date'){
       const data = new Date(DB.data[props.row_index][props.col_index].data)
       var month = String(data.getMonth()+1)
       var date = String(data.getDate())

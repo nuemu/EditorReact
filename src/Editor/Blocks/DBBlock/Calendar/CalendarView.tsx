@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import './Calender.css'
+import './Calendar.css'
+
+import { v4 } from 'uuid'
 
 import { useRecoilState } from 'recoil'
 import { DBState } from '../../../recoil/atom';
 
-import { Week, currentYear, currentMonth, today } from './CalenderSettings'
+import { Week, currentYear, currentMonth, today } from './CalendarSettings'
 
 import ViewMenu from '../Components/ViewMenu/ViewMenu'
 
-type DBStateType = [
-  {
-    column:{
-      name: string,
-      property: string
-    }[],
-    data: any[][],
-  },
-  any
-]
-
 const Calender = () => {
-  const [DB, setDB] = useRecoilState(DBState) as DBStateType
+  const [DB, setDB] = useRecoilState(DBState) as [Data, any]
 
   const [year, setYear] = useState(currentYear)
   const [month, setMonth] = useState(currentMonth)
@@ -30,7 +21,7 @@ const Calender = () => {
     if(DB.column.filter(column => column.property === 'Date').length === 0){
       newDB.column.splice(0, 0, {name: 'Date', property: 'Date'})
       newDB.data.forEach((row:any[]) => {
-        row.splice(0, 0, Date.now())
+        row.splice(0, 0, {id: v4(), type:'Date', data: Date.now()})
       })
       setDB(newDB)
     }
@@ -66,7 +57,7 @@ const Calender = () => {
   const dayContent = (column:any, row_index:number, col_index:number) => {
     return (
       <div className="date-content" key={row_index+'-'+col_index}>
-        {column}
+        {column.data}
       </div>
     )
   }
@@ -74,7 +65,9 @@ const Calender = () => {
   const dayContents = (date: Date) => {
     const index = DB.column.findIndex(column => column.property==='Date')
     if(date && index >= 0){
-      const contents = DB.data.filter(row => formatDate(row[index]) === formatDate(date))
+      const contents = DB.data.filter(row => 
+        formatDate(row[index].data) === formatDate(date)
+      )
       return (
         <div className="date-contents-wrapper">
           {contents.map((row, row_index) => {

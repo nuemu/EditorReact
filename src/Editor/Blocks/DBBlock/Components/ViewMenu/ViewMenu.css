@@ -22,6 +22,21 @@
 .view-menu.active{
   display: block;
 }
-.view-menu-item:hover{
+.view-menu-items-wrapper{
+  margin: 3px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+.view-menu-items-wrapper:hover{
   background-color: gainsboro;
+}
+.view-menu-icon-wrapper{ 
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  margin: 2px;
+}
+.view-menu-icon{
+  margin: 2px;
 }

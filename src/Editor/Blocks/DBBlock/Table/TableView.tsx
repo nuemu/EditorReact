@@ -7,8 +7,12 @@ import { DBState } from '../../../recoil/atom';
 import { rowMenuItems, colMenuItems } from './TableMenuItems'
 
 import ViewMenu from '../Components/ViewMenu/ViewMenu'
+import { Properties } from '../DBConstants'
 
 import DBElements from '../Components/DBElements_loader.js'
+import { v4 } from 'uuid';
+
+const Property = Properties as any
 const Elements = DBElements as any
 
 const Table = () => {
@@ -18,37 +22,32 @@ const Table = () => {
   useEffect(() => {
     var newDB = JSON.parse(JSON.stringify(DB)) //Deep Copy
     if(DB.column.length === 0){
-      const newCol = {name: '', property: 'text'}
+      const newCol = {name: '', property: 'Text'}
       newDB.column.splice(0, 0, newCol)
       newDB.data.map((row:any) => row.splice(0, 0, ''))
       setDB(newDB)
       keepDB.current = newDB
     }
     if(DB.data.length === 0){
-      const newRow: string[] = new Array(newDB.column.length).fill('')
+      const newRow = generateRow(newDB)
       newDB.data.splice(0, 0, newRow)
       setDB(newDB)
       keepDB.current = newDB
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [DB])
 
   const [rowSelect, setRowSelect] = useState(new Array(DB.data.length).fill(''))
   const [Menu, setMenu] = useState([-1,-1])
 
   var rowMenuRefs = useRef([React.createRef()]) as any
-  var dummyRefs:any[] = []
-  DB.data.forEach(() => dummyRefs.push(React.createRef()))
-  rowMenuRefs.current = dummyRefs
+  rowMenuRefs.current = keepDB.current.data.map(() => React.createRef())
 
   var colMenuRefs = useRef([React.createRef()]) as any
-  dummyRefs = []
-  DB.column.forEach(() => dummyRefs.push(React.createRef()))
-  colMenuRefs.current = dummyRefs
+  colMenuRefs.current = keepDB.current.column.map(() => React.createRef())
 
   var dataRefs = useRef([React.createRef()]) as any
-  dummyRefs = []
-  DB.data.forEach((row) => {
+  var dummyRefs:any = []
+  keepDB.current.data.forEach((row) => {
     var dummyRowRefs:any[] = []
     row.forEach(() => {
       dummyRowRefs.push(React.createRef())
@@ -102,12 +101,16 @@ const Table = () => {
     document.addEventListener("mousedown", handleClickOutside)
   }
 
+  const generateRow = (newDB: Data) => {
+    return newDB.column.map(item => {const data = {id: v4(), type: item.property, data: Property[item.property].initialData}; return data})
+  }
+
   const TableActions = (type: string, index: number) => {
     var newDB = JSON.parse(JSON.stringify(DB)) //Deep Copy
     
     switch(type){
       case('AddRow'):
-        const newRow: string[] = new Array(newDB.column.length).fill('')
+        const newRow = generateRow(newDB)
         newDB.data.splice(index+1, 0, newRow)
         break
       case('RemoveRow'):
@@ -214,7 +217,7 @@ const Table = () => {
       {keepDB.current.data.map((row, row_index) => (
         <tr
           className={"table-row "+rowSelect[row_index]}
-          key={row_index}
+          key={keepDB.current.id+"-"+row_index}
         >
           <td className="row-index-wrapper">
             <div
@@ -243,7 +246,7 @@ const Table = () => {
           {
             row.map((_, col_index) => (
               <td
-                key={col_index}
+                key={keepDB.current.id+"-"+col_index}
               >
                 <div
                   ref={dataRefs.current[row_index][col_index]}

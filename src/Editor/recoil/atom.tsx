@@ -10,6 +10,11 @@ export const menuState = atom({
     default: [-1, 0]
 })
 
+export const DBsState = atom({
+  key: 'DBsState',
+  default: []
+})
+
 export const DBState = atom<Data|null>({
   key: 'DBState',
   default: null

@@ -11,9 +11,42 @@ const axiosInstance = axios.create({
 })
 
 export const DBActions = async (action: string, params: any) => {
-  var response: any = 'failed'
+  var response: any = null
   switch(action){
     case 'fetch':
+      response = DBs.find(DB => DB.id === params.id)
+      if(!response){
+        axiosInstance.get('get')
+          .then(() => {
+            response = DBs.find(DB => DB.id === params.id)
+          })
+      }
+      break
+    case 'post':
+      const newDB = {
+        id: params.id,
+        column: [{
+          name: '',
+          property: 'Text'
+        }],
+        data: [[
+          {
+            id: v4(),
+            type: 'text',
+            data: ''
+          }
+        ]]
+      }
+      if(DBs.filter(DB => DB.id === params.id).length === 0) DBs.push(newDB)
+      response = newDB
+      break
+    case 'patch':
+      const data = JSON.parse(JSON.stringify(params.data))
+      await axiosInstance.patch('patch', params)
+        .then(() => {
+          const index = DBs.findIndex(DB => DB.id === params.id)
+          response = DBs.splice(index, 1, data)
+        })
       break
   }
   return response
@@ -68,7 +101,7 @@ export const PageListActions = async (action: string, params?: any) => {
       await axiosInstance.patch('patch', params)
         .then(() => {
           const newPageList = JSON.parse(JSON.stringify(PageList))
-          const newItem = {id: params.id, title: 'New Page', view: 'Page', list: []} as PageList[0]
+          const newItem = {id: params.id, title: 'New Page', view: params.view, list: []} as PageList[0]
           if(!getList(params.id, newPageList)) getList(params.currentId, newPageList).list.push(newItem)
           response = newPageList
           PageList = newPageList
@@ -78,19 +111,30 @@ export const PageListActions = async (action: string, params?: any) => {
   return response
 }
 
-const DBs = [
+const DBs:Data[] = [
   {
-    id: v4(),
-    view: 'Table',
-    column:[
-      {name:'Date', property: 'Date'},
-      {name:'作成中の', property: 'Text'},
-      {name:'DB', property: 'Text'}
+    "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7",
+    "column": [
+        {
+            "name": "sample",
+            "property": "Text"
+        }
     ],
-    data:
-    [
-      ['', '行は複数選択可能', '一括削除も'],
-      ['', '列はこれから', '色々拡張予定']
+    "data": [
+        [
+            {
+                "id": "62dd889d-7972-4d4b-bea5-0876509a6057",
+                "type": "text",
+                "data": "sample"
+            }
+        ],
+        [
+            {
+                "id": "99f42e10-fe55-4a14-9484-267494860955",
+                "type": "Text",
+                "data": "sample"
+            }
+        ]
     ]
   }
 ]
@@ -99,6 +143,15 @@ const Pages = [
     id: 'Editor',
     column: [],
     data: [
+      [
+        {
+          "id": "sample",
+          "type": "DB",
+          "data": {
+            "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7"
+          }
+        }
+      ],
       [
         {
           "id": "d24c3512-d4a2-4e93-a145-7aaf96b6ab1b",
@@ -213,6 +266,13 @@ var PageList:PageList = [
     id: 'Editor',
     title: 'Semi WYSIWYG Block Style Editor',
     view: 'Page',
-    list:[]
+    list:[
+      {
+        id: "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7",
+        title: "newDB",
+        view: "Table",
+        list: []
+      }
+    ]
   }
 ]

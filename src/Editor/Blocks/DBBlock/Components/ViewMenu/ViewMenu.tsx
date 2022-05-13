@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import './ViewMenu.css'
 
-import { useRecoilState } from 'recoil'
-import { DBState } from '../../../../recoil/atom';
-import { viewMenuItems } from '../../DBViews'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { DBState, pageListSelector } from '../../../../recoil/atom';
+import { viewMenuItems } from '../../DBConstants'
 
 const ViewMenu = () => {
-  const [DB, setDB] = useRecoilState(DBState) as [Data, any]
+  const DB = useRecoilValue(DBState) as Data
   const [Menu, setMenu] = useState(0)
+  const [PageList, setPageList] = useRecoilState(pageListSelector)
 
   const closeMenu = () => {
     document.removeEventListener("mousedown", handleClickOutside)
@@ -27,10 +28,19 @@ const ViewMenu = () => {
     document.addEventListener("mousedown", handleClickOutside)
   }
 
+  const getList = (id:string, pageList: any) => {
+    var listItem:any = null
+    pageList.forEach((item:any) => {
+      if(item.id === id) listItem = item
+      else if(!listItem) listItem = getList(id,item.list)
+    })
+    return listItem
+  }
+
   const handleView = (view_name: string) => {
-    var newDB = JSON.parse(JSON.stringify(DB))
-    newDB.view = view_name
-    setDB(newDB)
+    var newPageList= JSON.parse(JSON.stringify(PageList))
+    getList(DB.id, newPageList).view = view_name
+    setPageList(newPageList)
   }
 
   const isSelectedViewMenu = () => {
@@ -48,16 +58,16 @@ const ViewMenu = () => {
       >
         <div className="view-menu-header">View Menu</div>
         {viewMenuItems.map((item:any) => (
-          <>
-            <img src={item.icon} alt="view-menu-icon"/>
+          <div className="view-menu-items-wrapper" key={item.name} onClick={() => {handleView(item.type)}}>
+            <div className="view-menu-icon-wrapper">
+              <img src={item.icon} alt="view-menu-icon" className="view-menu-icon"/>
+            </div>
             <div
-              className="view-menu-item"
-              key={item.name}
-              onClick={() => {handleView(item.type)}}
+              className="view-menu-item"       
             >
               {item.name}
             </div>
-          </>
+          </div>
         ))}
       </div>
     </div>)

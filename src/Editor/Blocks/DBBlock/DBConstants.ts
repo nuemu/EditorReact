@@ -5,8 +5,17 @@ export const viewMenuItems = [
     icon: require('../../Assets/Table.svg').default
   },
   {
-    name: 'Calender',
-    type: 'Calender',
+    name: 'Calendar',
+    type: 'Calendar',
     icon: require('../../Assets/Calendar.svg').default
   }
 ]
+
+export const Properties = {
+  Text: {
+    initialData: ''
+  },
+  Date: {
+    initialData: (() => Date.now())()
+  }
+}

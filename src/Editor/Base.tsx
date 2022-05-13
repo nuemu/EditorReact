@@ -28,6 +28,8 @@ function Base() {
       const newPage = await PageActions('fetch', {id: currentPageId})
       setBlocks(newPage.data)
 
+      setFocus([-1, 1])
+
       const newPageList = await PageListActions('fetch')
       setPageList(newPageList)
       
