@@ -52,7 +52,7 @@ const DropDownMenu = (props: Props) => {
     return (
       <div
         className="dropdown-menu-wrapper menu-item"
-        onContextMenu={() => {setToggle(true);document.addEventListener("mousedown", handleClickOutside)}}
+        onContextMenu={(e) => {e.preventDefault();setToggle(true);document.addEventListener("mousedown", handleClickOutside)}}
         onMouseLeave={() => {setToggle(false)}}
       >
         {title()}

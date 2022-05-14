@@ -9,7 +9,6 @@
 
 .hover-menu-wrapper{
   position: relative;
-  max-width: 100%;
 }
 .hover-menu-wrapper:hover{
   background-color: gainsboro;
@@ -17,7 +16,6 @@
 }
 .hover-menu-contents{
   position: absolute;
-  max-width: 100%;
   z-index: 5;
   top: 0%;
   left: 100%;

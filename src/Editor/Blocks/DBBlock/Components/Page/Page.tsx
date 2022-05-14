@@ -54,7 +54,7 @@ const PageElement = (props: Props) => {
         }
       })()
     }
-  },[])
+  },[pageId])
 
   // Move to clicked Page
   const handlePage = async () => {

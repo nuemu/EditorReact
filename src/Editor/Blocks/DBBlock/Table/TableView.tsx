@@ -48,7 +48,6 @@ const Table = (props: BlockProps) => {
   }, [DB])
 
   const [rowSelect, setRowSelect] = useState(new Array(DB.data.length).fill(''))
-  const [Menu, setMenu] = useState([-1,-1])
 
   var rowMenuRefs = useRef([React.createRef()]) as any
   rowMenuRefs.current = keepDB.current.data.map(() => React.createRef())
@@ -81,32 +80,8 @@ const Table = (props: BlockProps) => {
     setDB(newDB)
   }
 
-  const closeMenu = () => {
-    setMenu([-1, -1])
-    document.removeEventListener("mousedown", handleClickOutside)
-  }
-
-  const handleClickOutside = (e:MouseEvent) => {
-    const target = e.target as HTMLElement
-    if(!(
-      target.classList.contains('menu-item')
-    )) closeMenu()
-  }
-
-  const handleRowMenu = (e: React.MouseEvent<HTMLDivElement>, row_index: number) => {
-    e.preventDefault()
-    setMenu([row_index, -1])
-    document.addEventListener("mousedown", handleClickOutside)
-
-    if(rowSelect.filter(row => row==='active').length < 2){
-      var select:string[] = new Array(DB.data.length).fill('')
-      select[row_index] = 'active'
-      setRowSelect(select)
-    }
-  }
-
   const generateRow = (newDB: Data) => {
-    return newDB.column.map(item => {const data = {id: v4(), type: item.property, data: Property[item.property].initialData}; return data})
+    return newDB.column.map(item => {return {id: v4(), type: item.property, data: Property[item.property].initialData()}})
   }
 
   const TableActions = (type: string, index: number) => {
@@ -130,12 +105,12 @@ const Table = (props: BlockProps) => {
       case('InsertColumnBefore'):
         var newCol = {name: '', property: 'Text'}
         newDB.column.splice(index, 0, newCol)
-        newDB.data.map((row:any) => row.splice(index, 0, {id: v4(), type: 'Text', data: Property['Text'].initialData}))
+        newDB.data.map((row:any) => row.splice(index, 0, {id: v4(), type: 'Text', data: Property['Text'].initialData()}))
         break
       case('InsertColumnAfter'):
         newCol = {name: '', property: 'Text'}
         newDB.column.splice(index+1, 0, newCol)
-        newDB.data.map((row:any) => row.splice(index+1, 0, {id: v4(), type: 'Text', data: Property['Text'].initialData}))
+        newDB.data.map((row:any) => row.splice(index+1, 0, {id: v4(), type: 'Text', data: Property['Text'].initialData()}))
         break
       case('RemoveColumn'):
         newDB.column.splice(index, 1)
@@ -193,10 +168,6 @@ const Table = (props: BlockProps) => {
     setRowSelect(select)
   }
 
-  const isSelectedRowMenu = (row_index:number) => {
-    return row_index === Menu[0]
-  }
-
   const renderElement = (row_index:number, col_index: number) => {
     const Element = Elements[DB.column[col_index].property].default
     return (
@@ -207,23 +178,6 @@ const Table = (props: BlockProps) => {
         base_col_index={props.col_index}
       />)
   }
-
-  const RowMenu = (row_index: number) => {
-    return (<div
-      ref={rowMenuRefs.current[row_index]}
-      className={isSelectedRowMenu(row_index) ? "row-menu menu-item active" : "menu-item row-menu"}
-    >
-      {rowMenuItems.map(item => (
-        <div
-          className="row-menu-item menu-item"
-          key={item.type}
-          onClick={() => {TableActions(item.type, row_index);closeMenu()}}
-        >
-          {item.name(rowSelect.filter(row => row === 'active').length > 1)}
-        </div>
-      ))}
-    </div>
-  )}
 
   const leaveEdit = (col_index: number) => {
     const newHeadEditing = JSON.parse(JSON.stringify(headEditing))
@@ -275,14 +229,10 @@ const Table = (props: BlockProps) => {
         >
           <td className="row-index-wrapper">
             <div
-              className="row-index"
               onClick={(e) => handleRowSelect(e, row_index)}
-              onContextMenu={(e) => handleRowMenu(e, row_index)}
             >
-              {row_index}
+              <ContextDropDownMenu title={String(row_index)} contents={rowMenuItems} Action={(type:string) => TableActions(type, row_index)} icon="" />
             </div>
-            <ContextDropDownMenu title={String(row_index)} contents={rowMenuItems} icon={""} Action={console.log("sample")}/>
-            {RowMenu(row_index)}
           </td>
           {
             row.map((_, col_index) => (

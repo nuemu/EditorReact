@@ -15,12 +15,12 @@ export const viewMenuItems = [
 
 export const Properties = {
   Text: {
-    initialData: ''
+    initialData: () => ''
   },
   Date: {
-    initialData: (() => Date.now())()
+    initialData: () => Date.now()
   },
   Page: {
-    initialData: (() => v4())()
+    initialData: () => v4()
   }
 }

@@ -1,12 +1,14 @@
 export const rowMenuItems = [
   {
-    name: (multiple:boolean) => multiple ? 'Remove Rows' : 'Remove Row',
+    name: 'Remove Rows',
     type: 'RemoveRow',
+    icon: require('../../../Assets/Remove.svg').default,
     contents: []
   },
   {
-    name: () => 'Add Row',
+    name: 'Add Row',
     type: 'AddRow',
+    icon: require('../../../Assets/Plus.svg').default,
     contents: []
   }
 ]
