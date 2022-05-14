@@ -11,8 +11,11 @@ import { Properties } from '../DBConstants'
 
 import DBElements from '../Components/DBElements_loader.js'
 import { v4 } from 'uuid';
+import DOMPurify from 'dompurify';
 
 import DropDownMenu from '../Components/DropDownMenu/DropDownMenu'
+import ContextDropDownMenu from '../Components/ContextDropDownMenu/ContextDropDownMenu'
+
 
 const Property = Properties as any
 const Elements = DBElements as any
@@ -23,6 +26,8 @@ const Table = (props: BlockProps) => {
   const DBId = blocks[props.row_index][props.col_index].data.id
   const [DB, setDB] = useRecoilState(DBSelector(DBId)) as [Data, any]
   const keepDB = useRef(DB)
+
+  const [headEditing, setHeadEditing] = useState(new Array(DB.column.length).fill(false))
 
   useEffect(() => {
     var newDB = JSON.parse(JSON.stringify(DB)) //Deep Copy
@@ -39,6 +44,7 @@ const Table = (props: BlockProps) => {
       setDB(newDB)
       keepDB.current = newDB
     }
+    if(DB.column.length > headEditing.length) setHeadEditing(new Array(DB.column.length).fill(false))
   }, [DB])
 
   const [rowSelect, setRowSelect] = useState(new Array(DB.data.length).fill(''))
@@ -109,13 +115,17 @@ const Table = (props: BlockProps) => {
     switch(type){
       case('AddRow'):
         const newRow = generateRow(newDB)
-        console.log(newRow)
         newDB.data.splice(index+1, 0, newRow)
         break
       case('RemoveRow'):
         const startIndex = rowSelect.findIndex(row => row==='active')
         const count = rowSelect.filter(row => row==='active').length
         newDB.data.splice(startIndex, count)
+        break
+      case('EditColumnName'):
+        const newHeadEditing = JSON.parse(JSON.stringify(headEditing))
+        newHeadEditing[index] = true
+        setHeadEditing(newHeadEditing)
         break
       case('InsertColumnBefore'):
         var newCol = {name: '', property: 'Text'}
@@ -131,12 +141,28 @@ const Table = (props: BlockProps) => {
         newDB.column.splice(index, 1)
         newDB.data.map((row:any) => row.splice(index, 1))
         break
-      case('Page'):
+      case('ChangePropertyToPage'):
         newDB.column[index].property = 'Page'
         newDB.data.map((row:any) => {
           const id = v4()
           row[index].data=id
           row[index].type='Page'
+        })
+        break
+      case('ChangePropertyToDate'):
+      newDB.column[index].property = 'Date'
+        newDB.data.map((row:any) => {
+          const id = v4()
+          row[index].data=id
+          row[index].type='Date'
+        })
+        break
+      case('ChangePropertyToText'):
+      newDB.column[index].property = 'Text'
+        newDB.data.map((row:any) => {
+          const id = v4()
+          row[index].data=id
+          row[index].type='Text'
         })
         break
     }
@@ -199,6 +225,13 @@ const Table = (props: BlockProps) => {
     </div>
   )}
 
+  const leaveEdit = (col_index: number) => {
+    const newHeadEditing = JSON.parse(JSON.stringify(headEditing))
+    newHeadEditing[col_index] = false
+    setHeadEditing(newHeadEditing)
+    keepDB.current = DB
+  }
+
   const thead = (
     <thead>
       <tr>
@@ -215,7 +248,16 @@ const Table = (props: BlockProps) => {
               className="table-head"
               onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleHeadChange(e, index)}
             >
-            <DropDownMenu title={column.name} contents={colMenuItems} Action={(type:string) => TableActions(type, index)} icon="" />
+              <div
+                className={"table-head-title " + (headEditing[index] ? "editing" : "")}
+                contentEditable
+                onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleHeadChange(e, index)}
+                onKeyPress={(e) => {if(e.key==='Enter') leaveEdit(index)}}
+                onBlur={() => leaveEdit(index)}
+                dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(column.name)}}
+              >
+              </div>
+              <DropDownMenu title={column.name} contents={colMenuItems} Action={(type:string) => TableActions(type, index)} icon="" />
             </div>
           </td>
         ))}
@@ -239,7 +281,7 @@ const Table = (props: BlockProps) => {
             >
               {row_index}
             </div>
-            
+            <ContextDropDownMenu title={String(row_index)} contents={rowMenuItems} icon={""} Action={console.log("sample")}/>
             {RowMenu(row_index)}
           </td>
           {

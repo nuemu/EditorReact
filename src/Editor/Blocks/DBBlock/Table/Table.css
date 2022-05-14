@@ -7,12 +7,27 @@ table{
 }
 
 .table-head{
-  outline: none;
+  position: relative;
   width: 100%;
   height: 100%;
 }
 .table-head:hover{
   background-color: whitesmoke;
+}
+.table-head-title{
+  padding: 5px;
+  opacity: 0;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  outline: none;
+}
+.table-head-title.editing{
+  opacity: 1;
+  z-index: 5;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px 5px lightgrey;
 }
 .col-menu{
   z-index: 1;

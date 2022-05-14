@@ -1,31 +1,39 @@
 export const rowMenuItems = [
   {
     name: (multiple:boolean) => multiple ? 'Remove Rows' : 'Remove Row',
-    type: 'RemoveRow'
+    type: 'RemoveRow',
+    contents: []
   },
   {
     name: () => 'Add Row',
-    type: 'AddRow'
+    type: 'AddRow',
+    contents: []
   }
 ]
 
 export const colMenuItems = [
-  {
-    name: 'Insert Column',
-    type: 'Hover',
-    icon: require('../../../Assets/Plus.svg').default,
-    contents: [{
-      name: 'Insert Before',
-      type: 'InsertColumnBefore',
-      icon: require('../../../Assets/Left.svg').default,
+    {
+      name: 'Edit Title',
+      type: 'EditColumnName',
+      icon: require('../../../Assets/Right.svg').default,
       contents: []
     },
     {
-      name: 'Insert After',
-      type: 'InsertColumnAfter',
-      icon: require('../../../Assets/Right.svg').default,
-      contents: []
-    }]
+      name: 'Insert Column',
+      type: 'Hover',
+      icon: require('../../../Assets/Plus.svg').default,
+      contents: [{
+        name: 'Insert Before',
+        type: 'InsertColumnBefore',
+        icon: require('../../../Assets/Left.svg').default,
+        contents: []
+      },
+      {
+        name: 'Insert After',
+        type: 'InsertColumnAfter',
+        icon: require('../../../Assets/Right.svg').default,
+        contents: []
+      }]
   },
   {
     name: 'Remove Column',
@@ -40,19 +48,19 @@ export const colMenuItems = [
     contents: [
       {
         name: 'Page',
-        type: 'Page',
+        type: 'ChangePropertyToPage',
         icon: require('../../../Assets/Page.svg').default,
         contents: []
       },
       {
         name: 'Date',
-        type: 'Date',
+        type: 'ChangePropertyToDate',
         icon: require('../../../Assets/Calendar.svg').default,
         contents: []
       },
       {
         name: 'Text',
-        type: 'Text',
+        type: 'ChangePropertyToText',
         icon: require('../../../Assets/Text.svg').default,
         contents: []
       }]

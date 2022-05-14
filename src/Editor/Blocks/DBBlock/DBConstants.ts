@@ -1,3 +1,5 @@
+import { v4 } from 'uuid'
+
 export const viewMenuItems = [
   {
     name: 'Table',
@@ -19,6 +21,6 @@ export const Properties = {
     initialData: (() => Date.now())()
   },
   Page: {
-    initialData: (() => Date.now())()
+    initialData: (() => v4())()
   }
 }

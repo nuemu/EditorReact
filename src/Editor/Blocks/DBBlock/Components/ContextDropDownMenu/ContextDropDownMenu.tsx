@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import './DropDown.css'
 
 import HoverMenu from '../HoverMenu/HoverMenu'
 
@@ -53,7 +52,7 @@ const DropDownMenu = (props: Props) => {
     return (
       <div
         className="dropdown-menu-wrapper menu-item"
-        onClick={() => {setToggle(true);document.addEventListener("mousedown", handleClickOutside)}}
+        onContextMenu={() => {setToggle(true);document.addEventListener("mousedown", handleClickOutside)}}
         onMouseLeave={() => {setToggle(false)}}
       >
         {title()}

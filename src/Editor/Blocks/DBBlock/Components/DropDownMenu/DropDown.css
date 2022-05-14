@@ -1,7 +1,11 @@
 .dropdown-menu-title{
   padding: 5px;
   display: flex;
-  justify-content: flex-start
+  justify-content: flex-start;
+}
+.menu-title:empty:before{
+  content: 'New Column';
+  color: grey;
 }
 
 .dropdown-menu-wrapper{
