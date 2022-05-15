@@ -25,7 +25,7 @@ function Base() {
   const [currentPageId, setCurrentPageId] = useRecoilState(currentPage)
 
   const menu = useRecoilValue(menuState)
-  const [dragging, setDrag] = useState([-1,0])
+  const [drag, setDrag] = useState(false)
 
   let [searchParams, ] = useSearchParams()
 
@@ -123,19 +123,28 @@ function Base() {
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     const element = e.target as HTMLElement
-    if(!element.classList.contains("option-menu-icon")){
+    if(!(
+      element.classList.contains("option-menu-icon") ||
+      element.classList.contains('table-head') ||
+      element.classList.contains('table-row-index')
+    )){
       e.preventDefault()
       return
     }
 
-    const id = element.id.split('-')
-    setDrag([Number(id[0]), Number(id[1])])
-    e.dataTransfer.setDragImage(Refs.current[Number(id[0])][Number(id[1])].current, 0, 0)
+    if(element.classList.contains("option-menu-icon")){
+      const dragItem = element.id.split('-')
+      const dragging = [Number(dragItem[0]), Number(dragItem[1])]
+      e.dataTransfer.clearData()
+      e.dataTransfer.setData('text', element.id)
+      e.dataTransfer.setDragImage(Refs.current[dragging[0]][dragging[1]].current, 0, 0)
+      setDrag(true)
+    }
   }
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     const element = e.target as HTMLElement
-    if(!element.classList.contains('dragArea')) return
+    if(!element.classList.contains('dragArea') || !drag) return
     element.classList.add('active')
     e.preventDefault()
   }
@@ -171,10 +180,12 @@ function Base() {
   }
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    const dragItem = e.dataTransfer.getData('text').split('-')
+    const dragging = [Number(dragItem[0]), Number(dragItem[1])]
     const element = e.target as HTMLElement
     if(!element.classList.contains('dragArea')) return
 
-    if(dragging[0] >= 0){
+    if(!isNaN(dragging[1])){
       element.classList.remove('active')
       var newBlocks = JSON.parse(JSON.stringify(blocks))
       const id = element.id.split('-')
@@ -201,8 +212,8 @@ function Base() {
       }
       setBlocks(newBlocks)
       setFocus([-1, 1])
-      setDrag([-1,0])
     }
+    setDrag(false)
   }
 
   const block = (row_index: number, col_index: number) => {

@@ -1,4 +1,4 @@
-.dropdown-menu-title{
+.menu-title{
   padding: 5px;
   display: flex;
   justify-content: flex-start;
@@ -8,15 +8,15 @@
   color: grey;
 }
 
-.dropdown-menu-wrapper{
+.menu-wrapper{
   position: relative;
   
 }
-.dropdown-menu-wrapper:hover{
+.menu-wrapper:hover{
   background-color: whitesmoke;
   cursor: pointer;
 }
-.dropdown-menu-contents{
+.menu-contents{
   position: absolute;
   z-index: 5;
   background-color: white;
@@ -24,15 +24,15 @@
   border-radius: 5px;
   box-shadow: 0px 0px 1px 1px lightgrey;
 }
-.dropdown-menu-contents.active{
+.menu-contents.active{
   display: block;
 }
 
-.dropdown-menu-content{
+.menu-content{
   border-radius: 5px;
   padding: 0px;
 }
-.dropdown-menu-content:hover{
+.menu-content:hover{
   background-color: gainsboro;
   cursor: pointer;
 }

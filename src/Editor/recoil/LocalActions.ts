@@ -351,7 +351,7 @@ var PageList:PageList = [
           {
               "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7",
               "title": "SampleDB",
-              "view": "Calendar",
+              "view": "Table",
               "list": [
                   {
                       "id": "ec1d2b8f-d3b1-4905-ba0c-30af053ac719",

@@ -93,3 +93,17 @@ table{
 .row-menu-item:hover{
   background-color: gainsboro;
 }
+
+.table-dragArea{
+  position: absolute;
+  height: 100%;
+  top: 0;
+}
+.table-dragArea.left{
+  left: 0;
+  width: 10pt;
+}
+.table-dragArea.right{
+  right: 0;
+  width: 10pt;
+}

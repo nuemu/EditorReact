@@ -13,8 +13,8 @@ import DBElements from '../Components/DBElements_loader.js'
 import { v4 } from 'uuid';
 import DOMPurify from 'dompurify';
 
-import DropDownMenu from '../Components/DropDownMenu/DropDownMenu'
-import ContextDropDownMenu from '../Components/ContextDropDownMenu/ContextDropDownMenu'
+import DropDownMenu from '../../../Components/Menu/DropDownMenu/DropDownMenu'
+import ContextDropDownMenu from '../../../Components/Menu/ContextDropDownMenu/ContextDropDownMenu'
 
 
 const Property = Properties as any
@@ -28,6 +28,9 @@ const Table = (props: BlockProps) => {
   const keepDB = useRef(DB)
 
   const [headEditing, setHeadEditing] = useState(new Array(DB.column.length).fill(false))
+
+  const [colDrag, setColDrag] = useState(-1)
+  const [rowDrag, setRowDrag] = useState(-1)
 
   useEffect(() => {
     var newDB = JSON.parse(JSON.stringify(DB)) //Deep Copy
@@ -186,6 +189,83 @@ const Table = (props: BlockProps) => {
     keepDB.current = DB
   }
 
+  const changeOrder = (array: any, from: number, to: number) => {
+    if(from > to){
+      //from
+      array.splice(to+1, 0, array[from])
+      array.splice(from+1, 1)
+      //to
+      array.splice(from+1, 0, array[to])
+      array.splice(to, 1)
+    }
+    else{
+      //from
+      array.splice(to+1, 0, array[from])
+      array.splice(from, 1)
+      //to
+      array.splice(from, 0, array[to-1])
+      array.splice(to, 1)
+    }
+    return array
+  }
+
+  const changeColumnOrder = (from: number, to: number) => {
+    var newDB = JSON.parse(JSON.stringify(DB))
+    changeOrder(newDB.column, from, to)
+
+    newDB.data.map((row:any) => {
+      changeOrder(row, from, to)
+    })
+    setDB(newDB)
+    keepDB.current = newDB
+  }
+
+  const changeRowOrder = (from: number, to: number) => {
+    var newDB = JSON.parse(JSON.stringify(DB))
+    changeOrder(newDB.data, from, to)
+
+    setDB(newDB)
+    keepDB.current = newDB
+  }
+
+  const handleColDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    const element = e.target as HTMLElement
+    if(!element.classList.contains("table-head")){
+      e.preventDefault()
+      return
+    }
+    setColDrag(Number(element.id))
+  }
+
+  const handleColDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    const element = e.target as HTMLElement
+    if(!element.classList.contains('menu-title')) return
+    if(Number(element.id) !== colDrag) {
+      changeColumnOrder(colDrag, Number(element.id))
+      setColDrag(Number(element.id))
+    }
+    return
+  }
+
+  const handleRowDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    const element = e.target as HTMLElement
+    if(!element.classList.contains("table-row-index")){
+      e.preventDefault()
+      return
+    }
+    setRowDrag(Number(element.id))
+  }
+
+  const handleRowDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    const element = e.target as HTMLElement
+    if(!element.classList.contains('menu-title')) return
+    if(Number(element.id) !== rowDrag) {
+      changeRowOrder(rowDrag, Number(element.id))
+      setRowDrag(Number(element.id))
+    }
+    return
+  }
+
   const thead = (
     <thead>
       <tr>
@@ -200,6 +280,10 @@ const Table = (props: BlockProps) => {
           >
             <div
               className="table-head"
+              draggable
+              id={String(index)}
+              onDragStart={(e) => handleColDragStart(e)}
+              onDragOver={(e) => handleColDragOver(e)}
               onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleHeadChange(e, index)}
             >
               <div
@@ -209,9 +293,8 @@ const Table = (props: BlockProps) => {
                 onKeyPress={(e) => {if(e.key==='Enter') leaveEdit(index)}}
                 onBlur={() => leaveEdit(index)}
                 dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(column.name)}}
-              >
-              </div>
-              <DropDownMenu title={column.name} contents={colMenuItems} Action={(type:string) => TableActions(type, index)} icon="" />
+              />
+              <DropDownMenu id={String(index)} title={column.name} contents={colMenuItems} Action={(type:string) => TableActions(type, index)} icon="" />
             </div>
           </td>
         ))}
@@ -229,9 +312,13 @@ const Table = (props: BlockProps) => {
         >
           <td className="row-index-wrapper">
             <div
+              draggable
+              className="table-row-index"
+              onDragStart={(e) => handleRowDragStart(e)}
+              onDragOver={(e) => handleRowDragOver(e)}
               onClick={(e) => handleRowSelect(e, row_index)}
             >
-              <ContextDropDownMenu title={String(row_index)} contents={rowMenuItems} Action={(type:string) => TableActions(type, row_index)} icon="" />
+              <ContextDropDownMenu title={String(row_index)} contents={rowMenuItems} Action={(type:string) => TableActions(type, row_index)} icon="" id={String(row_index)}/>
             </div>
           </td>
           {
