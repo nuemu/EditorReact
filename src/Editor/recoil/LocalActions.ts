@@ -46,7 +46,7 @@ export const DBActions = async (action: string, params: any) => {
         .then(() => {
           const index = DBs.findIndex(DB => DB.id === params.id)
           response = DBs.splice(index, 1, data)
-          //console.log('DBs:', DBs)
+          console.log('DBs:', DBs)
         })
       break
   }
@@ -84,7 +84,7 @@ export const PageActions = async (action: string, params: any|null) => {
         .then(() => {
           const index = Pages.findIndex(page => page.id === data.id)
           response = Pages.splice(index, 1, data)
-          //console.log('Pages:', Pages)
+          console.log('Pages:', Pages)
         })
   }
   return response
@@ -122,7 +122,7 @@ export const PageListActions = async (action: string, params?: any) => {
           const newPageList = params
           response = newPageList
           PageList = newPageList
-          //console.log('PageList:',newPageList)
+          console.log('PageList:',newPageList)
         })
       break
       
@@ -351,7 +351,7 @@ var PageList:PageList = [
           {
               "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7",
               "title": "SampleDB",
-              "view": "Table",
+              "view": "Calendar",
               "list": [
                   {
                       "id": "ec1d2b8f-d3b1-4905-ba0c-30af053ac719",

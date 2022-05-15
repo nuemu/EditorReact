@@ -8,7 +8,7 @@ Notionはとても良いサービスである、万のことに愛用してい�
 Issueを使え？**太字**は優先順序高め
 - [x] **Textブロック**
   - [x] **Markdown対応**
-    - [ ] Notion風のMarkdown入力
+    - [ ] **Notion風のMarkdown入力**
     - [ ] noteやzenn風の拡張(定理のハイライト用に特殊なQuoteみたいなのが欲しい)
   - [x] **KaTeX入力対応**
 - [x] **Menu**
@@ -63,6 +63,7 @@ Issueを使え？**太字**は優先順序高め
   - [x] おそらく、DnD時の削除処理に異常がある。時々空の行が生じる
 - [ ] ブロックをDnDすると、時々reading errorが出る。
 - [ ] １行コピペすると改行が追加される。ContentEditableの仕様か？
+- [ ] TextBlockが使いもにならないので、Notion StyleのMarkdown入力を優先
 
 ### 利用ライブラリ・他
 - [React](https://ja.reactjs.org/)(MIT)

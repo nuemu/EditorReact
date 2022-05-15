@@ -126,7 +126,8 @@ function Base() {
     if(!(
       element.classList.contains("option-menu-icon") ||
       element.classList.contains('table-head') ||
-      element.classList.contains('table-row-index')
+      element.classList.contains('table-row-index') ||
+      element.classList.contains('date-content')
     )){
       e.preventDefault()
       return

@@ -6,6 +6,8 @@ import { v4 } from 'uuid'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { blocksSelector, DBSelector } from '../../../recoil/atom';
 
+import ContextDropDownMenu from '../../../Components/Menu/ContextDropDownMenu/ContextDropDownMenu'
+
 import { Week, currentYear, currentMonth, today } from './CalendarSettings'
 
 import ViewMenu from '../Components/ViewMenu/ViewMenu'
@@ -69,10 +71,43 @@ const Calender = (props: BlockProps) => {
       />)
   }
 
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, array: number[]) => {
+    const element = e.target as HTMLElement
+    if(!element.classList.contains("date-content")){
+      e.preventDefault()
+      return
+    }
+    e.dataTransfer.clearData()
+    e.dataTransfer.setData('id', JSON.stringify(array))
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    const element = e.target as HTMLElement
+    if(!element.classList.contains('date-wrapper')) return
+    e.preventDefault()
+    return
+  }
+  
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    const element = e.target as HTMLElement
+    const date = new Date(element.id).getTime()
+    const array = JSON.parse(e.dataTransfer.getData('id'))
+    var newDB = JSON.parse(JSON.stringify(DB))
+
+    const index = newDB.data[array[0]].findIndex((column: any) => column.type==='Date')
+    newDB.data[array[0]][index].data = date
+    setDB(newDB)
+  }
+
   const dayContent = (column:any, row_index:number, col_index:number) => {
     if(column.type === 'Page'){
       return (
-        <div className="date-content" key={row_index+'-'+col_index}>
+        <div
+          className="date-content"
+          key={row_index+'-'+col_index}
+          draggable
+          onDragStart={(e) => handleDragStart(e, [row_index, col_index])}
+        >
           {renderElement(row_index, col_index)}
         </div>
       )}
@@ -95,9 +130,37 @@ const Calender = (props: BlockProps) => {
   }
 
   const dayDiv = (date: Date) => {
-    if(date.getFullYear() === currentYear && date.getMonth() === currentMonth && date.getDate() === today) return <div className="date-wrapper today">{date.getDate()}{dayContents(date)}</div>
-    if(date.getMonth() !== month) return <div className="date-wrapper not-current-month">{date.getDate()}{dayContents(date)}</div>
-    return <div className="date-wrapper">{date.getDate()}{dayContents(date)}</div>
+    if(date.getFullYear() === currentYear && date.getMonth() === currentMonth && date.getDate() === today){
+      return (
+        <div
+          className="date-wrapper today"
+          id={date.getFullYear()+"/"+(date.getMonth()+1)+"/"+date.getDate()}
+          onDragOver={(e) => handleDragOver(e)}
+          onDrop={(e) => handleDrop(e)}
+        >
+          {date.getDate()}{dayContents(date)}
+        </div>)
+    }
+    if(date.getMonth() !== month){
+      return (
+        <div
+          className="date-wrapper not-current-month"
+          id={date.getFullYear()+"/"+(date.getMonth()+1)+"/"+date.getDate()}
+          onDragOver={(e) => handleDragOver(e)}
+          onDrop={(e) => handleDrop(e)}
+        >
+          {date.getDate()}{dayContents(date)}
+        </div>)
+    }
+    return (
+      <div
+        className="date-wrapper"
+        id={date.getFullYear()+"/"+(date.getMonth()+1)+"/"+date.getDate()}
+        onDragOver={(e) => handleDragOver(e)}
+        onDrop={(e) => handleDrop(e)}
+      >
+        {date.getDate()}{dayContents(date)}
+      </div>)
   }
   
   const setDates = (number: number) => {
