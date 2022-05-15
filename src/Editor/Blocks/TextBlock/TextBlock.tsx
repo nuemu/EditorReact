@@ -7,8 +7,8 @@ import { blocksSelector, focusState } from '../../recoil/atom';
 import katex from 'katex'
 import 'katex/dist/katex.css'
 
-import highlightjs from 'highlight.js'
-import 'highlight.js/styles/github-dark-dimmed.css'
+/*import highlightjs from 'highlight.js'
+import 'highlight.js/styles/github-dark-dimmed.css'*/
 import DOMPurify from "dompurify";
 
 import { textParser, textReverseParser } from "./TextParser";

@@ -1,76 +1,65 @@
 const ParseSettings = [
   {
-    reg: /```[\s\S]*```/,
-    replace_start: '```',
-    replace_end: '```',
+    reg: /\*\*.*\*\*/,
+    replace: '**',
+    end: '**',
+    tags: ['STRONG'],
+    class: [],
+  },
+  {
+    reg: /- /,
+    replace: '- ',
+    end: '\n',
+    tags: ['LI'],
+    class: [],
+  },
+  {
+    reg: /```/,
+    replace: '```',
+    end: '\n',
     tags: ['PRE', 'CODE'],
     class: [],
   },
   {
-    reg: /### .*n/,
-    replace_start: '### ',
-    replace_end: '\n',
+    reg: /### /,
+    replace: '### ',
+    end: '\n',
     tags: ['H3'],
     class: [],
   },
   {
-    reg: /## .*n/,
-    replace_start: '## ',
-    replace_end: '\n',
+    reg: /## /,
+    replace: '## ',
+    end: '\n',
     tags: ['H2'],
     class: [],
   },
   {
-    reg: /# .*n/,
-    replace_start: '# ',
-    replace_end: '\n',
+    reg: /# /,
+    replace: '# ',
+    end: '\n',
     tags: ['H1'],
     class: [],
   },
   {
-    reg: /- .*n/,
-    replace_start: '- ',
-    replace_end: '\n',
-    tags: ['LI', 'UL'],
-    class: [],
-  },
-  {
-    reg: /\*\*.*\*\*/,
-    replace_start: '**',
-    replace_end: '\n',
-    tags: ['STRONG'],
-    class: [],
+    reg: / {2}/,
+    replace: '  ',
+    end: '\n',
+    tags: ['UL'],
+    class: []
   }
 ]
 
-type Setting = {
-  reg: RegExp,
-  replace_start: string,
-  tags: string[],
-  class: string[],
-}[]
-
 export const textParser = (text: string) => {
-  return text = Parser(text, ParseSettings)
+  return text.split('\n\n').join('\n').split('\n').map(sentence => {
+    if(sentence !== '') return Parser(sentence)
+    else return '<div><br></div>'
+  }).join('')
 }
 
-const Parser = (text: string, settings: Setting) => {
-  settings.forEach(setting => {
-    if(setting.reg.test(text)){
-      var devide = text.match(setting.reg)!.input!.split(setting.replace_start)
-      text  = devide.map((tex, index) => {
-        if(index%2===1){
-          setting.tags.forEach(tag => {
-            tex = '<'+tag+'>' + tex + '</'+tag+'>'
-          })
-          return tex
-        }else return tex
-      }).join('')
-      console.log(text)
-    }
-  })
-  text = '<div>' + text + '</div>'
-  return text
+const Parser = (text: string) => {
+  var processed = '<div>' + text + '</div>'
+  return processed
 }
 
 export const textReverseParser = (element: HTMLElement) => {
@@ -79,7 +68,7 @@ export const textReverseParser = (element: HTMLElement) => {
   children.forEach((item, index) => {
     ParseSettings.forEach(setting => {
       if(setting.tags[setting.tags.length-1] === item.tagName){
-        text[index] = setting.replace_start + item.innerText + setting.replace_end
+        text[index] = setting.replace + item.innerText + setting.end
       }
     })
   })

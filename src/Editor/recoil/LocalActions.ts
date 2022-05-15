@@ -181,7 +181,7 @@ const Pages = [
                   "id": "d24c3512-d4a2-4e93-a145-7aaf96b6ab1b",
                   "type": "Text",
                   "data": {
-                      "text": "### Inspired by Notion**"
+                      "text": "### Inspired by Notion"
                   }
               }
           ],

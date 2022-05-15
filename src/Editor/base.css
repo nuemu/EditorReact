@@ -33,6 +33,10 @@
   content: "Empty";
   color: grey;
 }
+[contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
 .dragArea{
   position: absolute;
   opacity: 0.3;
