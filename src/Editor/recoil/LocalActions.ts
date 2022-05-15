@@ -46,7 +46,7 @@ export const DBActions = async (action: string, params: any) => {
         .then(() => {
           const index = DBs.findIndex(DB => DB.id === params.id)
           response = DBs.splice(index, 1, data)
-          console.log('DBs:', DBs)
+          //console.log('DBs:', DBs)
         })
       break
   }
@@ -84,7 +84,7 @@ export const PageActions = async (action: string, params: any|null) => {
         .then(() => {
           const index = Pages.findIndex(page => page.id === data.id)
           response = Pages.splice(index, 1, data)
-          console.log('Pages:', Pages)
+          //console.log('Pages:', Pages)
         })
   }
   return response
@@ -122,7 +122,7 @@ export const PageListActions = async (action: string, params?: any) => {
           const newPageList = params
           response = newPageList
           PageList = newPageList
-          console.log('PageList:',newPageList)
+          //console.log('PageList:',newPageList)
         })
       break
       
@@ -181,10 +181,19 @@ const Pages = [
                   "id": "d24c3512-d4a2-4e93-a145-7aaf96b6ab1b",
                   "type": "Text",
                   "data": {
-                      "text": "**Inspired by Notion**"
+                      "text": "### Inspired by Notion**"
                   }
               }
           ],
+          [
+            {
+                "id": "description",
+                "type": "Text",
+                "data": {
+                    "text": "# 現在MarkdownのParserを自作する方向で検討中..."
+                }
+            }
+        ],
           [
               {
                   "id": "a",
@@ -300,18 +309,9 @@ const Pages = [
           [
               {
                   "id": "tekito",
-                  "type": "Page",
-                  "data": {
-                      "id": "Editor"
-                  }
-              }
-          ],
-          [
-              {
-                  "id": "tekito",
                   "type": "Text",
                   "data": {
-                      "text": "な訳がない"
+                      "text": "サンプルページ"
                   }
               }
           ]
@@ -335,7 +335,7 @@ const Pages = [
                   "id": "a",
                   "type": "Text",
                   "data": {
-                      "text": "とっても嬉しい"
+                      "text": "もう一つサンプル"
                   }
               }
           ]

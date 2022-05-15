@@ -6,6 +6,9 @@ Notionはとても良いサービスである、万のことに愛用してい�
 　
 ### 開発予定
 Issueを使え？**太字**は優先順序高め
+
+- [ ] **Markdown Parserの作成...**
+
 - [x] **Textブロック**
   - [x] **Markdown対応**
     - [ ] **Notion風のMarkdown入力**

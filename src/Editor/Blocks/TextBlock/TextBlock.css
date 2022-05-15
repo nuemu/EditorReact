@@ -4,7 +4,10 @@
   width: 100%;
   outline:none;
   white-space: pre-wrap;
-  margin-bottom: 16pt;
+  margin-bottom: 8pt;
+}
+.text-block > div:empty:before{
+  content: 'sample'
 }
 .visible{
   opacity: 1;
@@ -17,7 +20,6 @@
   top: 0;
   width: 100%;
   outline:none;
-  margin-bottom: 16pt;
 }
 .text-block-viewer:after{
   content: '\200b';

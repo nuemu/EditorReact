@@ -55,10 +55,10 @@ function Base() {
 
     })()
   }, [])
+
   useEffect(() => {
     if(page?.id !== 'loading'){
       (async () => await PageActions('patch', page))()
-      setFocus([-1, 1])
     }
   }, [blocks])
 

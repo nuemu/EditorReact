@@ -84,6 +84,16 @@ export const blocksSelector = selector({
   }
 })
 
+export const blockSelector = selectorFamily({
+  key: 'blockSelector',
+  get: (id) => ({get}) => {
+    const data = get(pageState)!.data
+    var block = {}
+    data.forEach(row => row.forEach(col => {if(col.id === id) block=col}))
+    return block
+  },
+})
+
 export const focusState = atom({
   key: 'focusState',
   default: [-1, 0]
