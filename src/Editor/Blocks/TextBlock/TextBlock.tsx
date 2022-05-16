@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import './TextBlock.css'
+import './Parser.css'
 
 import { useRecoilState } from 'recoil'
 import { blocksSelector, focusState } from '../../recoil/atom';
@@ -10,8 +11,6 @@ import 'katex/dist/katex.css'
 /*import highlightjs from 'highlight.js'
 import 'highlight.js/styles/github-dark-dimmed.css'*/
 import DOMPurify from "dompurify";
-
-import { textParser, textReverseParser } from "./TextParser";
 
 const katexRender = (innerText:string) => {
   var newText = innerText
@@ -60,7 +59,7 @@ const TextBlock = (props: BlockProps) => {
 
   var editRef = useRef<HTMLDivElement>(null)
 
-  var text = textParser(blocks[props.row_index][props.col_index].data.text)
+  var text = blocks[props.row_index][props.col_index].data.text
 
   var textRef = useRef(text)
 
@@ -77,7 +76,7 @@ const TextBlock = (props: BlockProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, row_index:number, col_index:number ) => {
     const element = editRef.current as HTMLElement
     var newBlocks = JSON.parse(JSON.stringify(blocks)) //Deep Copy
-    newBlocks[row_index][col_index].data.text = textReverseParser(element)
+    newBlocks[row_index][col_index].data.text = element.innerText
     setBlocks(newBlocks)
   }
 
