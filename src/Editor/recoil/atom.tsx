@@ -86,12 +86,15 @@ export const blocksSelector = selector({
 
 export const blockSelector = selectorFamily({
   key: 'blockSelector',
-  get: (id) => ({get}) => {
+  get: (props: BlockProps) => ({get}) => {
     const data = get(pageState)!.data
-    var block = {}
-    data.forEach(row => row.forEach(col => {if(col.id === id) block=col}))
-    return block
+    return data[props.row_index][props.col_index]
   },
+  set: (props: BlockProps) => ({get, set}, newValue) => {
+    const data = JSON.parse(JSON.stringify(get(pageState)))
+    data.data[props.row_index][props.col_index].data = newValue
+    set(pageState, data)
+  }
 })
 
 export const focusState = atom({

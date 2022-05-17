@@ -10,7 +10,12 @@ export const viewMenuItems = [
     name: 'Calendar',
     type: 'Calendar',
     icon: require('../../Assets/Calendar.svg').default
-  }
+  },
+  {
+    name: 'Graph',
+    type: 'Graph',
+    icon: require('../../Assets/Graph.svg').default
+  },
 ]
 
 export const Properties = {
