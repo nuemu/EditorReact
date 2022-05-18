@@ -2,7 +2,7 @@ import React from 'react'
 import './Date.css'
 
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { DBSelector, blocksSelector } from '../../../../recoil/atom';
+import { DBSelector, blockSelector } from '../../../../recoil/atom';
 
 type Props = {
   row_index: number
@@ -12,8 +12,8 @@ type Props = {
 }
 
 const DateElement = (props: Props) => {
-  const blocks = useRecoilValue(blocksSelector) as Blocks
-  const DBId = blocks[props.base_row_index][props.base_col_index].data.id
+  const block = useRecoilValue(blockSelector({row_index: props.base_row_index, col_index: props.base_col_index})) as Block
+  const DBId = block.data.id
   const [DB, setDB] = useRecoilState(DBSelector(DBId)) as [Data, any]
 
   const handleDataChange = (e: React.ChangeEvent<HTMLInputElement>, row_index:number, col_index:number) => {

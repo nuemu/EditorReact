@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { blocksSelector, currentPage, DBSelector, pageListState, DBsState } from '../../recoil/atom';
+import { blockSelector, currentPage, DBSelector, pageListState, DBsState } from '../../recoil/atom';
 import { DBActions, PageListActions } from '../../recoil/LocalActions';
 
 import Components from './view_loader'
@@ -11,15 +11,14 @@ const ViewComponents = Components as any
 const DB = (props: BlockProps) => {
   const [DBs, setDBs] = useRecoilState(DBsState) as [any, any]
   const [PageList, setPageList] = useRecoilState(pageListState) as [PageList, any]
-  const blocks = useRecoilValue(blocksSelector) as Blocks
-
-  const DBId = blocks[props.row_index][props.col_index].data.id
+  const block = useRecoilValue(blockSelector(props)) as Block
+  
+  const DBId = block.data.id
   const [currentDB, setDB] = useRecoilState(DBSelector(DBId))
   const currentPageId = useRecoilValue(currentPage)
 
   const [view, setView] = useState('Loading.tsx')
 
-  
   const getList = (id:string, pageList: any) => {
     var listItem:any = null
     pageList.forEach((item:any) => {
@@ -30,7 +29,7 @@ const DB = (props: BlockProps) => {
   }
 
   useEffect(() => {
-    var viewStyle = 'Loading.tsx'
+    var viewStyle = view
     if(getList(DBId, PageList) && DB !== null) viewStyle = getList(DBId, PageList).view
     setView(viewStyle)
   },[currentDB, PageList])

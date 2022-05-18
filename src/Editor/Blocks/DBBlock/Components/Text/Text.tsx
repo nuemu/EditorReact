@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { DBSelector, blocksSelector } from '../../../../recoil/atom';
+import { DBSelector, blockSelector } from '../../../../recoil/atom';
 
 import './Text.css'
 
@@ -13,8 +13,8 @@ type Props = {
 }
 
 const TextElement = (props: Props) => {
-  const blocks = useRecoilValue(blocksSelector) as Blocks
-  const DBId = blocks[props.base_row_index][props.base_col_index].data.id
+  const block = useRecoilValue(blockSelector({row_index: props.base_row_index, col_index: props.base_col_index})) as Block
+  const DBId = block.data.id
   const [DB, setDB] = useRecoilState(DBSelector(DBId)) as [Data, any]
 
   const text = useRef(DB.data[props.row_index][props.col_index].data)
