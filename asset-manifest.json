@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Editor/static/css/main.4b432a96.css",
-    "main.js": "/Editor/static/js/main.666b92da.js",
+    "main.css": "/Editor/static/css/main.b8f3e1e1.css",
+    "main.js": "/Editor/static/js/main.dcc0001b.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/Editor/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/Editor/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
     "static/media/KaTeX_Main-Bold.ttf": "/Editor/static/media/KaTeX_Main-Bold.8169508bf58f8bd92ad8.ttf",
@@ -71,14 +71,15 @@
     "static/media/Right.svg": "/Editor/static/media/Right.89a4e2c5840d3bb558d6f0177f2c1c1b.svg",
     "static/media/Table.svg": "/Editor/static/media/Table.81c50475450ec0ecef46d8ec3ac306da.svg",
     "static/media/Text.svg": "/Editor/static/media/Text.cba6fb6f83334be8a5ce18c0e7621081.svg",
+    "static/media/Graph.svg": "/Editor/static/media/Graph.a430e9bb8dfc592aadce84d0d0b278bc.svg",
     "static/media/Calendar.svg": "/Editor/static/media/Calendar.84471c0a90fae8ad0f380c56f657f4ba.svg",
     "static/media/Page.svg": "/Editor/static/media/Page.8502ce1e072afa86cb16452850c32f1f.svg",
     "static/media/Plus.svg": "/Editor/static/media/Plus.84478f1596d8d93aef242201a227b42b.svg",
-    "main.4b432a96.css.map": "/Editor/static/css/main.4b432a96.css.map",
-    "main.666b92da.js.map": "/Editor/static/js/main.666b92da.js.map"
+    "main.b8f3e1e1.css.map": "/Editor/static/css/main.b8f3e1e1.css.map",
+    "main.dcc0001b.js.map": "/Editor/static/js/main.dcc0001b.js.map"
   },
   "entrypoints": [
-    "static/css/main.4b432a96.css",
-    "static/js/main.666b92da.js"
+    "static/css/main.b8f3e1e1.css",
+    "static/js/main.dcc0001b.js"
   ]
 }
