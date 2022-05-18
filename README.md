@@ -1,8 +1,16 @@
 # Block Style Editor React ver
 お試し：https://tusko-ku.github.io/Editor
 
-### 開発動機
-Notionはとても良いサービスである、万のことに愛用している。それ故に、使わないブロックで肥大しすぎている、グラフが作成できない他色々な機能が欲しい、など不満を覚えてしまった。BlockStyleEditorが欲しいならWordPressを使うなり、Editor.jsのようなライブラリを用いるのも手ではあるが、いずれにせよ目的を達成するには、大幅に改造する必要があると感じたため、自作するのとそう大差なかろうということで、このEditorの開発に至った。
+### 目指すところ
+NotionスタイルのPage・DB構造、Markdown入力方式を持ちつつ、LaTeXへの変換が可能なエディタ
+
+### 利用技術
+- Front
+  - React: コンポーネントはブロックと相性が良い。後方互換性を保っている。TypeScriptと相性が良い。
+    - Recoil: 状態管理用。
+    - React Router: ページ遷移用(後に)
+  - KaTeX: 数式表示用
+  - D3: CanvasとWebGLの方が高速なようだが、svgとtikzは変換事例があるので。
 　
 ### 開発予定
 Issueを使え？**太字**は優先順序高め
@@ -96,7 +104,6 @@ DBとページのブロックは分離しても良いかもしれない。
 - [Recoil](https://recoiljs.org/)(MIT)
 - [KaTeX](https://katex.org/)(MIT)
 - [highlight.js](https://highlightjs.org/)(BSD-3-Clause)
-- [marked](https://github.com/markedjs/marked)(MIT)
 - [uuid js](https://github.com/uuidjs/uuid)(MIT)
 - [DOMPurify](https://github.com/cure53/DOMPurify)
   a) the Apache License Version 2.0, or
