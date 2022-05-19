@@ -7,7 +7,8 @@ import { blockSelector, DBSelector } from "../../../recoil/atom";
 
 import * as d3 from 'd3'
 
-import ViewMenu from "../Components/ViewMenu/ViewMenu";
+import DropDownMenu from "../../../Components/Menu/DropDownMenu/DropDownMenu";
+import { MenuOptions } from "./GraphMenuOptions";
 
 const Graph = (props: BlockProps) => {
   const block = useRecoilValue(blockSelector(props)) as any
@@ -17,9 +18,12 @@ const Graph = (props: BlockProps) => {
 
   var margin = {top: 30, right: 30, bottom: 70, left: 60}
 
+  var d3base: d3.Selection<SVGGElement, unknown, null, undefined>
+  var data: any[][] = new Array(db.data.length).fill([0, 0])
+
   useEffect(() => {
     var width = ref.current!.offsetWidth
-    const d3base = d3.select(ref.current!)
+    d3base = d3.select(ref.current!)
       .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
         .attr("viewBox", "0 0 " + width + " " + (width*0.75))
@@ -28,9 +32,26 @@ const Graph = (props: BlockProps) => {
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    drawLineCharts(d3base)
+    drawLineCharts()
     return () => {}
   },[])
+
+  const setData = (index: number, action: string) => {
+    switch(action){
+      case('setXAxis'):
+        data = db.data.map((row, row_index) => {
+          data[row_index][0] = row[index].data
+          return data
+        })
+        break
+      case('setYAxis'):
+        data = db.data.map((row, row_index) => {
+          data[row_index][1] = row[index].data
+          return data
+        })
+        break
+    }
+  }
 
   const scaleTime = (data: any[], width: number) => {
     return d3.scaleTime()
@@ -51,7 +72,7 @@ const Graph = (props: BlockProps) => {
       .range([height, 0]);
   }
 
-  const drawBarCharts = (d3base: d3.Selection<SVGGElement, unknown, null, undefined>) => {
+  const drawBarCharts = () => {
     const data = [{Country: 'USA', Value: 100}, {Country: 'JPN', Value: 300}]
 
     var height = ref.current!.offsetWidth*0.75
@@ -81,7 +102,7 @@ const Graph = (props: BlockProps) => {
         .attr("fill", "#69b3a2")
   }
 
-  const drawLineCharts = (d3base: d3.Selection<SVGGElement, unknown, null, undefined>) => {
+  const drawLineCharts = () => {
     const data = [{date: '2022-05-15', Value: 10}, {date: '2022-05-17', Value: 30}]
 
     var height = ref.current!.offsetWidth*0.75
@@ -113,7 +134,11 @@ const Graph = (props: BlockProps) => {
 
   return (
     <>
-      <ViewMenu row_index={props.row_index} col_index={props.col_index}/>
+      <div className="column_name_wrapper">
+        {db.column.map((column, index) => {
+          return <div key={index}><DropDownMenu title={column.name} Action ={() => {}} contents={MenuOptions} icon="" id={String(index)}/></div>
+        })}
+      </div>
       <div className="GraphBase" ref={ref} />
     </>)
 }
