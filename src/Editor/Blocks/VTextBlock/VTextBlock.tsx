@@ -1,46 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import './TextBlock.css'
+import './VTextBlock.css'
 
 import { useRecoilState } from 'recoil'
 import { blocksSelector, focusState } from '../../recoil/atom';
 
-import katex from 'katex'
-import 'katex/dist/katex.css'
-
-/*import highlightjs from 'highlight.js'
-import 'highlight.js/styles/github-dark-dimmed.css'*/
 import DOMPurify from "dompurify";
-
-const katexRender = (innerText:string) => {
-  var newText = innerText
-
-  // display mode true
-  var split = innerText.split('$$')
-  var newTexts:string[] = []
-  if(split.length > 1){
-    split.forEach((text, index) => {
-      if(index%2 === 1){
-        text = text.replaceAll('\n', '')
-        newTexts.push(katex.renderToString(text, {displayMode: true, throwOnError: false, strict: 'ignore'}))
-      }
-      else newTexts.push(text)
-    })
-    newText = newTexts.join('')
-  }
-
-  // display mode false
-  split = newText.split('$')
-  newTexts = []
-  if(split.length > 1){
-    split.forEach((text, index) => {
-      if(index%2 === 1) newTexts.push(katex.renderToString(text, {displayMode: false, throwOnError: false, strict: 'ignore'}))
-      else newTexts.push(text)
-    })
-    newText = newTexts.join('')
-  }
-
-  return newText
-}
 
 const SetCaret = (node:Node, caret:number) => {
   const selection = window.getSelection()!
@@ -50,7 +14,7 @@ const SetCaret = (node:Node, caret:number) => {
   selection.addRange(range)
 }
 
-const TextBlock = (props: BlockProps) => {
+const VTextBlock = (props: BlockProps) => {
   const [blocks, setBlocks] = useRecoilState(blocksSelector) as [Blocks, any]
   const [focusing, setFocus] = useRecoilState(focusState)
 
@@ -58,7 +22,7 @@ const TextBlock = (props: BlockProps) => {
 
   var editRef = useRef<HTMLDivElement>(null)
 
-  var text = blocks[props.row_index][props.col_index].data.text
+  var text = blocks[props.row_index][props.col_index].data.text.split('\n').map((text:string) => '<div>'+text+'</div>').join('')
 
   var textRef = useRef(text)
 
@@ -271,7 +235,7 @@ const TextBlock = (props: BlockProps) => {
   return (
     <div
       ref={editRef}
-      className="text-block"
+      className="v-text-block"
       id={"editable-id-"+props.row_index+"-"+props.col_index}
       contentEditable
       dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(textRef.current)}}
@@ -282,4 +246,4 @@ const TextBlock = (props: BlockProps) => {
   )
 }
 
-export default TextBlock;
+export default VTextBlock;

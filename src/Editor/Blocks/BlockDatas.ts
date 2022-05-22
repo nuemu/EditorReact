@@ -9,6 +9,13 @@ const Data = [
 		initial: () => {return {text: ''}}
 	},
 	{
+		type: 'VText',
+		name: 'VText',
+		description: '',
+		icon: require('../Assets/VText.svg').default,
+		initial: () => {return {text: ''}}
+	},
+	{
 		type: 'DB',
 		name: 'DataBase',
 		description: '',

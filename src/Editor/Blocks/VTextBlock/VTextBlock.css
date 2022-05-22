@@ -1,0 +1,16 @@
+.v-text-block {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  z-index: 1;
+  width: 100%;
+  outline:none;
+  white-space: pre-wrap;
+  margin-bottom: 8pt;
+}
+
+.v-text-block > div {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+}
