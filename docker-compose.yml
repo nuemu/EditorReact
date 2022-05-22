@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+ editor:
+   build:
+     context: .
+     dockerfile: Dockerfile
+   volumes:
+     - ./:/src
+     - yarn_cache:/usr/local/share/.cache/yarn/v6:cached
+   command: sh -c "PORT=8080 yarn start"
+   ports:
+     - "8080:8080"
+   stdin_open: true
+
+volumes:
+  node_modules:
+  yarn_cache:
