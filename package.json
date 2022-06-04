@@ -1,8 +1,8 @@
 {
-  "name": "next-gen-editor",
+  "name": "react-editor",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://tusko-ku.github.io/Editor",
+  "homepage": "https://nuemu.github.io/ReactEditor/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
@@ -24,6 +24,7 @@
     "gh-pages": "^3.2.3",
     "highlight.js": "^11.5.1",
     "katex": "^0.15.3",
+    "marked": "^4.0.16",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "6",

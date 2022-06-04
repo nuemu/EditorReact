@@ -177,6 +177,15 @@ const Pages = [
       "column": [],
       "data": [
           [
+            {
+                "id": "description",
+                "type": "Text",
+                "data": {
+                    "text": "# 開発中止"
+                }
+            }
+          ],
+          [
               {
                   "id": "d24c3512-d4a2-4e93-a145-7aaf96b6ab1b",
                   "type": "Text",
@@ -186,20 +195,11 @@ const Pages = [
               }
           ],
           [
-            {
-                "id": "description",
-                "type": "Text",
-                "data": {
-                    "text": "# 現在Markdownの構文解析を自作する方向で作業中、しばらくText表示はpoor"
-                }
-            }
-        ],
-          [
               {
                   "id": "a",
                   "type": "Text",
                   "data": {
-                      "text": "Editor.jsに満足できなかったので、ブログ用に開発しています。\nクリックすると編集できます。"
+                      "text": "Editor.jsに満足できなかったので、ブログ用に開発してい~~ます~~た。\nクリックすると編集できます。"
                   }
               }
           ],
@@ -351,17 +351,17 @@ var PageList:PageList = [
           {
               "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7",
               "title": "SampleDB",
-              "view": "Graph",
+              "view": "Calendar",
               "list": [
                   {
                       "id": "ec1d2b8f-d3b1-4905-ba0c-30af053ac719",
-                      "title": "元気一杯",
+                      "title": "サンプル１",
                       "view": "Page",
                       "list": []
                   },
                   {
                       "id": "4612db8c-5625-482b-8eb8-4427d0a08717",
-                      "title": "無気力",
+                      "title": "サンプル２",
                       "view": "Page",
                       "list": []
                   }

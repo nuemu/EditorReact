@@ -1,4 +1,4 @@
 FROM node:18.2.0-alpine3.14
-WORKDIR ./
+WORKDIR /src
 
-RUN yarn install
+RUN sh -c "yarn install"

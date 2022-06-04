@@ -7,8 +7,9 @@ import { blocksSelector, focusState } from '../../recoil/atom';
 import katex from 'katex'
 import 'katex/dist/katex.css'
 
-/*import highlightjs from 'highlight.js'
-import 'highlight.js/styles/github-dark-dimmed.css'*/
+import { marked } from 'marked'
+import highlightjs from 'highlight.js'
+import 'highlight.js/styles/github-dark-dimmed.css'
 import DOMPurify from "dompurify";
 
 const katexRender = (innerText:string) => {
@@ -42,6 +43,17 @@ const katexRender = (innerText:string) => {
   return newText
 }
 
+marked.setOptions({
+  langPrefix: 'hljs language-',
+  highlight: function(code, lang) {
+    return highlightjs.highlightAuto(code, [lang]).value;
+  },
+  pedantic: false,
+  gfm: true,
+  breaks: true,
+  silent: true
+})
+
 const SetCaret = (node:Node, caret:number) => {
   const selection = window.getSelection()!
   var range = document.createRange()
@@ -56,27 +68,38 @@ const TextBlock = (props: BlockProps) => {
 
   const [editing, setEdit] = useState(false)
 
+  var wrapperRef = useRef<HTMLDivElement>(null)
   var editRef = useRef<HTMLDivElement>(null)
+  var viewRef = useRef<HTMLDivElement>(null)
+  var textRef = useRef(blocks[props.row_index][props.col_index].data.text)
 
-  var text = blocks[props.row_index][props.col_index].data.text
+  const [height, setHeight] = useState(100)
 
-  var textRef = useRef(text)
+  var wrapperSize = {
+    height: height
+  }
 
   useEffect(() => {
     if(focusing[0] === props.row_index && focusing[1] === props.col_index) setEdit(true)
     else setEdit(false)
-    textRef.current = text
+    textRef.current = blocks[props.row_index][props.col_index].data.text
+    setHeight((editRef.current!.clientHeight > viewRef.current!.clientHeight) ? editRef.current?.clientHeight as number : viewRef.current?.clientHeight as number)
   },[focusing])
 
   useEffect(() => {
     if(editing) editRef!.current!!.focus()
   }, [editing])
 
+  const processedText = (text:string) => {
+    const math = katexRender(text)
+    return  marked.parse(math)
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, row_index:number, col_index:number ) => {
-    const element = editRef.current as HTMLElement
     var newBlocks = JSON.parse(JSON.stringify(blocks)) //Deep Copy
-    newBlocks[row_index][col_index].data.text = element.innerText
+    newBlocks[row_index][col_index].data.text = e.target.innerText
     setBlocks(newBlocks)
+    setHeight((editRef.current!.clientHeight > viewRef.current!.clientHeight) ? editRef.current?.clientHeight as number : viewRef.current?.clientHeight as number)
   }
 
   const handleKeyDown = (e:React.KeyboardEvent<HTMLDivElement>, row_index:number, col_index:number) => {
@@ -269,16 +292,25 @@ const TextBlock = (props: BlockProps) => {
   }
 
   return (
-    <div
-      ref={editRef}
-      className="text-block"
-      id={"editable-id-"+props.row_index+"-"+props.col_index}
-      contentEditable
-      dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(textRef.current)}}
-      onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleChange(e, props.row_index, props.col_index)}
-      onKeyDown={(e:React.KeyboardEvent<HTMLDivElement>) => handleKeyDown(e, props.row_index, props.col_index)}
-      onFocus={() => handleFocus(props.row_index, props.col_index)}
-    />
+    <div ref={wrapperRef} className="text-block-wrapper" style={wrapperSize}>
+      <div
+        ref={editRef}
+        className={"text-block " + (editing ? 'visible' : 'invisible')}
+        id={"editable-id-"+props.row_index+"-"+props.col_index}
+        contentEditable
+        dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(textRef.current)}}
+        onInput={(e:React.ChangeEvent<HTMLInputElement>) => handleChange(e, props.row_index, props.col_index)}
+        onKeyDown={(e:React.KeyboardEvent<HTMLDivElement>) => handleKeyDown(e, props.row_index, props.col_index)}
+        onFocus={() => handleFocus(props.row_index, props.col_index)}
+        onMouseOver={() => {setFocus([props.row_index, props.col_index])}}
+      />
+      <div
+        ref={viewRef}
+        className={"text-block-viewer " + (editing ? 'invisible' : 'visible')}
+        dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(processedText(blocks[props.row_index][props.col_index].data.text))}}
+        onMouseOver={() => handleFocus(props.row_index, props.col_index)}
+      />
+    </div>
   )
 }
 

@@ -4,10 +4,33 @@
   width: 100%;
   outline:none;
   white-space: pre-wrap;
-  margin-bottom: 8pt;
+  margin-bottom: 16pt;
 }
-.text-block > div:empty:before{
-  content: '\200'
+.visible{
+  opacity: 1;
+}
+.invisible{
+  opacity: 0;
+}
+.text-block-viewer {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  outline:none;
+  margin-bottom: 16pt;
+}
+.text-block-viewer:after{
+  content: '\200b';
+}
+p {
+  margin: 0;
+  display:inline;
+}
+ul {
+  margin: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
 }
 a {
   color: black;
