@@ -205,15 +205,6 @@ const Pages = [
           ],
           [
               {
-                  "id": "sample",
-                  "type": "DB",
-                  "data": {
-                      "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7"
-                  }
-              }
-          ],
-          [
-              {
                   "id": "a",
                   "type": "Text",
                   "data": {
@@ -244,7 +235,7 @@ const Pages = [
                   "id": "a",
                   "type": "Text",
                   "data": {
-                      "text": "- ~~markdownスタイルの文章修飾~~\n- $\\~~KaTeX$による数式表示~~\n- Drag&Dropでブロックの並び替え、並列配置\n- DBの編集、行の追加・削除\n- DBのビュー変更(現状カレンダーは日付変更のみ対応)"
+                      "text": "- markdownスタイルの文章修飾\n- $\\KaTeX$による数式表示\n- Drag&Dropでブロックの並び替え、並列配置\n- DBの編集、行の追加・削除\n- DBのビュー変更(現状カレンダーは日付変更のみ対応)"
                   }
               }
           ],
@@ -281,6 +272,24 @@ const Pages = [
                       "text": "**数式入力**\n- inline\nゼータ函数は$\\zeta(s) = \\sum_{n=0}^\\infty\\frac{1}{n^s}$と定義される。\n- display mode\n$$\\sum_{n=0}^\\infty n = -\\frac{1}{12}$$"
                   }
               }
+          ],
+          [
+            {
+              "id": "asdasad",
+              "type": "Text",
+              "data": {
+                      "text": "**データベースのテーブル表示・カレンダー表示**(グラフは未完成)\n表示は#で切り替えられます。"
+                  }
+              }
+          ],
+          [
+            {
+                "id": "sample",
+                "type": "DB",
+                "data": {
+                    "id": "b233ebf2-44f8-4eb0-9277-9c4ebd63f2e7"
+                }
+            }
           ],
           [
               {

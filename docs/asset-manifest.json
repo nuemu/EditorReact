@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/EditorReact/static/css/main.c27a05fd.css",
-    "main.js": "/EditorReact/static/js/main.32f2e3cc.js",
+    "main.js": "/EditorReact/static/js/main.de1a54c8.js",
     "static/media/KaTeX_AMS-Regular.ttf": "/EditorReact/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
     "static/media/KaTeX_Main-Regular.ttf": "/EditorReact/static/media/KaTeX_Main-Regular.9eba1d77abcf2aa6e94e.ttf",
     "static/media/KaTeX_Main-Bold.ttf": "/EditorReact/static/media/KaTeX_Main-Bold.8169508bf58f8bd92ad8.ttf",
@@ -77,10 +77,10 @@
     "static/media/Page.svg": "/EditorReact/static/media/Page.8502ce1e072afa86cb16452850c32f1f.svg",
     "static/media/Plus.svg": "/EditorReact/static/media/Plus.84478f1596d8d93aef242201a227b42b.svg",
     "main.c27a05fd.css.map": "/EditorReact/static/css/main.c27a05fd.css.map",
-    "main.32f2e3cc.js.map": "/EditorReact/static/js/main.32f2e3cc.js.map"
+    "main.de1a54c8.js.map": "/EditorReact/static/js/main.de1a54c8.js.map"
   },
   "entrypoints": [
     "static/css/main.c27a05fd.css",
-    "static/js/main.32f2e3cc.js"
+    "static/js/main.de1a54c8.js"
   ]
 }
