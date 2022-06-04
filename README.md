@@ -1,8 +1,13 @@
+## 開発中止
+作成したところ、データ構造の設計が不十分だと感じ、$\LaTeX$との互換性を高めたくなったので、作り直しを決定。ついでにReactからSolid.jsに移行中。
+
+現在開発中：https://github.com/nuemu/Editor
+
 # Block Style Editor React ver
-お試し：https://tusko-ku.github.io/Editor
+お試し：https://nuemu.github.io/EditorReact
 
 ### 目指すところ
-NotionスタイルのPage・DB構造、Markdown入力方式を持ちつつ、LaTeXへの変換が可能なエディタ
+NotionスタイルのPage・DB構造、Markdown入力方式を持つブログ利用可能なエディタ
 
 ### 利用技術
 - Front
@@ -96,7 +101,7 @@ DBとページのブロックは分離しても良いかもしれない。
   - [x] おそらく、DnD時の削除処理に異常がある。時々空の行が生じる
 - [ ] ブロックをDnDすると、時々reading errorが出る。
 - [ ] １行コピペすると改行が追加される。ContentEditableの仕様か？
-- [ ] TextBlockが使いもにならないので、Notion StyleのMarkdown入力を優先
+- [ ] TextBlockが使いものにならないので、Notion StyleのMarkdown入力を優先
 
 ### 利用ライブラリ・他
 - [React](https://ja.reactjs.org/)(MIT)
